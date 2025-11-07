@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* këtu mund të shtosh stile globale më vonë */
+/* TEST — hiqe më vonë */
+body {
+  outline: 5px solid red !important;
+}
