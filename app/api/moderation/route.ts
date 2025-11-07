@@ -1,6 +1,24 @@
 // app/api/moderation/route.ts
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "../../../lib/supabaseAdmin"; // relative import
+import { createClient } from "@supabase/supabase-js";
+
+function getSupabaseAdmin() {
+  const url =
+    process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+  const key =
+    process.env.SUPABASE_SERVICE_ROLE_KEY || // prefero service_role
+    process.env.SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    "";
+
+  if (!url || !key) return null;
+
+  // persistSession off në route server-side
+  return createClient(url, key, { auth: { persistSession: false } });
+}
 
 function isOk(req: Request) {
   const pass = req.headers.get("x-admin-pass");
@@ -13,7 +31,12 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { data, error } = await supabaseAdmin
+  const supabase = getSupabaseAdmin();
+  if (!supabase) {
+    return NextResponse.json({ error: "Supabase config missing" }, { status: 500 });
+  }
+
+  const { data, error } = await supabase
     .from("posts")
     .select("*")
     .eq("status", "pending")
@@ -30,6 +53,11 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
+  const supabase = getSupabaseAdmin();
+  if (!supabase) {
+    return NextResponse.json({ error: "Supabase config missing" }, { status: 500 });
+  }
+
   try {
     const { id, action } = (await req.json()) as {
       id: string;
@@ -42,7 +70,7 @@ export async function PATCH(req: Request) {
 
     const newStatus = action === "approve" ? "approved" : "rejected";
 
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabase
       .from("posts")
       .update({ status: newStatus, approved_at: new Date().toISOString() })
       .eq("id", id)
@@ -54,6 +82,9 @@ export async function PATCH(req: Request) {
     }
     return NextResponse.json({ ok: true, post: data }, { status: 200 });
   } catch (e: any) {
-    return NextResponse.json({ error: e?.message ?? "Server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: e?.message ?? "Server error" },
+      { status: 500 }
+    );
   }
 }
