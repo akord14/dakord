@@ -2,6 +2,21 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import Image from "next/image";
+const PROF_TO_IMG: Record<string, string> = {
+  "Shofer": "driver.svg",
+  "Elektriçist": "electrician.svg",
+  "Hidraulik": "plumber.svg",
+  "Teknik CCTV/Alarm": "technician.svg",
+  "IT / Developer": "developer.svg",
+  "Shitës / Market": "shop.svg",
+  "Kuzhinier": "chef.svg",
+  "Pastrim": "cleaner.svg",
+  "Kamerier": "waiter.svg",
+  "Punëtor ndërtimi": "builder.svg",
+  "Tjetër…": "other.svg",
+};
+const imgFor = (profession: string) =>
+  `/images/professions/${PROF_TO_IMG[profession] ?? "other.svg"}`;
 
 export const metadata: Metadata = {
   title: "akord.al — Kërkoj punë | Ofroj punë",

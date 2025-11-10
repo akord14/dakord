@@ -1,34 +1,122 @@
-// app/post/page.tsx
-import Link from "next/link";
-import { supabaseServer } from "../../lib/supabaseServer";
+import { supabaseServer } from "@/lib/supabaseServer";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+type Post = {
+  id: string;
+  title: string;
+  description: string | null;
+  contact: string | null;
+  payment: string | null;
+  payment_currency: "EUR" | "USD" | "ALL" | null;
+  profession: string | null;
+  image: string | null;
+  type: "seeking" | "offering";
+  status: "pending" | "approved" | "rejected";
+  created_at: string;
+};
+
+export const revalidate = 0; // pa cache gjatë zhvillimit
 
 export default async function PostsPage() {
-  const supabase = await supabaseServer();
-  const { data: posts, error } = await supabase
+  const supabase = supabaseServer();
+  const { data, error } = await supabase
     .from("posts")
-    .select("id,title,description,contact,type,status,created_at")
+    .select(
+      "id,title,description,contact,payment,payment_currency,profession,image,type,status,created_at"
+    )
+    .eq("status", "approved")
     .order("created_at", { ascending: false });
 
   if (error) {
-    return <main className="mx-auto max-w-2xl p-6">Nuk u ngarkuan postet.</main>;
+    return (
+      <div className="max-w-6xl mx-auto p-6">
+        Gabim gjatë leximit të postimeve: {error.message}
+      </div>
+    );
+  }
+
+  const posts = (data ?? []) as Post[];
+
+  if (posts.length === 0) {
+    return (
+      <div className="max-w-6xl mx-auto p-6 text-center text-gray-600">
+        Nuk ka ende postime të aprovuara. ✨
+      </div>
+    );
   }
 
   return (
-    <main className="mx-auto max-w-2xl p-6 space-y-4">
-      {(posts ?? []).map((post) => (
-        <article key={post.id} className="border rounded-xl p-4 space-y-1">
-          <h2 className="text-xl font-semibold">
-            <Link href={`/post/${post.id}`}>{post.title}</Link>
-          </h2>
-          <p className="text-sm opacity-70">
-            {post.type === "seeking" ? "Kërkoj punë" : "Ofroj punë"} ·{" "}
-            {post.status === "approved" ? "✅ Miratuar" : "⏳ Në pritje"}
-          </p>
-        </article>
-      ))}
-    </main>
+    <div className="max-w-6xl mx-auto p-6">
+      <h1 className="text-2xl font-semibold mb-6">Postimet</h1>
+
+      {/* Grid responsive 1 → 2 → 3 kolona */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.map((p) => {
+          const desc = (p.description ?? "").trim();
+          const short =
+            desc.length > 140 ? desc.slice(0, 140).trimEnd() + "…" : desc;
+
+          return (
+            <article
+              key={p.id}
+              className="rounded-2xl border bg-white shadow-sm hover:shadow-md transition overflow-hidden"
+            >
+              {/* Ilustrimi sipër */}
+              <div className="relative w-full aspect-[16/9] bg-gray-50">
+                <img
+                  src={p.image ?? "/images/professions/other.svg"}
+                  alt={p.profession ?? "Profesioni"}
+                  className="absolute inset-0 w-full h-full object-contain p-6 opacity-95"
+                  loading="lazy"
+                />
+              </div>
+
+              <div className="p-4 space-y-2">
+                {/* Titulli + badge tipi */}
+                <div className="flex items-start justify-between gap-3">
+                  <h2 className="font-semibold leading-snug">{p.title}</h2>
+                  <span
+                    className={`text-xs px-2 py-1 rounded-full shrink-0 ${
+                      p.type === "offering"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-blue-100 text-blue-700"
+                    }`}
+                  >
+                    {p.type === "offering" ? "Ofroj" : "Kërkoj"}
+                  </span>
+                </div>
+
+                {/* Pagesa */}
+                {p.payment ? (
+                  <div className="text-sm">
+                    <span className="inline-block px-2 py-1 rounded-md bg-gray-100">
+                      💶 {p.payment} {p.payment_currency ?? ""}
+                    </span>
+                  </div>
+                ) : null}
+
+                {/* Përshkrim i shkurtuar */}
+                {short ? (
+                  <p className="text-sm text-gray-600">{short}</p>
+                ) : null}
+
+                {/* Kontakt */}
+                {p.contact ? (
+                  <p className="text-xs text-gray-500">📞 {p.contact}</p>
+                ) : null}
+
+                <div className="pt-2">
+                  <a
+                    href={`/post/${p.id}`}
+                    className="text-blue-600 text-sm hover:underline"
+                  >
+                    Shiko më shumë →
+                  </a>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
   );
 }
