@@ -1,68 +1,168 @@
+import { createClient } from "@supabase/supabase-js";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-async function login(formData: FormData) {
-  "use server";
+type Post = {
+  id: string;
+  type: "seeking" | "offering";
+  title: string;
+  description: string;
+  contact: string;
+  status: string;
+  created_at: string;
+};
 
-  const password = formData.get("password");
-  const adminPassword = process.env.ADMIN_PASSWORD;
+function getSupabaseAnon() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!adminPassword) {
-    console.error("ADMIN_PASSWORD nuk është vendosur në environment!");
-    redirect("/admin?error=server");
+  if (!url || !key) {
+    throw new Error("Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY");
   }
 
-  if (password === adminPassword) {
-    // Nëse password është i saktë, shko te paneli i moderimit
-    redirect("/admin/moderation");
-  } else {
-    // Nëse është gabim, kthehu te /admin me error
-    redirect("/admin?error=1");
-  }
+  return createClient(url, key);
 }
 
-// VËREJTJE: këtu nuk vendosim tip strict, përdorim `any` që të mos na pengojë TS në build
-export default function AdminLoginPage({ searchParams }: any) {
-  const rawError = searchParams?.error;
-  const error = Array.isArray(rawError) ? rawError[0] : rawError;
+// Ky do përdorë SERVICE ROLE KEY vetëm në server (për update si admin)
+function getSupabaseAdmin() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!url || !serviceKey) {
+    throw new Error("Mungon SUPABASE_SERVICE_ROLE_KEY ose URL");
+  }
+
+  return createClient(url, serviceKey);
+}
+
+async function getPendingPosts(): Promise<Post[]> {
+  const supabase = getSupabaseAnon();
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("status", "pending")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Gabim gjatë ngarkimit të posteve pending:", error);
+    return [];
+  }
+
+  return (data ?? []) as Post[];
+}
+
+async function updatePostStatus(formData: FormData) {
+  "use server";
+
+  const id = formData.get("id");
+  const action = formData.get("action");
+
+  if (!id || typeof id !== "string" || !action || typeof action !== "string") {
+    return;
+  }
+
+  const newStatus = action === "approve" ? "approved" : "refused";
+
+  const supabase = getSupabaseAdmin();
+
+  const { error } = await supabase
+    .from("posts")
+    .update({ status: newStatus })
+    .eq("id", id);
+
+  if (error) {
+    console.error("Gabim gjatë përditësimit të statusit:", error);
+    // Nëse do, mund të hedhim error që ta shohim si faqe error:
+    // throw new Error("Nuk u përditësua posti");
+  }
+
+  // rifresko të dhënat e kësaj faqeje dhe bëj reload
+  revalidatePath("/admin/moderation");
+  redirect("/admin/moderation");
+}
+
+export default async function ModerationPage() {
+  const posts = await getPendingPosts();
 
   return (
     <div
       style={{
         padding: 24,
-        maxWidth: 400,
-        margin: "60px auto",
+        maxWidth: 900,
+        margin: "40px auto",
         fontFamily: "system-ui, sans-serif",
       }}
     >
-      <h1 style={{ fontSize: 24, marginBottom: 16 }}>Admin Login</h1>
+      <h1 style={{ fontSize: 28, marginBottom: 16 }}>Moderimi i postimeve</h1>
 
-      <form action={login} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <input
-          type="password"
-          name="password"
-          placeholder="Vendos password-in e adminit"
-          required
-          style={{ padding: 8, fontSize: 16 }}
-        />
-        <button
-          type="submit"
-          style={{
-            padding: "8px 12px",
-            fontSize: 16,
-            cursor: "pointer",
-          }}
-        >
-          Hyr
-        </button>
-      </form>
+      {posts.length === 0 ? (
+        <p>S&apos;ka asgjë në pending.</p>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              style={{
+                border: "1px solid #ddd",
+                borderRadius: 8,
+                padding: 16,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 14,
+                  opacity: 0.7,
+                  marginBottom: 4,
+                }}
+              >
+                {post.type === "seeking" ? "Kërkon punë" : "Ofron punë"} ·{" "}
+                {new Date(post.created_at).toLocaleString("sq-AL")}
+              </div>
 
-      {error === "1" && (
-        <p style={{ color: "red", marginTop: 12 }}>Password i gabuar.</p>
-      )}
-      {error === "server" && (
-        <p style={{ color: "red", marginTop: 12 }}>
-          Mungon variabla ADMIN_PASSWORD në Vercel.
-        </p>
+              <h2 style={{ fontSize: 20, marginBottom: 8 }}>{post.title}</h2>
+
+              <p style={{ marginBottom: 8 }}>{post.description}</p>
+
+              <p style={{ fontWeight: 500, marginBottom: 12 }}>
+                Kontakt: {post.contact}
+              </p>
+
+              <form
+                action={updatePostStatus}
+                style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
+              >
+                <input type="hidden" name="id" value={post.id} />
+                <button
+                  type="submit"
+                  name="action"
+                  value="approve"
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: 4,
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  ✅ Aprovo
+                </button>
+                <button
+                  type="submit"
+                  name="action"
+                  value="refuse"
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: 4,
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  ❌ Refuzo
+                </button>
+              </form>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

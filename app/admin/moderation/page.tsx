@@ -1,8 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 type Post = {
-  id: string;
+  id: string | number;
   type: "seeking" | "offering";
   title: string;
   description: string;
@@ -11,7 +12,8 @@ type Post = {
   created_at: string;
 };
 
-function getSupabaseServer() {
+// Lexim me anon key (për të marrë listën e posteve)
+function getSupabaseAnon() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -22,8 +24,21 @@ function getSupabaseServer() {
   return createClient(url, key);
 }
 
+// Update me SERVICE ROLE KEY (admin)
+function getSupabaseAdmin() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!url || !serviceKey) {
+    throw new Error("Mungon SUPABASE_SERVICE_ROLE_KEY ose URL e Supabase");
+  }
+
+  return createClient(url, serviceKey);
+}
+
+// Merr postet pending
 async function getPendingPosts(): Promise<Post[]> {
-  const supabase = getSupabaseServer();
+  const supabase = getSupabaseAnon();
 
   const { data, error } = await supabase
     .from("posts")
@@ -32,45 +47,56 @@ async function getPendingPosts(): Promise<Post[]> {
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("Gabim gjatë ngarkimit të posteve pending:", error);
+    console.error("❌ Gabim gjatë ngarkimit të posteve pending:", error);
     return [];
   }
 
   return (data ?? []) as Post[];
 }
 
-async function updatePostStatus(formData: FormData) {
+// SERVER ACTION për butonat Aprovo / Refuzo
+export async function updatePostStatus(formData: FormData) {
   "use server";
 
   const id = formData.get("id");
   const action = formData.get("action");
 
+  console.log("➡️ updatePostStatus called with:", { id, action });
+
   if (!id || typeof id !== "string" || !action || typeof action !== "string") {
+    console.error("❌ ID ose action mungon ose nuk është string:", { id, action });
     return;
   }
 
+  // Në DB ke UUID string, kështu që idValue është string
+  const idValue: string = id;
   const newStatus = action === "approve" ? "approved" : "refused";
 
-  const supabase = getSupabaseServer();
+  const supabase = getSupabaseAdmin();
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("posts")
-    .update({ status: newStatus })
-    .eq("id", id);
+    .update({ status: newStatus } as any)
+    .eq("id", idValue as any)
+    .select();
+
+  console.log("✅ Supabase update result:", { data, error });
 
   if (error) {
-    console.error("Gabim gjatë përditësimit të statusit:", error);
+    console.error("❌ Gabim gjatë përditësimit të statusit:", error);
   }
 
-  // Rifresko faqen e moderimit pas veprimit
+  // rifresko faqen dhe bëj reload
   revalidatePath("/admin/moderation");
+  redirect("/admin/moderation");
 }
 
+// KOMPONENTI KRYESOR I FAQES
 export default async function ModerationPage() {
   const posts = await getPendingPosts();
 
   return (
-    <div
+    <main
       style={{
         padding: 24,
         maxWidth: 900,
@@ -85,12 +111,14 @@ export default async function ModerationPage() {
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {posts.map((post) => (
-            <div
+            <section
               key={post.id}
               style={{
-                border: "1px solid #ddd",
-                borderRadius: 8,
+                border: "1px solid #e5e7eb",
+                borderRadius: 12,
                 padding: 16,
+                background: "#ffffff",
+                boxShadow: "0 10px 30px rgba(15,23,42,0.05)",
               }}
             >
               <div
@@ -112,42 +140,44 @@ export default async function ModerationPage() {
                 Kontakt: {post.contact}
               </p>
 
-              <form
-                action={updatePostStatus}
-                style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
-              >
-                <input type="hidden" name="id" value={post.id} />
-                <button
-                  type="submit"
-                  name="action"
-                  value="approve"
-                  style={{
-                    padding: "6px 12px",
-                    borderRadius: 4,
-                    border: "none",
-                    cursor: "pointer",
-                  }}
-                >
-                  ✅ Aprovo
-                </button>
-                <button
-                  type="submit"
-                  name="action"
-                  value="refuse"
-                  style={{
-                    padding: "6px 12px",
-                    borderRadius: 4,
-                    border: "none",
-                    cursor: "pointer",
-                  }}
-                >
-                  ❌ Refuzo
-                </button>
-              </form>
-            </div>
+              {/* Dy forma të ndara që dërgojnë action-in si hidden field */}
+              <div style={{ display: "flex", gap: 8 }}>
+                <form action={updatePostStatus}>
+                  <input type="hidden" name="id" value={String(post.id)} />
+                  <input type="hidden" name="action" value="approve" />
+                  <button
+                    type="submit"
+                    style={{
+                      padding: "6px 12px",
+                      borderRadius: 4,
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    ✅ Aprovo
+                  </button>
+                </form>
+
+                <form action={updatePostStatus}>
+                  <input type="hidden" name="id" value={String(post.id)} />
+                  <input type="hidden" name="action" value="refuse" />
+                  <button
+                    type="submit"
+                    style={{
+                      padding: "6px 12px",
+                      borderRadius: 4,
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    ❌ Refuzo
+                  </button>
+                </form>
+              </div>
+            </section>
           ))}
         </div>
       )}
-    </div>
+    </main>
   );
 }
