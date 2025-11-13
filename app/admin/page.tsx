@@ -20,12 +20,13 @@ async function login(formData: FormData) {
   }
 }
 
-export default function AdminLoginPage({
-  searchParams,
-}: {
-  searchParams?: { error?: string };
-}) {
-  const error = searchParams?.error;
+type AdminPageProps = {
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
+
+export default function AdminLoginPage({ searchParams }: AdminPageProps) {
+  const rawError = searchParams?.error;
+  const error = Array.isArray(rawError) ? rawError[0] : rawError;
 
   return (
     <div
