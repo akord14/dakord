@@ -12,86 +12,55 @@ type Post = {
   created_at: string;
 };
 
-// Lexim me anon key (për të marrë listën e posteve)
+// Lexim me anon key
 function getSupabaseAnon() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!url || !key) {
-    throw new Error("Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY");
-  }
-
-  return createClient(url, key);
+  return createClient(url!, key!);
 }
 
-// Update me SERVICE ROLE KEY (admin)
+// Update me service role key (admin)
 function getSupabaseAdmin() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!url || !serviceKey) {
-    throw new Error("Mungon SUPABASE_SERVICE_ROLE_KEY ose URL e Supabase");
-  }
-
-  return createClient(url, serviceKey);
+  return createClient(url!, serviceKey!);
 }
 
 // Merr postet pending
 async function getPendingPosts(): Promise<Post[]> {
   const supabase = getSupabaseAnon();
 
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("posts")
     .select("*")
     .eq("status", "pending")
     .order("created_at", { ascending: false });
 
-  if (error) {
-    console.error("❌ Gabim gjatë ngarkimit të posteve pending:", error);
-    return [];
-  }
-
   return (data ?? []) as Post[];
 }
 
-// SERVER ACTION për butonat Aprovo / Refuzo
-export async function updatePostStatus(formData: FormData) {
+// SERVER ACTION - PA EXPORT ❗
+async function updatePostStatus(formData: FormData) {
   "use server";
 
-  const id = formData.get("id");
-  const action = formData.get("action");
+  const id = formData.get("id") as string;
+  const action = formData.get("action") as string;
 
-  console.log("➡️ updatePostStatus called with:", { id, action });
-
-  if (!id || typeof id !== "string" || !action || typeof action !== "string") {
-    console.error("❌ ID ose action mungon ose nuk është string:", { id, action });
-    return;
-  }
-
-  // Në DB ke UUID string, kështu që idValue është string
-  const idValue: string = id;
   const newStatus = action === "approve" ? "approved" : "refused";
 
   const supabase = getSupabaseAdmin();
 
-  const { data, error } = await supabase
+  await supabase
     .from("posts")
-    .update({ status: newStatus } as any)
-    .eq("id", idValue as any)
-    .select();
+    .update({ status: newStatus })
+    .eq("id", id);
 
-  console.log("✅ Supabase update result:", { data, error });
-
-  if (error) {
-    console.error("❌ Gabim gjatë përditësimit të statusit:", error);
-  }
-
-  // rifresko faqen dhe bëj reload
   revalidatePath("/admin/moderation");
   redirect("/admin/moderation");
 }
 
-// KOMPONENTI KRYESOR I FAQES
 export default async function ModerationPage() {
   const posts = await getPendingPosts();
 
@@ -140,7 +109,6 @@ export default async function ModerationPage() {
                 Kontakt: {post.contact}
               </p>
 
-              {/* Dy forma të ndara që dërgojnë action-in si hidden field */}
               <div style={{ display: "flex", gap: 8 }}>
                 <form action={updatePostStatus}>
                   <input type="hidden" name="id" value={String(post.id)} />
