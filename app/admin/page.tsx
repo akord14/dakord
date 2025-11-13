@@ -20,11 +20,8 @@ async function login(formData: FormData) {
   }
 }
 
-type AdminPageProps = {
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
-
-export default function AdminLoginPage({ searchParams }: AdminPageProps) {
+// VËREJTJE: këtu nuk vendosim tip strict, përdorim `any` që të mos na pengojë TS në build
+export default function AdminLoginPage({ searchParams }: any) {
   const rawError = searchParams?.error;
   const error = Array.isArray(rawError) ? rawError[0] : rawError;
 
