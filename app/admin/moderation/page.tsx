@@ -1,5 +1,5 @@
-"use client";
-import { useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+import { revalidatePath } from "next/cache";
 
 type Post = {
   id: string;
@@ -7,109 +7,147 @@ type Post = {
   title: string;
   description: string;
   contact: string;
-  status: "pending" | "approved" | "rejected";
+  status: string;
   created_at: string;
 };
 
-export default function ModerationPage() {
-  const [adminPass, setAdminPass] = useState("");
-  const [items, setItems] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(false);
+function getSupabaseServer() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  async function load() {
-    if (!adminPass) {
-      alert("Vendos fjalëkalimin e adminit.");
-      return;
-    }
-    setLoading(true);
-    try {
-      const res = await fetch("/api/moderation", {
-        headers: { "x-admin-pass": adminPass },
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Gabim ngarkimi");
-      setItems(data.items || []);
-    } catch (e: any) {
-      alert(e.message || "Gabim");
-    } finally {
-      setLoading(false);
-    }
+  if (!url || !key) {
+    throw new Error("Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY");
   }
 
-  async function act(id: string, action: "approve" | "reject") {
-    try {
-      const res = await fetch("/api/moderation", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "x-admin-pass": adminPass,
-        },
-        body: JSON.stringify({ id, action }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Gabim veprimi");
-      setItems(prev => prev.filter(p => p.id !== id));
-    } catch (e: any) {
-      alert(e.message || "Gabim");
-    }
+  return createClient(url, key);
+}
+
+async function getPendingPosts(): Promise<Post[]> {
+  const supabase = getSupabaseServer();
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("status", "pending")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Gabim gjatë ngarkimit të posteve pending:", error);
+    return [];
   }
+
+  return (data ?? []) as Post[];
+}
+
+async function updatePostStatus(formData: FormData) {
+  "use server";
+
+  const id = formData.get("id");
+  const action = formData.get("action");
+
+  if (!id || typeof id !== "string" || !action || typeof action !== "string") {
+    return;
+  }
+
+  const newStatus = action === "approve" ? "approved" : "refused";
+
+  const supabase = getSupabaseServer();
+
+  const { error } = await supabase
+    .from("posts")
+    .update({ status: newStatus })
+    .eq("id", id);
+
+  if (error) {
+    console.error("Gabim gjatë përditësimit të statusit:", error);
+  }
+
+  // Rifresko faqen e moderimit pas veprimit
+  revalidatePath("/admin/moderation");
+}
+
+export default async function ModerationPage() {
+  const posts = await getPendingPosts();
 
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-4">
-      <h1 className="text-2xl font-semibold">Moderimi i postimeve</h1>
+    <div
+      style={{
+        padding: 24,
+        maxWidth: 900,
+        margin: "40px auto",
+        fontFamily: "system-ui, sans-serif",
+      }}
+    >
+      <h1 style={{ fontSize: 28, marginBottom: 16 }}>Moderimi i postimeve</h1>
 
-      <div className="flex gap-2 items-center">
-        <input
-          type="password"
-          className="border rounded p-2 w-72"
-          placeholder="Fjalëkalimi i adminit"
-          value={adminPass}
-          onChange={e => setAdminPass(e.target.value)}
-        />
-        <button
-          onClick={load}
-          className="px-3 py-2 rounded bg-black text-white disabled:opacity-50"
-          disabled={loading}
-        >
-          {loading ? "Duke ngarkuar..." : "Ngarko pending"}
-        </button>
-      </div>
+      {posts.length === 0 ? (
+        <p>S&apos;ka asgjë në pending.</p>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              style={{
+                border: "1px solid #ddd",
+                borderRadius: 8,
+                padding: 16,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 14,
+                  opacity: 0.7,
+                  marginBottom: 4,
+                }}
+              >
+                {post.type === "seeking" ? "Kërkon punë" : "Ofron punë"} ·{" "}
+                {new Date(post.created_at).toLocaleString("sq-AL")}
+              </div>
 
-      {!loading && items.length === 0 && (
-        <p className="text-sm opacity-70">
-          S’ka asgjë në pending (ose fut fjalëkalimin dhe kliko “Ngarko”).
-        </p>
+              <h2 style={{ fontSize: 20, marginBottom: 8 }}>{post.title}</h2>
+
+              <p style={{ marginBottom: 8 }}>{post.description}</p>
+
+              <p style={{ fontWeight: 500, marginBottom: 12 }}>
+                Kontakt: {post.contact}
+              </p>
+
+              <form
+                action={updatePostStatus}
+                style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
+              >
+                <input type="hidden" name="id" value={post.id} />
+                <button
+                  type="submit"
+                  name="action"
+                  value="approve"
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: 4,
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  ✅ Aprovo
+                </button>
+                <button
+                  type="submit"
+                  name="action"
+                  value="refuse"
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: 4,
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  ❌ Refuzo
+                </button>
+              </form>
+            </div>
+          ))}
+        </div>
       )}
-
-      <div className="space-y-4">
-        {items.map(p => (
-          <div key={p.id} className="border rounded p-4">
-            <div className="flex items-center justify-between mb-1">
-              <h2 className="text-lg font-medium">{p.title}</h2>
-              <span className="text-xs uppercase">{p.type}</span>
-            </div>
-            <p className="text-xs opacity-60 mb-2">
-              {new Date(p.created_at).toLocaleString()}
-            </p>
-            <p className="whitespace-pre-wrap mb-2">{p.description}</p>
-            <p className="text-sm mb-3">Kontakt: {p.contact}</p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => act(p.id, "approve")}
-                className="px-3 py-1 rounded bg-green-600 text-white"
-              >
-                Aprovo
-              </button>
-              <button
-                onClick={() => act(p.id, "reject")}
-                className="px-3 py-1 rounded bg-red-600 text-white"
-              >
-                Refuzo
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
