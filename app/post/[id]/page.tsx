@@ -54,12 +54,10 @@ function extractPhone(contact: string): string | null {
   return match[1].replace(/\s+/g, "");
 }
 
-export default async function PostDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const post = await getPost(params.id);
+export default async function PostDetailPage({ params }: any) {
+  const id = params?.id as string;
+  const post = await getPost(id);
+
 
   if (!post || post.status === "refused") {
     notFound();
