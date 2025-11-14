@@ -1,8 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import ApproveButtons from "@/app/admin/moderation/approve-buttons";
-
+import ApproveButtons from "../approve-buttons";
 
 type Post = {
   id: string;
@@ -19,7 +18,9 @@ function getSupabaseAnon() {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !key) {
-    throw new Error("Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY");
+    throw new Error(
+      "Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    );
   }
 
   return createClient(url, key);
@@ -48,14 +49,18 @@ function formatType(type: Post["type"]) {
   return "";
 }
 
-// ✔️ KETU ESHTE NDRYSHIMI KRYESOR: params tip 'any' që të mos na bezdisë TS
-export default async function AdminPostDetailPage({ params }: any) {
-  const id = params?.id as string;
-  const post = await getPost(id);
+export default async function AdminPostDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const post = await getPost(params.id);
 
   if (!post) {
     notFound();
   }
+
+  const safePost = post as Post;
 
   return (
     <main
@@ -91,7 +96,7 @@ export default async function AdminPostDetailPage({ params }: any) {
           </Link>
 
           <span style={{ fontSize: 12, color: "#9ca3af" }}>
-            {new Date(post.created_at).toLocaleString("sq-AL")}
+            {new Date(safePost.created_at).toLocaleString("sq-AL")}
           </span>
         </div>
 
@@ -107,7 +112,6 @@ export default async function AdminPostDetailPage({ params }: any) {
             gap: 24,
           }}
         >
-          {/* Info kryesore */}
           <div>
             <div
               style={{
@@ -123,15 +127,15 @@ export default async function AdminPostDetailPage({ params }: any) {
                   padding: "4px 10px",
                   borderRadius: 999,
                   background:
-                    post.type === "seeking" ? "#ecfeff" : "#eef2ff",
-                  color: post.type === "seeking" ? "#0891b2" : "#4f46e5",
+                    safePost.type === "seeking" ? "#ecfeff" : "#eef2ff",
+                  color: safePost.type === "seeking" ? "#0891b2" : "#4f46e5",
                   border:
-                    post.type === "seeking"
+                    safePost.type === "seeking"
                       ? "1px solid #a5f3fc"
                       : "1px solid #c7d2fe",
                 }}
               >
-                {formatType(post.type)}
+                {formatType(safePost.type)}
               </span>
 
               <span
@@ -140,26 +144,26 @@ export default async function AdminPostDetailPage({ params }: any) {
                   padding: "4px 10px",
                   borderRadius: 999,
                   background:
-                    post.status === "pending"
+                    safePost.status === "pending"
                       ? "#fef9c3"
-                      : post.status === "approved"
+                      : safePost.status === "approved"
                       ? "#dcfce7"
                       : "#fee2e2",
                   color:
-                    post.status === "pending"
+                    safePost.status === "pending"
                       ? "#92400e"
-                      : post.status === "approved"
+                      : safePost.status === "approved"
                       ? "#166534"
                       : "#b91c1c",
                   border:
-                    post.status === "pending"
+                    safePost.status === "pending"
                       ? "1px solid #fef3c7"
-                      : post.status === "approved"
+                      : safePost.status === "approved"
                       ? "1px solid #bbf7d0"
                       : "1px solid #fecaca",
                 }}
               >
-                Status: {post.status}
+                Status: {safePost.status}
               </span>
             </div>
 
@@ -169,7 +173,7 @@ export default async function AdminPostDetailPage({ params }: any) {
                 marginBottom: 8,
               }}
             >
-              {post.title}
+              {safePost.title}
             </h1>
 
             <p
@@ -180,7 +184,8 @@ export default async function AdminPostDetailPage({ params }: any) {
                 whiteSpace: "pre-line",
               }}
             >
-              {post.description || "Ky postim nuk ka përshkrim të detajuar."}
+              {safePost.description ||
+                "Ky postim nuk ka përshkrim të detajuar."}
             </p>
 
             <div
@@ -189,11 +194,11 @@ export default async function AdminPostDetailPage({ params }: any) {
                 color: "#6b7280",
               }}
             >
-              <strong>Kontakt:</strong> {post.contact || "Nuk ka kontakt."}
+              <strong>Kontakt:</strong>{" "}
+              {safePost.contact || "Nuk ka kontakt."}
             </div>
           </div>
 
-          {/* Panel i djathtë për veprimet e adminit */}
           <aside
             style={{
               background: "#0f172a",
@@ -229,7 +234,7 @@ export default async function AdminPostDetailPage({ params }: any) {
             </div>
 
             <div>
-              <ApproveButtons id={post.id} />
+              <ApproveButtons id={safePost.id} />
               <p
                 style={{
                   fontSize: 11,
