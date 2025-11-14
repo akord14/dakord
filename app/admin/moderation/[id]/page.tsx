@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import ContactActions from "./ContactActions";
+import ApproveButtons from "../approve-buttons";
 
 type Post = {
   id: string;
@@ -47,25 +47,16 @@ function formatType(type: Post["type"]) {
   return "";
 }
 
-function extractPhone(contact: string): string | null {
-  // nxjerr vetëm shifrat + plus
-  const match = contact.match(/(\+?\d[\d\s]+)/);
-  if (!match) return null;
-  return match[1].replace(/\s+/g, "");
-}
-
-export default async function PostDetailPage({
+export default async function AdminPostDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
   const post = await getPost(params.id);
 
-  if (!post || post.status === "refused") {
+  if (!post) {
     notFound();
   }
-
-  const phone = extractPhone(post.contact || "") || null;
 
   return (
     <main
@@ -84,7 +75,6 @@ export default async function PostDetailPage({
           padding: "32px 16px 56px",
         }}
       >
-        {/* Breadcrumb + back */}
         <div
           style={{
             marginBottom: 16,
@@ -92,27 +82,20 @@ export default async function PostDetailPage({
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            gap: 8,
           }}
         >
-          <div>
-            <Link
-              href="/"
-              style={{
-                textDecoration: "none",
-                color: "#6b7280",
-              }}
-            >
-              ← Kthehu te faqja kryesore
-            </Link>
-          </div>
+          <Link
+            href="/admin/moderation"
+            style={{ textDecoration: "none", color: "#6b7280" }}
+          >
+            ← Kthehu te lista e moderimit
+          </Link>
 
-          <div style={{ fontSize: 12, color: "#9ca3af" }}>
-            {new Date(post.created_at).toLocaleDateString("sq-AL")}
-          </div>
+          <span style={{ fontSize: 12, color: "#9ca3af" }}>
+            {new Date(post.created_at).toLocaleString("sq-AL")}
+          </span>
         </div>
 
-        {/* Karta kryesore */}
         <article
           style={{
             background: "#ffffff",
@@ -121,7 +104,7 @@ export default async function PostDetailPage({
             boxShadow: "0 24px 50px rgba(15,23,42,0.12)",
             border: "1px solid #e5e7eb",
             display: "grid",
-            gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1.3fr)",
+            gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1.2fr)",
             gap: 24,
           }}
         >
@@ -152,26 +135,39 @@ export default async function PostDetailPage({
                 {formatType(post.type)}
               </span>
 
-              {post.status === "approved" && (
-                <span
-                  style={{
-                    fontSize: 11,
-                    padding: "4px 10px",
-                    borderRadius: 999,
-                    background: "#dcfce7",
-                    color: "#166534",
-                    border: "1px solid #bbf7d0",
-                  }}
-                >
-                  Miratuar
-                </span>
-              )}
+              <span
+                style={{
+                  fontSize: 11,
+                  padding: "4px 10px",
+                  borderRadius: 999,
+                  background:
+                    post.status === "pending"
+                      ? "#fef9c3"
+                      : post.status === "approved"
+                      ? "#dcfce7"
+                      : "#fee2e2",
+                  color:
+                    post.status === "pending"
+                      ? "#92400e"
+                      : post.status === "approved"
+                      ? "#166534"
+                      : "#b91c1c",
+                  border:
+                    post.status === "pending"
+                      ? "1px solid #fef3c7"
+                      : post.status === "approved"
+                      ? "1px solid #bbf7d0"
+                      : "1px solid #fecaca",
+                }}
+              >
+                Status: {post.status}
+              </span>
             </div>
 
             <h1
               style={{
-                fontSize: 24,
-                marginBottom: 6,
+                fontSize: 22,
+                marginBottom: 8,
               }}
             >
               {post.title}
@@ -181,7 +177,8 @@ export default async function PostDetailPage({
               style={{
                 fontSize: 14,
                 color: "#4b5563",
-                marginBottom: 18,
+                marginBottom: 16,
+                whiteSpace: "pre-line",
               }}
             >
               {post.description || "Ky postim nuk ka përshkrim të detajuar."}
@@ -189,18 +186,15 @@ export default async function PostDetailPage({
 
             <div
               style={{
-                marginTop: 16,
                 fontSize: 13,
                 color: "#6b7280",
-                whiteSpace: "pre-line",
               }}
             >
-              <strong>Kontakt: </strong>
-              {post.contact}
+              <strong>Kontakt:</strong> {post.contact || "Nuk ka kontakt."}
             </div>
           </div>
 
-          {/* Paneli i djathtë: kontakt + butona */}
+          {/* Panel i djathtë për veprimet e adminit */}
           <aside
             style={{
               background: "#0f172a",
@@ -220,7 +214,7 @@ export default async function PostDetailPage({
                   marginBottom: 6,
                 }}
               >
-                Kontakto
+                Vendimi i administratorit
               </h2>
               <p
                 style={{
@@ -229,25 +223,25 @@ export default async function PostDetailPage({
                   marginBottom: 10,
                 }}
               >
-                Përdor një nga butonat më poshtë për të kontaktuar shpejt
-                personin ose biznesin.
+                Lexoje postimin me kujdes dhe më pas zgjidh nëse do ta miratosh
+                ose refuzosh. Vendimi yt do të pasqyrohet menjëherë në faqen
+                publike.
               </p>
-
-              <div
-                style={{
-                  fontSize: 13,
-                  background: "rgba(15,23,42,0.75)",
-                  borderRadius: 12,
-                  padding: 10,
-                  border: "1px solid rgba(148,163,184,0.4)",
-                  marginBottom: 8,
-                }}
-              >
-                {post.contact || "Nuk ka kontakt të specifikuar."}
-              </div>
             </div>
 
-            <ContactActions phone={phone} contactText={post.contact || ""} />
+            <div>
+              <ApproveButtons id={post.id} />
+              <p
+                style={{
+                  fontSize: 11,
+                  marginTop: 8,
+                  opacity: 0.75,
+                }}
+              >
+                * Pasi të miratosh postimin, ai do të shfaqet te lista publike e
+                postimeve.
+              </p>
+            </div>
           </aside>
         </article>
       </div>
