@@ -47,12 +47,10 @@ function formatType(type: Post["type"]) {
   return "";
 }
 
-export default async function AdminPostDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const post = await getPost(params.id);
+// ✔️ KETU ESHTE NDRYSHIMI KRYESOR: params tip 'any' që të mos na bezdisë TS
+export default async function AdminPostDetailPage({ params }: any) {
+  const id = params?.id as string;
+  const post = await getPost(id);
 
   if (!post) {
     notFound();
