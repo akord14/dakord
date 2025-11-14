@@ -1,169 +1,54 @@
-import { createClient } from "@supabase/supabase-js";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+"use client";
 
-type Post = {
-  id: string;
-  type: "seeking" | "offering";
-  title: string;
-  description: string;
-  contact: string;
-  status: string;
-  created_at: string;
-};
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-function getSupabaseAnon() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+export default function AdminLoginPage() {
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
-  if (!url || !key) {
-    throw new Error("Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY");
-  }
+  const correctPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD as string;
 
-  return createClient(url, key);
-}
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
-// Ky do përdorë SERVICE ROLE KEY vetëm në server (për update si admin)
-function getSupabaseAdmin() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!url || !serviceKey) {
-    throw new Error("Mungon SUPABASE_SERVICE_ROLE_KEY ose URL");
-  }
-
-  return createClient(url, serviceKey);
-}
-
-async function getPendingPosts(): Promise<Post[]> {
-  const supabase = getSupabaseAnon();
-
-  const { data, error } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("status", "pending")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Gabim gjatë ngarkimit të posteve pending:", error);
-    return [];
-  }
-
-  return (data ?? []) as Post[];
-}
-
-async function updatePostStatus(formData: FormData) {
-  "use server";
-
-  const id = formData.get("id");
-  const action = formData.get("action");
-
-  if (!id || typeof id !== "string" || !action || typeof action !== "string") {
-    return;
-  }
-
-  const newStatus = action === "approve" ? "approved" : "refused";
-
-  const supabase = getSupabaseAdmin();
-
-  const { error } = await supabase
-    .from("posts")
-    .update({ status: newStatus })
-    .eq("id", id);
-
-  if (error) {
-    console.error("Gabim gjatë përditësimit të statusit:", error);
-    // Nëse do, mund të hedhim error që ta shohim si faqe error:
-    // throw new Error("Nuk u përditësua posti");
-  }
-
-  // rifresko të dhënat e kësaj faqeje dhe bëj reload
-  revalidatePath("/admin/moderation");
-  redirect("/admin/moderation");
-}
-
-export default async function ModerationPage() {
-  const posts = await getPendingPosts();
+    if (password === correctPassword) {
+      router.push("/admin/moderation");
+    } else {
+      alert("Password i gabuar");
+    }
+  };
 
   return (
-    <div
-      style={{
-        padding: 24,
-        maxWidth: 900,
-        margin: "40px auto",
-        fontFamily: "system-ui, sans-serif",
-      }}
-    >
-      <h1 style={{ fontSize: 28, marginBottom: 16 }}>Moderimi i postimeve</h1>
+    <div style={{ maxWidth: 600, margin: "80px auto", fontFamily: "system-ui" }}>
+      <h1 style={{ fontSize: 28, marginBottom: 16 }}>Admin Moderation — Login</h1>
 
-      {posts.length === 0 ? (
-        <p>S&apos;ka asgjë në pending.</p>
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {posts.map((post) => (
-            <div
-              key={post.id}
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: 8,
-                padding: 16,
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 14,
-                  opacity: 0.7,
-                  marginBottom: 4,
-                }}
-              >
-                {post.type === "seeking" ? "Kërkon punë" : "Ofron punë"} ·{" "}
-                {new Date(post.created_at).toLocaleString("sq-AL")}
-              </div>
-
-              <h2 style={{ fontSize: 20, marginBottom: 8 }}>{post.title}</h2>
-
-              <p style={{ marginBottom: 8 }}>{post.description}</p>
-
-              <p style={{ fontWeight: 500, marginBottom: 12 }}>
-                Kontakt: {post.contact}
-              </p>
-
-              <form
-                action={updatePostStatus}
-                style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
-              >
-                <input type="hidden" name="id" value={post.id} />
-                <button
-                  type="submit"
-                  name="action"
-                  value="approve"
-                  style={{
-                    padding: "6px 12px",
-                    borderRadius: 4,
-                    border: "none",
-                    cursor: "pointer",
-                  }}
-                >
-                  ✅ Aprovo
-                </button>
-                <button
-                  type="submit"
-                  name="action"
-                  value="refuse"
-                  style={{
-                    padding: "6px 12px",
-                    borderRadius: 4,
-                    border: "none",
-                    cursor: "pointer",
-                  }}
-                >
-                  ❌ Refuzo
-                </button>
-              </form>
-            </div>
-          ))}
-        </div>
-      )}
+      <form onSubmit={handleSubmit} style={{ display: "flex", gap: 12 }}>
+        <input
+          type="password"
+          placeholder="Fut password-in"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{
+            flex: 1,
+            padding: "8px 12px",
+            borderRadius: 6,
+            border: "1px solid #ccc",
+          }}
+        />
+        <button
+          type="submit"
+          style={{
+            padding: "8px 16px",
+            borderRadius: 6,
+            background: "black",
+            color: "white",
+            cursor: "pointer",
+          }}
+        >
+          Hyr
+        </button>
+      </form>
     </div>
   );
 }
