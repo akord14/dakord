@@ -11,7 +11,13 @@ export default function ApproveButtons({ id }: { id: string }) {
       <button
         onClick={() => start(() => approvePost(id))}
         disabled={pending}
-        style={{ marginRight: 10, background: "green", color: "white", padding: "6px 12px", borderRadius: 4 }}
+        style={{
+          marginRight: 10,
+          background: "green",
+          color: "white",
+          padding: "6px 12px",
+          borderRadius: 6,
+        }}
       >
         Aprovo
       </button>
@@ -19,7 +25,12 @@ export default function ApproveButtons({ id }: { id: string }) {
       <button
         onClick={() => start(() => rejectPost(id))}
         disabled={pending}
-        style={{ background: "red", color: "white", padding: "6px 12px", borderRadius: 4 }}
+        style={{
+          background: "red",
+          color: "white",
+          padding: "6px 12px",
+          borderRadius: 6,
+        }}
       >
         Refuzo
       </button>
