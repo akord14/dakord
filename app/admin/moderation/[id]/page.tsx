@@ -1,7 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import ApproveButtons from "../approve-buttons";
+import ApproveButtons from "@/app/admin/moderation/approve-buttons";
+
 
 type Post = {
   id: string;
