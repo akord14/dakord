@@ -1,177 +1,95 @@
-import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
-import ApproveButtons from "./approve-buttons";
+import { supabaseAdmin } from "../../../lib/supabaseAdmin";
 
 type Post = {
   id: string;
   type: "seeking" | "offering";
   title: string;
-  description: string | null;
+  description: string;
   contact: string;
   status: string;
   created_at: string;
 };
 
-function getSupabaseAnon() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!url || !key) {
-    throw new Error("Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY");
-  }
-
-  return createClient(url, key);
-}
-
-async function getPendingPosts(): Promise<Post[]> {
-  const supabase = getSupabaseAnon();
-
-  const { data, error } = await supabase
+export default async function ModerationPage() {
+  const { data, error } = await supabaseAdmin
     .from("posts")
     .select("*")
     .eq("status", "pending")
-    .order("created_at", { ascending: true });
+    .order("created_at", { ascending: false });
 
-  if (error || !data) {
-    console.error("Gabim duke lexuar postimet për moderim:", error);
-    return [];
+  if (error) {
+    console.error("Gabim gjatë marrjes së posteve për moderim:", error);
+    return (
+      <main className="max-w-4xl mx-auto py-10">
+        <h1 className="text-2xl font-semibold mb-4">Poste në moderim</h1>
+        <p className="text-red-600">
+          Ndodhi një gabim gjatë ngarkimit të posteve për moderim.
+        </p>
+      </main>
+    );
   }
 
-  return data as Post[];
-}
-
-export default async function ModerationPage() {
-  const posts = await getPendingPosts();
+  const posts = (data as Post[]) ?? [];
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#f5f7fb",
-        color: "#111827",
-        fontFamily:
-          "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 900,
-          margin: "0 auto",
-          padding: "32px 16px 56px",
-        }}
-      >
-        <h1
-          style={{
-            fontSize: 24,
-            marginBottom: 8,
-          }}
-        >
-          Poste në moderim
-        </h1>
-        <p
-          style={{
-            fontSize: 14,
-            color: "#4b5563",
-            marginBottom: 24,
-          }}
-        >
-          Këtu shfaqen të gjitha postimet me status <b>pending</b>. Hap postimin
-          e plotë dhe më pas vendos nëse do ta miratosh ose refuzosh.
+    <main className="max-w-4xl mx-auto py-10 space-y-6">
+      <header className="space-y-2">
+        <h1 className="text-2xl font-semibold">Poste në moderim</h1>
+        <p className="text-gray-600">
+          Këtu shfaqen të gjitha postimet me status{" "}
+          <span className="font-semibold">pending</span>. Hap postimin e plotë
+          dhe më pas vendos nëse do ta miratosh ose refuzosh.
         </p>
+      </header>
 
-        {posts.length === 0 && (
-          <p style={{ fontSize: 14, color: "#6b7280" }}>
-            Nuk ka postime në pritje për aprovuar.
-          </p>
-        )}
-
-        <div style={{ display: "grid", gap: 14 }}>
+      {posts.length === 0 ? (
+        <p className="text-gray-600">Nuk ka postime në pritje për aprovar.</p>
+      ) : (
+        <div className="space-y-4">
           {posts.map((post) => (
             <article
               key={post.id}
-              style={{
-                background: "#ffffff",
-                borderRadius: 16,
-                padding: 14,
-                border: "1px solid #e5e7eb",
-                boxShadow: "0 8px 18px rgba(15, 23, 42, 0.04)",
-                display: "grid",
-                gridTemplateColumns: "minmax(0, 2.2fr) minmax(0, 1fr)",
-                gap: 12,
-                alignItems: "center",
-              }}
+              className="bg-white rounded-2xl shadow-sm px-6 py-4 border border-gray-100"
             >
-              <div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    marginBottom: 6,
-                    color: "#6b7280",
-                  }}
-                >
-                  {new Date(post.created_at).toLocaleString("sq-AL")}
+              <div className="flex flex-col gap-2">
+                <div className="text-xs text-gray-500">
+                  {new Date(post.created_at).toLocaleString("sq-AL", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </div>
 
-                <h2
-                  style={{
-                    fontSize: 16,
-                    margin: 0,
-                    marginBottom: 4,
-                  }}
-                >
-                  {post.title}
+                <h2 className="text-lg font-semibold">
+                  {post.title || "Pa titull"}
                 </h2>
 
-                <p
-                  style={{
-                    fontSize: 13,
-                    color: "#6b7280",
-                    margin: 0,
-                    marginBottom: 4,
-                    overflow: "hidden",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                  }}
-                >
-                  {post.description || "Pa përshkrim të detajuar."}
+                <p className="text-sm text-gray-700 line-clamp-2">
+                  {post.description}
                 </p>
 
-                <p
-                  style={{
-                    fontSize: 12,
-                    color: "#4b5563",
-                    margin: 0,
-                    marginBottom: 6,
-                  }}
-                >
-                  <b>Kontakt:</b> {post.contact}
+                <p className="text-sm text-gray-800">
+                  <span className="font-semibold">Kontakt:</span>{" "}
+                  {post.contact}
                 </p>
 
-                <Link
-                  href={`/admin/moderation/${post.id}`}
-                  style={{
-                    fontSize: 13,
-                    color: "#0ea5e9",
-                    textDecoration: "none",
-                    fontWeight: 500,
-                  }}
-                >
-                  Shiko postimin e plotë →
-                </Link>
-              </div>
-
-              <div
-                style={{
-                  justifySelf: "end",
-                }}
-              >
-                <ApproveButtons id={post.id} />
+                <div className="pt-2">
+                  {/* ⚠️ Ky është ndryshimi kryesor */}
+                  <Link
+                    href={`/admin/moderation/${post.id}`}
+                    className="text-sm font-medium text-blue-600 hover:underline"
+                  >
+                    Shiko postimin e plotë →
+                  </Link>
+                </div>
               </div>
             </article>
           ))}
         </div>
-      </div>
+      )}
     </main>
   );
 }
