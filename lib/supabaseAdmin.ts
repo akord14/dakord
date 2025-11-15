@@ -1,8 +1,12 @@
 // lib/supabaseAdmin.ts
 import { createClient } from "@supabase/supabase-js";
 
-export const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,   // URL publike OK
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,  // KY çelës është sekret (vetëm server)
-  { auth: { persistSession: false } }
-);
+const url = process.env.SUPABASE_URL;
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!url || !serviceRoleKey) {
+  throw new Error("Mungon SUPABASE_URL ose SUPABASE_SERVICE_ROLE_KEY");
+}
+
+// Ky klient përdoret VETËM në server (admin, server actions, etj.)
+export const supabaseAdmin = createClient(url, serviceRoleKey);

@@ -1,33 +1,31 @@
 "use server";
 
-import { createClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { supabaseAdmin } from "../../../lib/supabaseAdmin";
 
-function supabaseAdmin() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const service = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+export async function updatePostStatus(formData: FormData) {
+  const id = formData.get("id") as string | null;
+  const status = formData.get("status") as "approved" | "refused" | null;
 
-  return createClient(url, service);
-}
+  if (!id || !status) {
+    throw new Error("Mungon id ose status");
+  }
 
-export async function approvePost(id: string) {
-  const supabase = supabaseAdmin();
-
-  await supabase
+  const { error } = await supabaseAdmin
     .from("posts")
-    .update({ status: "approved" })
+    .update({ status })
     .eq("id", id);
 
+  if (error) {
+    console.error("Gabim gjatë update:", error);
+    throw new Error("S'munda të përditësoj statusin e postimit");
+  }
+
+  // Rifresko listën e moderimit dhe faqen e postimit
   revalidatePath("/admin/moderation");
-}
+  revalidatePath(`/post/${id}`);
 
-export async function rejectPost(id: string) {
-  const supabase = supabaseAdmin();
-
-  await supabase
-    .from("posts")
-    .update({ status: "refused" })
-    .eq("id", id);
-
-  revalidatePath("/admin/moderation");
+  // Kthehu prapë te lista e posteve në moderim
+  redirect("/admin/moderation");
 }

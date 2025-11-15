@@ -1,248 +1,92 @@
-import { createClient } from "@supabase/supabase-js";
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import ApproveButtons from "../approve-buttons";
+import { supabaseAdmin } from "../../../../lib/supabaseAdmin";
+import { updatePostStatus } from "../actions";
 
 type Post = {
   id: string;
   type: "seeking" | "offering";
   title: string;
-  description: string | null;
+  description: string;
   contact: string;
   status: string;
   created_at: string;
 };
 
-function getSupabaseAnon() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!url || !key) {
-    throw new Error("Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY");
-  }
-
-  return createClient(url, key);
+interface ModerationDetailPageProps {
+  params: { id: string };
 }
 
-async function getPost(id: string): Promise<Post | null> {
-  const supabase = getSupabaseAnon();
+export default async function ModerationDetailPage({
+  params,
+}: ModerationDetailPageProps) {
+  const { id } = params;
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("posts")
     .select("*")
     .eq("id", id)
-    .single();
+    .single<Post>();
 
   if (error || !data) {
-    console.error("Gabim duke lexuar postin:", error);
-    return null;
+    console.error("Gabim gjatë marrjes së postimit:", error);
+    return (
+      <main className="max-w-3xl mx-auto py-10">
+        <h1 className="text-2xl font-semibold mb-4">Posti nuk u gjet</h1>
+        <p className="text-gray-600">
+          Ky post nuk ekziston më ose është fshirë.
+        </p>
+      </main>
+    );
   }
 
-  return data as Post;
-}
-
-function formatType(type: Post["type"]) {
-  if (type === "seeking") return "Kërkoj punë";
-  if (type === "offering") return "Ofroj punë";
-  return "";
-}
-
-// 👉 KETU: params është any, që të mos na bezdisë TypeScript-i në build.
-export default async function AdminPostDetailPage({ params }: any) {
-  const id = params?.id as string;
-  const post = await getPost(id);
-
-  if (!post) {
-    notFound();
-  }
+  const post = data;
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#f5f7fb",
-        color: "#111827",
-        fontFamily:
-          "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 900,
-          margin: "0 auto",
-          padding: "32px 16px 56px",
-        }}
-      >
-        <div
-          style={{
-            marginBottom: 16,
-            fontSize: 13,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Link
-            href="/admin/moderation"
-            style={{ textDecoration: "none", color: "#6b7280" }}
-          >
-            ← Kthehu te lista e moderimit
-          </Link>
-
-          <span style={{ fontSize: 12, color: "#9ca3af" }}>
-            {new Date(post.created_at).toLocaleString("sq-AL")}
-          </span>
-        </div>
-
-        <article
-          style={{
-            background: "#ffffff",
-            borderRadius: 24,
-            padding: 24,
-            boxShadow: "0 24px 50px rgba(15,23,42,0.12)",
-            border: "1px solid #e5e7eb",
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1.2fr)",
-            gap: 24,
-          }}
-        >
-          {/* Info kryesore */}
-          <div>
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                marginBottom: 10,
-                flexWrap: "wrap",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 11,
-                  padding: "4px 10px",
-                  borderRadius: 999,
-                  background:
-                    post.type === "seeking" ? "#ecfeff" : "#eef2ff",
-                  color: post.type === "seeking" ? "#0891b2" : "#4f46e5",
-                  border:
-                    post.type === "seeking"
-                      ? "1px solid #a5f3fc"
-                      : "1px solid #c7d2fe",
-                }}
-              >
-                {formatType(post.type)}
-              </span>
-
-              <span
-                style={{
-                  fontSize: 11,
-                  padding: "4px 10px",
-                  borderRadius: 999,
-                  background:
-                    post.status === "pending"
-                      ? "#fef9c3"
-                      : post.status === "approved"
-                      ? "#dcfce7"
-                      : "#fee2e2",
-                  color:
-                    post.status === "pending"
-                      ? "#92400e"
-                      : post.status === "approved"
-                      ? "#166534"
-                      : "#b91c1c",
-                  border:
-                    post.status === "pending"
-                      ? "1px solid #fef3c7"
-                      : post.status === "approved"
-                      ? "1px solid #bbf7d0"
-                      : "1px solid #fecaca",
-                }}
-              >
-                Status: {post.status}
-              </span>
-            </div>
-
-            <h1
-              style={{
-                fontSize: 22,
-                marginBottom: 8,
-              }}
-            >
-              {post.title}
-            </h1>
-
-            <p
-              style={{
-                fontSize: 14,
-                color: "#4b5563",
-                marginBottom: 16,
-                whiteSpace: "pre-line",
-              }}
-            >
-              {post.description || "Ky postim nuk ka përshkrim të detajuar."}
-            </p>
-
-            <div
-              style={{
-                fontSize: 13,
-                color: "#6b7280",
-              }}
-            >
-              <strong>Kontakt:</strong> {post.contact || "Nuk ka kontakt."}
-            </div>
-          </div>
-
-          {/* Panel i djathtë për veprimet e adminit */}
-          <aside
-            style={{
-              background: "#0f172a",
-              color: "white",
-              borderRadius: 20,
-              padding: 18,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              gap: 16,
-            }}
-          >
-            <div>
-              <h2
-                style={{
-                  fontSize: 16,
-                  marginBottom: 6,
-                }}
-              >
-                Vendimi i administratorit
-              </h2>
-              <p
-                style={{
-                  fontSize: 13,
-                  opacity: 0.8,
-                  marginBottom: 10,
-                }}
-              >
-                Lexoje postimin me kujdes dhe më pas zgjidh nëse do ta miratosh
-                ose refuzosh. Vendimi yt do të pasqyrohet menjëherë në faqen
-                publike.
-              </p>
-            </div>
-
-            <div>
-              <ApproveButtons id={post.id} />
-              <p
-                style={{
-                  fontSize: 11,
-                  marginTop: 8,
-                  opacity: 0.75,
-                }}
-              >
-                * Pasi të miratosh postimin, ai do të shfaqet te lista publike e
-                postimeve.
-              </p>
-            </div>
-          </aside>
-        </article>
+    <main className="max-w-3xl mx-auto py-10 space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
+        <p className="text-sm text-gray-500">
+          ID: {post.id} • Status:{" "}
+          <span className="font-semibold">{post.status}</span>
+        </p>
       </div>
+
+      <section className="space-y-2">
+        <h2 className="text-lg font-semibold">Përshkrimi</h2>
+        <p className="whitespace-pre-line text-gray-800">
+          {post.description}
+        </p>
+      </section>
+
+      <section className="space-y-2">
+        <h2 className="text-lg font-semibold">Kontakti</h2>
+        <p className="text-gray-800">{post.contact}</p>
+      </section>
+
+      <section className="flex gap-4 pt-6">
+        {/* Mirato */}
+        <form action={updatePostStatus}>
+          <input type="hidden" name="id" value={post.id} />
+          <input type="hidden" name="status" value="approved" />
+          <button
+            type="submit"
+            className="px-4 py-2 rounded bg-green-600 text-white text-sm font-medium hover:bg-green-700"
+          >
+            Mirato postimin
+          </button>
+        </form>
+
+        {/* Refuzo */}
+        <form action={updatePostStatus}>
+          <input type="hidden" name="id" value={post.id} />
+          <input type="hidden" name="status" value="refused" />
+          <button
+            type="submit"
+            className="px-4 py-2 rounded bg-red-600 text-white text-sm font-medium hover:bg-red-700"
+          >
+            Refuzo postimin
+          </button>
+        </form>
+      </section>
     </main>
   );
 }
