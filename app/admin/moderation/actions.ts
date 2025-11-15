@@ -5,11 +5,14 @@ import { redirect } from "next/navigation";
 import { supabaseAdmin } from "../../../lib/supabaseAdmin";
 
 export async function updatePostStatus(formData: FormData) {
-  const id = formData.get("id") as string | null;
-  const status = formData.get("status") as "approved" | "refused" | null;
+  const id = formData.get("id")?.toString() || "";
+  const status = formData.get("status")?.toString() || "";
 
   if (!id || !status) {
-    throw new Error("Mungon id ose status");
+    console.error("updatePostStatus: Mungon id ose status", { id, status });
+    // thjesht kthehu te lista, mos hidh error
+    revalidatePath("/admin/moderation");
+    redirect("/admin/moderation");
   }
 
   const { error } = await supabaseAdmin
@@ -18,14 +21,15 @@ export async function updatePostStatus(formData: FormData) {
     .eq("id", id);
 
   if (error) {
-    console.error("Gabim gjatë update:", error);
-    throw new Error("S'munda të përditësoj statusin e postimit");
+    console.error("updatePostStatus: Gabim gjatë update:", error);
+    // mos bjerë faqja – thjesht rifresko listën
+    revalidatePath("/admin/moderation");
+    redirect("/admin/moderation");
   }
 
-  // Rifresko listën e moderimit dhe faqen e postimit
+  // rifresko faqet ku shfaqen postet
   revalidatePath("/admin/moderation");
-  revalidatePath(`/post/${id}`);
+  revalidatePath("/");
 
-  // Kthehu prapë te lista e posteve në moderim
   redirect("/admin/moderation");
 }
