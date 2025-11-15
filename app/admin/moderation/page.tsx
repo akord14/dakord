@@ -77,7 +77,7 @@ export default async function ModerationPage() {
                 </p>
 
                 <div className="pt-2">
-                  {/* ⚠️ Ky është ndryshimi kryesor */}
+                  {/* Ky është ndryshimi KRYESOR: link te faqja e adminit */}
                   <Link
                     href={`/admin/moderation/${post.id}`}
                     className="text-sm font-medium text-blue-600 hover:underline"
