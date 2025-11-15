@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { supabaseAdmin } from "../../../lib/supabaseAdmin";
+import { updatePostStatus } from "./actions";
 
 type Post = {
   id: string;
@@ -38,8 +38,8 @@ export default async function ModerationPage() {
         <h1 className="text-2xl font-semibold">Poste në moderim</h1>
         <p className="text-gray-600">
           Këtu shfaqen të gjitha postimet me status{" "}
-          <span className="font-semibold">pending</span>. Hap postimin e plotë
-          dhe më pas vendos nëse do ta miratosh ose refuzosh.
+          <span className="font-semibold">pending</span>. Lexo postimin dhe
+          vendos nëse do ta miratosh apo refuzosh.
         </p>
       </header>
 
@@ -67,7 +67,8 @@ export default async function ModerationPage() {
                   {post.title || "Pa titull"}
                 </h2>
 
-                <p className="text-sm text-gray-700 line-clamp-2">
+                {/* Përshkrimi i plotë, jo line-clamp */}
+                <p className="text-sm text-gray-700 whitespace-pre-line">
                   {post.description}
                 </p>
 
@@ -76,14 +77,30 @@ export default async function ModerationPage() {
                   {post.contact}
                 </p>
 
-                <div className="pt-2">
-                  {/* Ky është ndryshimi KRYESOR: link te faqja e adminit */}
-                  <Link
-                    href={`/admin/moderation/${post.id}`}
-                    className="text-sm font-medium text-blue-600 hover:underline"
-                  >
-                    Shiko postimin e plotë →
-                  </Link>
+                <div className="flex gap-3 pt-3">
+                  {/* Mirato */}
+                  <form action={updatePostStatus}>
+                    <input type="hidden" name="id" value={post.id} />
+                    <input type="hidden" name="status" value="approved" />
+                    <button
+                      type="submit"
+                      className="px-4 py-2 rounded bg-green-600 text-white text-sm font-medium hover:bg-green-700"
+                    >
+                      Mirato
+                    </button>
+                  </form>
+
+                  {/* Refuzo */}
+                  <form action={updatePostStatus}>
+                    <input type="hidden" name="id" value={post.id} />
+                    <input type="hidden" name="status" value="refused" />
+                    <button
+                      type="submit"
+                      className="px-4 py-2 rounded bg-red-600 text-white text-sm font-medium hover:bg-red-700"
+                    >
+                      Refuzo
+                    </button>
+                  </form>
                 </div>
               </div>
             </article>
