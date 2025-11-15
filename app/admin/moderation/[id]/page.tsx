@@ -11,13 +11,11 @@ type Post = {
   created_at: string;
 };
 
-interface ModerationDetailPageProps {
-  params: { id: string };
-}
-
 export default async function ModerationDetailPage({
   params,
-}: ModerationDetailPageProps) {
+}: {
+  params: { id: string };
+}) {
   const { id } = params;
 
   const { data, error } = await supabaseAdmin
