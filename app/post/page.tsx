@@ -73,9 +73,20 @@ export default async function PostsPage() {
       {/* Grid responsive 1 → 2 → 3 kolona */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((p) => {
-          const desc = (p.description ?? "").trim();
-          const short =
-            desc.length > 140 ? desc.slice(0, 140).trimEnd() + "…" : desc;
+         
+        const desc = (p.description ?? "").trim();
+        const short =
+         desc.length > 140 ? desc.slice(0, 140).trimEnd() + "..." : desc;
+
+         const professionKey = p.profession ?? "Tjetër";
+         const imageSrc =
+  PROF_TO_IMG[professionKey] || "/images/professions/other.svg";
+
+  return (
+    <article
+      key={p.id}
+      className="rounded-2xl border bg-white shadow-sm hover:shadow-md transition overflow-hidden"
+    >
 
           return (
             <article
@@ -86,7 +97,7 @@ export default async function PostsPage() {
               
 <div className="relative w-full aspect-[16/9] bg-gray-50">
   <img
-    src={PROF_TO_IMG[p.profession] || "/images/professions/other.svg"}
+    src={imageSrc}
     alt={p.profession ?? "Ikonë profesion"}
     className="absolute inset-0 w-full h-full object-contain p-6"
     loading="lazy"
