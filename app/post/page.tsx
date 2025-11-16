@@ -1,5 +1,5 @@
 import { supabaseServer } from "@/lib/supabaseServer";
-const PROF_TO_IMG = {
+const PROF_TO_IMG: Record<string, string> = {
   // Shoferë
   "Shofer furgoni": "/images/professions/driver.svg",
   "Shofer kamioni": "/images/professions/driver.svg",
@@ -78,7 +78,6 @@ export default async function PostsPage() {
             desc.length > 140 ? desc.slice(0, 140).trimEnd() + "..." : desc;
           const professionKey = p.profession ?? "Tjetër";
           const imageSrc = PROF_TO_IMG[professionKey] || "/images/professions/other.svg";
-
           return (
             <article
               key={p.id}
