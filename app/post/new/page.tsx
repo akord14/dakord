@@ -39,19 +39,73 @@ const CITIES = [
 ];
 
 const PROFESSIONS = [
-  "Shofer",
-  "Elektriçist",
+  "Elektricist",
+  "Instalues kamerash sigurie",
+  "Teknik alarmi",
+  "Montim kondicionerësh",
+  "Instalues interneti / rrjeti",
+  "Teknik mirëmbajtjeje",
+  "Hidraulik",
+  "Montues mobilerie",
   "Punëtor ndërtimi",
+  "Murator / Suvatues",
+  "Saldator",
+  "Gjeometër",
+
+  // Transport dhe shoferë
+  "Shofer furgoni",
+  "Shofer kamioni",
+  "Shofer taksie",
+  "Shofer personal",
+  "Korrier / Delivery",
+
+  // Magazinë dhe fizik
   "Magazinier",
-  "Rroje sigurie",
-  "Kamerier",
+  "Punëtor magazine",
+  "Ngarkim / Shkarkim",
+  "Operator forklift",
+
+  // Zyrë dhe call center
+  "Operator Call Center",
+  "Asistent administrativ",
+  "Sekretar/e",
+  "Financier / Kontabilist",
+  "Ekonomist",
+  "Data Entry",
+
+  // Shitje & shërbim klienti
+  "Shitës / Shitëse dyqani",
+  "Konsulent shitjesh",
+  "Agjent shitjesh terren",
+  "Shërbim klienti",
+
+  // IT & marketing
+  "IT / Support",
+  "Programues / Developer",
+  "Web Designer",
+  "Social Media Manager",
+  "Digital Marketing",
+  "Grafik Designer",
+
+  // Gastronomi & shërbim
+  "Kamarier",
+  "Banakier",
   "Kuzhinier",
-  "Operator call center",
-  "IT / Programues",
-  "Teknik sistemi sigurie",
-  "Estetike / Parukeri",
-  "Sanitare / Pastrim",
-  "Infermier/e",
+  "Ndihmës kuzhinier",
+  "Picajol",
+  "Pastiçier",
+
+  // Bukuri & kujdes
+  "Parukier/e",
+  "Estetiste",
+  "Manikyr / Pedikyr",
+
+  // Të tjera të përgjithshme
+  "Punëtor fasonerie",
+  "Punëtor pastrimi",
+  "Baby-sitter / Kujdestar fëmijësh",
+  "Kujdestar të moshuarish",
+  "Arsimtar / Mësues privat",
   "Tjetër",
 ];
 

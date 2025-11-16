@@ -1,4 +1,26 @@
 import { supabaseServer } from "@/lib/supabaseServer";
+const PROF_TO_IMG = {
+  // Shoferë
+  "Shofer furgoni": "/images/professions/driver.svg",
+  "Shofer kamioni": "/images/professions/driver.svg",
+  "Shofer taksie": "/images/professions/driver.svg",
+  "Shofer personal": "/images/professions/driver.svg",
+  "Korrier / Delivery": "/images/professions/driver.svg",
+
+  // Elektrik & instalime
+  "Elektricist": "/images/professions/electrician.svg",
+  "Instalues kamerash sigurie": "/images/professions/electrician.svg",
+  "Teknik alarmi": "/images/professions/electrician.svg",
+  "Montim kondicionerësh": "/images/professions/electrician.svg",
+  "Instalues interneti / rrjeti": "/images/professions/electrician.svg",
+  "Teknik mirëmbajtjeje": "/images/professions/electrician.svg",
+
+  // Call center & operator
+  "Operator Call Center": "/images/professions/operator.svg",
+
+  // Default për çdo profesion tjetër
+  Tjetër: "/images/professions/other.svg",
+};
 
 type Post = {
   id: string;
@@ -61,14 +83,16 @@ export default async function PostsPage() {
               className="rounded-2xl border bg-white shadow-sm hover:shadow-md transition overflow-hidden"
             >
               {/* Ilustrimi sipër */}
-              <div className="relative w-full aspect-[16/9] bg-gray-50">
-                <img
-                  src={p.image ?? "/images/professions/other.svg"}
-                  alt={p.profession ?? "Profesioni"}
-                  className="absolute inset-0 w-full h-full object-contain p-6 opacity-95"
-                  loading="lazy"
-                />
-              </div>
+              
+<div className="relative w-full aspect-[16/9] bg-gray-50">
+  <img
+    src={PROF_TO_IMG[p.profession] || "/images/professions/other.svg"}
+    alt={p.profession ?? "Ikonë profesion"}
+    className="absolute inset-0 w-full h-full object-contain p-6"
+    loading="lazy"
+  />
+</div>
+
 
               <div className="p-4 space-y-2">
                 {/* Titulli + badge tipi */}
@@ -100,9 +124,19 @@ export default async function PostsPage() {
                 ) : null}
 
                 {/* Kontakt */}
-                {p.contact ? (
-                  <p className="text-xs text-gray-500">📞 {p.contact}</p>
-                ) : null}
+                
+{p.contact ? (
+  <div className="mt-2 rounded-md border border-gray-200 bg-white p-2 shadow-sm">
+    <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
+      Kontakt
+    </p>
+    <p className="mt-1 text-sm font-semibold text-gray-900">
+      {p.contact}
+    </p>
+  </div>
+) : null}
+
+                  
 
                 <div className="pt-2">
                   <a
