@@ -56,16 +56,6 @@ export default async function PostPage({ params }: any) {
   }
 
   return (
-    // pjesa tjetër e JSX-it SIÇ E KE TANI
-  );
-}
-
-  // Nëse s’ka post, ose s’është i aprovuar, kthe 404
-  if (!post || post.status !== "approved") {
-    notFound();
-  }
-
-  return (
     <div className="min-h-screen bg-slate-50">
       <main className="max-w-2xl mx-auto px-4 py-10">
         <div className="mb-6">
@@ -102,7 +92,6 @@ export default async function PostPage({ params }: any) {
             Kontakti
           </h2>
           <p className="text-sm text-slate-700 break-words">{post.contact}</p>
-          {/* COPY CONTACT do ta shtojmë si hap tjetër, pasi ta kemi faqen në rregull */}
         </section>
       </main>
     </div>
