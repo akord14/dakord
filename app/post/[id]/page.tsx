@@ -47,12 +47,18 @@ async function getPost(id: string): Promise<Post | null> {
   return data as Post;
 }
 
-export default async function PostPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function PostPage({ params }: any) {
   const post = await getPost(params.id);
+
+  // Nëse s’ka post, ose s’është i aprovuar, kthe 404
+  if (!post || post.status !== "approved") {
+    notFound();
+  }
+
+  return (
+    // pjesa tjetër e JSX-it SIÇ E KE TANI
+  );
+}
 
   // Nëse s’ka post, ose s’është i aprovuar, kthe 404
   if (!post || post.status !== "approved") {
