@@ -1,6 +1,5 @@
 // app/post/[id]/page.tsx
 import { createClient } from "@supabase/supabase-js";
-import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -50,11 +49,30 @@ async function getPost(id: string): Promise<Post | null> {
 export default async function PostPage({ params }: any) {
   const post = await getPost(params.id);
 
-  // Nëse s’ka post, ose s’është i aprovuar, kthe 404
-  if (!post || post.status !== "approved") {
-    notFound();
+  // TEST: nëse nuk ka post fare
+  if (!post) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-sm text-slate-800">
+          Nuk u gjet asnjë post me këtë ID (post === null).
+        </p>
+      </div>
+    );
   }
 
+  // TEST: nëse ka post, por nuk është approved
+  if (post.status !== "approved") {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-sm text-slate-800">
+          Ky post ekziston, por statusi i tij nuk është "approved" (është "
+          {post.status}").
+        </p>
+      </div>
+    );
+  }
+
+  // Nëse kemi post të aprovuar → shfaq detajet
   return (
     <div className="min-h-screen bg-slate-50">
       <main className="max-w-2xl mx-auto px-4 py-10">
