@@ -1,6 +1,13 @@
 // app/post/[id]/page.tsx
+import React from "react";
 
-export default function PostPage({ params }: { params: { id: string } }) {
+interface PostPageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function PostPage({ params }: PostPageProps) {
   return (
     <div
       style={{
@@ -17,11 +24,20 @@ export default function PostPage({ params }: { params: { id: string } }) {
       <h1 style={{ fontSize: "28px", marginBottom: "16px" }}>
         TEST POST PAGE
       </h1>
-      <p style={{ fontSize: "16px" }}>
-        Ky është detaji i postit me ID:
-      </p>
+      <p style={{ fontSize: "16px" }}>Ky është detaji i postit me ID:</p>
       <p
         style={{
           marginTop: "8px",
           padding: "8px 12px",
-          borde
+          borderRadius: "999px",
+          background: "white",
+          color: "#0f172a",
+          fontWeight: 600,
+          fontSize: "14px",
+        }}
+      >
+        {params.id}
+      </p>
+    </div>
+  );
+}
