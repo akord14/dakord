@@ -31,11 +31,14 @@ export const dynamic = "force-dynamic";
 export default async function AdminModerationPage() {
   const supabase = getSupabaseAnon();
 
-  const { data, error } = await supabase
-    .from<Post, Post>("posts")
-    .select("*")
-    .eq("status", "pending")
-    .order("created_at", { ascending: false });
+ const { data, error } = await supabase
+  .from("posts")
+  .select("*")
+  .eq("status", "pending")
+  .order("created_at", { ascending: false }) as {
+    data: Post[] | null;
+    error: any;
+  };
 
   if (error) {
     console.error("Supabase error në /admin/moderation:", error.message);
