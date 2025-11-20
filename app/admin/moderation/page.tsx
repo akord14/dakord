@@ -32,7 +32,7 @@ export default async function AdminModerationPage() {
   const supabase = getSupabaseAnon();
 
   const { data, error } = await supabase
-    .from<Post>("posts")
+    .from<Post, Post>("posts")
     .select("*")
     .eq("status", "pending")
     .order("created_at", { ascending: false });
