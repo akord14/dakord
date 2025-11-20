@@ -35,10 +35,10 @@ export default async function PostPage(props: PageProps) {
 
   const supabase = getSupabaseAnon();
 
-  const { data, error } = await supabase
-    .from<Post>("posts")
+   const { data, error } = await supabase
+    .from("posts") // pa <Post>
     .select("*")
-    .eq("id", id)            // ⬅️ TANI PËRDORIM `id`, JO `params.id`
+    .eq("id", id)
     .eq("status", "approved")
     .single();
 
@@ -50,7 +50,7 @@ export default async function PostPage(props: PageProps) {
     notFound();
   }
 
-  const post = data;
+  const post = data as Post;
 
   const createdAt =
     post.created_at &&
