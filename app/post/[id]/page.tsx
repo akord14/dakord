@@ -1,6 +1,7 @@
 // app/post/[id]/page.tsx
 import { createClient } from "@supabase/supabase-js";
 import { notFound } from "next/navigation";
+import ContactActions from "./ContactActions";
 
 type Post = {
   id: string;
@@ -90,10 +91,13 @@ export default async function PostPage(props: PageProps) {
           {post.description}
         </p>
 
-        <div className="border-t pt-4 mt-4 flex flex-col gap-2">
+                <div className="border-t pt-4 mt-4 flex flex-col gap-2">
           <h2 className="text-sm font-semibold text-gray-800">Kontakti</h2>
           <p className="text-base font-medium break-all">{post.contact}</p>
+
+          <ContactActions contact={post.contact} />
         </div>
+
       </section>
     </main>
   );
