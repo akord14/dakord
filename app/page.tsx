@@ -2,7 +2,6 @@ import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import ProfessionIcon from "../components/ProfessionIcon";
 
-
 type Post = {
   id: string;
   type: "seeking" | "offering";
@@ -56,138 +55,54 @@ export default async function HomePage() {
   const latestPosts = await getLatestPosts();
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#f5f7fb",
-        color: "#111827",
-        fontFamily:
-          "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
-      }}
-    >
-      {/* Container kryesor */}
-      <div
-        style={{
-          maxWidth: 1040,
-          margin: "0 auto",
-          padding: "24px 16px 80px",
-        }}
-      >
-        {/* Header i thjeshtë */}
-        <header
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 32,
-          }}
-        >
-          <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 999,
-                  background: "linear-gradient(135deg, #38bdf8, #0ea5e9)",
-                }}
-              />
-              <span style={{ fontSize: 20, fontWeight: 700 }}>Akord.al</span>
-            </div>
+    <main className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
+      <div className="mx-auto max-w-5xl px-4 py-6 md:py-10">
+        {/* HEADER */}
+        <header className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-sky-400 to-sky-500" />
+            <span className="text-xl font-bold tracking-tight">Akord.al</span>
           </Link>
 
           <Link
             href="/post/new"
-            style={{
-              padding: "8px 14px",
-              borderRadius: 999,
-              border: "1px solid #0ea5e9",
-              fontSize: 14,
-              textDecoration: "none",
-              color: "#0f172a",
-            }}
+            className="inline-flex items-center rounded-full border border-sky-500 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-sky-50"
           >
             Krijo postim
           </Link>
         </header>
 
         {/* HERO */}
-        <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1.5fr)",
-            gap: 24,
-            alignItems: "center",
-            marginBottom: 40,
-          }}
-        >
+        <section className="mb-8 grid gap-6 md:grid-cols-2 md:items-center">
           <div>
-            <h1
-              style={{
-                fontSize: 32,
-                lineHeight: 1.2,
-                marginBottom: 12,
-              }}
-            >
+            <h1 className="mb-3 text-2xl font-semibold leading-snug text-slate-900 sm:text-3xl">
               Gjej njerëzit e duhur për punë.
               <br />
               Ose gjej punën që të përshtatet.
             </h1>
-            <p
-              style={{
-                fontSize: 15,
-                color: "#4b5563",
-                marginBottom: 24,
-              }}
-            >
+            <p className="mb-5 text-sm text-slate-600 sm:text-[15px]">
               Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë,
               me fokus te thjeshtësia, qartësia dhe respekti për kohën tënde.
             </p>
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+            <div className="flex flex-wrap gap-3">
               <Link
                 href="/post/new"
-                style={{
-                  padding: "10px 22px",
-                  borderRadius: 999,
-                  background:
-                    "linear-gradient(135deg, #38bdf8 0%, #0ea5e9 40%, #0f172a 100%)",
-                  color: "white",
-                  fontWeight: 600,
-                  fontSize: 15,
-                  textDecoration: "none",
-                  boxShadow: "0 14px 28px rgba(15, 23, 42, 0.25)",
-                }}
+                className="inline-flex items-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-6 py-2.5 text-sm font-semibold text-white shadow-xl shadow-slate-800/30"
               >
                 KRIJO POSTIMIN TËND
               </Link>
 
-              <div style={{ display: "flex", gap: 8 }}>
+              <div className="flex gap-2">
                 <Link
                   href="/post?type=seeking"
-                  style={{
-                    padding: "9px 16px",
-                    borderRadius: 999,
-                    border: "1px solid #d1d5db",
-                    background: "#ffffff",
-                    fontSize: 14,
-                    textDecoration: "none",
-                    color: "#111827",
-                  }}
+                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 hover:bg-slate-50 sm:text-sm"
                 >
                   KËRKOJ PUNË
                 </Link>
                 <Link
                   href="/post?type=offering"
-                  style={{
-                    padding: "9px 16px",
-                    borderRadius: 999,
-                    border: "1px solid #d1d5db",
-                    background: "#ffffff",
-                    fontSize: 14,
-                    textDecoration: "none",
-                    color: "#111827",
-                  }}
+                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 hover:bg-slate-50 sm:text-sm"
                 >
                   OFROJ PUNË
                 </Link>
@@ -195,89 +110,39 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Kuti anësore me info të shpejtë */}
-          <div
-            style={{
-              background: "#0f172a",
-              color: "white",
-              borderRadius: 24,
-              padding: 20,
-              boxShadow: "0 20px 40px rgba(15, 23, 42, 0.45)",
-            }}
-          >
-            <p style={{ fontSize: 14, opacity: 0.85, marginBottom: 12 }}>
-              Përdor Akord.al për:
-            </p>
-            <ul
-              style={{
-                listStyle: "none",
-                padding: 0,
-                margin: 0,
-                fontSize: 14,
-                display: "grid",
-                gap: 8,
-              }}
-            >
+          {/* Kuti anësore */}
+          <div className="rounded-3xl bg-slate-900 p-5 text-slate-50 shadow-2xl shadow-slate-900/60">
+            <p className="mb-3 text-sm/5 opacity-90">Përdor Akord.al për:</p>
+            <ul className="mb-3 grid list-none gap-2 text-sm">
               <li>• Punë të dyta dhe punë me kohë të pjesshme</li>
               <li>• Punë të shpejta në lagjen tënde</li>
               <li>• Punëtorë për biznesin tënd lokal</li>
             </ul>
-
-            <div
-              style={{
-                marginTop: 18,
-                fontSize: 12,
-                opacity: 0.7,
-                borderTop: "1px solid rgba(148, 163, 184, 0.3)",
-                paddingTop: 10,
-              }}
-            >
+            <div className="border-t border-slate-600/50 pt-3 text-xs text-slate-300">
               Çdo postim miratohet nga admini përpara se të shfaqet publikisht.
             </div>
           </div>
         </section>
 
-        {/* Seksioni KËRKO */}
-        <section
-          style={{
-            marginBottom: 32,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: 16,
-            flexWrap: "wrap",
-          }}
-        >
-          <h2 style={{ fontSize: 18, margin: 0 }}>Postimet e fundit</h2>
+        {/* HEADLINE POSTIME */}
+        <section className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-[17px] font-semibold text-slate-900">
+            Postimet e fundit
+          </h2>
 
           <Link
             href="/post"
-            style={{
-              padding: "8px 16px",
-              borderRadius: 999,
-              border: "1px solid #0ea5e9",
-              fontSize: 14,
-              textDecoration: "none",
-              color: "#0f172a",
-              background: "#e0f2fe",
-            }}
+            className="inline-flex items-center rounded-full border border-sky-500 bg-sky-100 px-4 py-1.5 text-xs font-medium text-slate-900 hover:bg-sky-200 sm:text-sm"
           >
             KËRKO
           </Link>
         </section>
 
-        {/* Lista e postimeve të fundit */}
-        <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: 16,
-          }}
-        >
+        {/* LISTA E POSTIMEVE */}
+        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {latestPosts.length === 0 && (
-            <p style={{ fontSize: 14, color: "#6b7280" }}>
-              Nuk ka ende postime të aprovuara. Bëhu i pari që krijon një
-              postim.
+            <p className="text-sm text-slate-500">
+              Nuk ka ende postime të aprovuara. Bëhu i pari që krijon një postim.
             </p>
           )}
 
@@ -285,134 +150,59 @@ export default async function HomePage() {
             <Link
               key={post.id}
               href={`/post/${post.id}`}
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-              }}
+              className="group text-slate-900 no-underline"
             >
-              <article
-                style={{
-                  background: "#ffffff",
-                  borderRadius: 16,
-                  padding: 14,
-                  border: "1px solid #e5e7eb",
-                  boxShadow: "0 8px 18px rgba(15, 23, 42, 0.06)",
-                  height: "100%",
-                }}
-              >
-                {/* Rreshti me ikonën + përmbajtjen */}
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 12,
-                    alignItems: "flex-start",
-                  }}
-                >
-                  <ProfessionIcon
-                    text={`${post.title} ${
-                      post.description ?? ""
-                    } ${post.profession ?? ""}`}
-                  />
+              <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+                <div className="flex items-start gap-3">
+                  <div>
+                    <ProfessionIcon
+                      text={`${post.title} ${
+                        post.description ?? ""
+                      } ${post.profession ?? ""}`}
+                    />
+                  </div>
 
-                  <div
-                    style={{
-                      flex: 1,
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 6,
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        gap: 8,
-                      }}
-                    >
+                  <div className="flex flex-1 flex-col gap-2">
+                    <div className="flex items-center justify-between gap-2">
                       <span
-                        style={{
-                          fontSize: 11,
-                          padding: "4px 10px",
-                          borderRadius: 999,
-                          background:
-                            post.type === "seeking" ? "#ecfeff" : "#eef2ff",
-                          color:
-                            post.type === "seeking" ? "#0891b2" : "#4f46e5",
-                          border:
-                            post.type === "seeking"
-                              ? "1px solid #a5f3fc"
-                              : "1px solid #c7d2fe",
-                        }}
+                        className={[
+                          "inline-flex items-center rounded-full px-3 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
+                          post.type === "seeking"
+                            ? "border border-cyan-200 bg-cyan-50 text-cyan-700"
+                            : "border border-indigo-200 bg-indigo-50 text-indigo-700",
+                        ].join(" ")}
                       >
                         {formatType(post.type)}
                       </span>
 
                       {post.city && (
-                        <span
-                          style={{
-                            fontSize: 11,
-                            padding: "4px 10px",
-                            borderRadius: 999,
-                            background: "#f3f4f6",
-                            color: "#4b5563",
-                          }}
-                        >
+                        <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-0.5 text-[11px] text-slate-700">
                           {post.city}
                         </span>
                       )}
                     </div>
 
-                    <h3
-                      style={{
-                        fontSize: 15,
-                        fontWeight: 600,
-                        margin: 0,
-                        marginTop: 4,
-                      }}
-                    >
+                    <h3 className="line-clamp-2 text-[15px] font-semibold text-slate-900">
                       {post.title}
                     </h3>
 
                     {post.profession && (
-                      <div
-                        style={{
-                          fontSize: 12,
-                          color: "#6b7280",
-                        }}
-                      >
+                      <div className="text-xs text-slate-500">
                         {post.profession}
                       </div>
                     )}
 
-                    <p
-                      style={{
-                        fontSize: 13,
-                        color: "#6b7280",
-                        margin: "4px 0 8px",
-                        overflow: "hidden",
-                        display: "-webkit-box",
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: "vertical",
-                      }}
-                    >
+                    <p className="line-clamp-3 text-sm text-slate-600">
                       {post.description || "Nuk ka përshkrim të detajuar."}
                     </p>
 
-                    <div
-                      style={{
-                        marginTop: "auto",
-                        fontSize: 11,
-                        color: "#9ca3af",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        gap: 8,
-                      }}
-                    >
+                    <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400">
                       <span>
                         {new Date(post.created_at).toLocaleDateString("sq-AL")}
                       </span>
-                      <span>Shiko detajet →</span>
+                      <span className="text-slate-500 group-hover:text-slate-700">
+                        Shiko detajet →
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -427,29 +217,9 @@ export default async function HomePage() {
         href="https://wa.me/355695111179"
         target="_blank"
         rel="noopener noreferrer"
-        style={{
-          position: "fixed",
-          right: 20,
-          bottom: 20,
-          width: 52,
-          height: 52,
-          borderRadius: 999,
-          background: "#22c55e",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: "0 18px 40px rgba(22, 163, 74, 0.6)",
-          textDecoration: "none",
-        }}
+        className="fixed bottom-5 right-5 flex h-13 w-13 items-center justify-center rounded-full bg-emerald-500 text-2xl shadow-2xl shadow-emerald-500/60"
       >
-        <span
-          style={{
-            fontSize: 26,
-            color: "white",
-          }}
-        >
-          🟢
-        </span>
+        <span className="text-white">🟢</span>
       </a>
     </main>
   );
