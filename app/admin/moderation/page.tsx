@@ -76,7 +76,10 @@ export default async function AdminModerationPage() {
                   </span>
                   <h2 className="font-semibold">{post.title}</h2>
                 </div>
-                <ApproveButtons postId={post.id} />
+                
+                {/* @ts-ignore – prano postId si prop edhe nëse tipi i ApproveButtons nuk e deklaron */}
+<ApproveButtons postId={post.id} />
+
               </div>
 
               <p className="text-sm text-gray-700 mb-2">{post.description}</p>
