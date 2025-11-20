@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
+import ProfessionIcon from "../components/ProfessionIcon";
+
 
 type Post = {
   id: string;
@@ -18,7 +20,9 @@ function getSupabaseAnon() {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !key) {
-    throw new Error("Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY");
+    throw new Error(
+      "Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    );
   }
 
   return createClient(url, key);
@@ -57,7 +61,8 @@ export default async function HomePage() {
         minHeight: "100vh",
         background: "#f5f7fb",
         color: "#111827",
-        fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+        fontFamily:
+          "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
       }}
     >
       {/* Container kryesor */}
@@ -271,7 +276,8 @@ export default async function HomePage() {
         >
           {latestPosts.length === 0 && (
             <p style={{ fontSize: 14, color: "#6b7280" }}>
-              Nuk ka ende postime të aprovuara. Bëhu i pari që krijon një postim.
+              Nuk ka ende postime të aprovuara. Bëhu i pari që krijon një
+              postim.
             </p>
           )}
 
@@ -291,94 +297,124 @@ export default async function HomePage() {
                   padding: 14,
                   border: "1px solid #e5e7eb",
                   boxShadow: "0 8px 18px rgba(15, 23, 42, 0.06)",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 8,
                   height: "100%",
                 }}
               >
-                <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
-                  <span
-                    style={{
-                      fontSize: 11,
-                      padding: "4px 10px",
-                      borderRadius: 999,
-                      background:
-                        post.type === "seeking" ? "#ecfeff" : "#eef2ff",
-                      color: post.type === "seeking" ? "#0891b2" : "#4f46e5",
-                      border:
-                        post.type === "seeking"
-                          ? "1px solid #a5f3fc"
-                          : "1px solid #c7d2fe",
-                    }}
-                  >
-                    {formatType(post.type)}
-                  </span>
-
-                  {post.city && (
-                    <span
-                      style={{
-                        fontSize: 11,
-                        padding: "4px 10px",
-                        borderRadius: 999,
-                        background: "#f3f4f6",
-                        color: "#4b5563",
-                      }}
-                    >
-                      {post.city}
-                    </span>
-                  )}
-                </div>
-
-                <h3
-                  style={{
-                    fontSize: 15,
-                    fontWeight: 600,
-                    margin: 0,
-                    marginTop: 4,
-                  }}
-                >
-                  {post.title}
-                </h3>
-
-                {post.profession && (
-                  <div
-                    style={{
-                      fontSize: 12,
-                      color: "#6b7280",
-                    }}
-                  >
-                    {post.profession}
-                  </div>
-                )}
-
-                <p
-                  style={{
-                    fontSize: 13,
-                    color: "#6b7280",
-                    margin: "4px 0 8px",
-                    overflow: "hidden",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: "vertical",
-                  }}
-                >
-                  {post.description || "Nuk ka përshkrim të detajuar."}
-                </p>
-
+                {/* Rreshti me ikonën + përmbajtjen */}
                 <div
                   style={{
-                    marginTop: "auto",
-                    fontSize: 11,
-                    color: "#9ca3af",
                     display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: 8,
+                    gap: 12,
+                    alignItems: "flex-start",
                   }}
                 >
-                  <span>{new Date(post.created_at).toLocaleDateString("sq-AL")}</span>
-                  <span>Shiko detajet →</span>
+                  <ProfessionIcon
+                    text={`${post.title} ${
+                      post.description ?? ""
+                    } ${post.profession ?? ""}`}
+                  />
+
+                  <div
+                    style={{
+                      flex: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 6,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: 8,
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: 11,
+                          padding: "4px 10px",
+                          borderRadius: 999,
+                          background:
+                            post.type === "seeking" ? "#ecfeff" : "#eef2ff",
+                          color:
+                            post.type === "seeking" ? "#0891b2" : "#4f46e5",
+                          border:
+                            post.type === "seeking"
+                              ? "1px solid #a5f3fc"
+                              : "1px solid #c7d2fe",
+                        }}
+                      >
+                        {formatType(post.type)}
+                      </span>
+
+                      {post.city && (
+                        <span
+                          style={{
+                            fontSize: 11,
+                            padding: "4px 10px",
+                            borderRadius: 999,
+                            background: "#f3f4f6",
+                            color: "#4b5563",
+                          }}
+                        >
+                          {post.city}
+                        </span>
+                      )}
+                    </div>
+
+                    <h3
+                      style={{
+                        fontSize: 15,
+                        fontWeight: 600,
+                        margin: 0,
+                        marginTop: 4,
+                      }}
+                    >
+                      {post.title}
+                    </h3>
+
+                    {post.profession && (
+                      <div
+                        style={{
+                          fontSize: 12,
+                          color: "#6b7280",
+                        }}
+                      >
+                        {post.profession}
+                      </div>
+                    )}
+
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: "#6b7280",
+                        margin: "4px 0 8px",
+                        overflow: "hidden",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                    >
+                      {post.description || "Nuk ka përshkrim të detajuar."}
+                    </p>
+
+                    <div
+                      style={{
+                        marginTop: "auto",
+                        fontSize: 11,
+                        color: "#9ca3af",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        gap: 8,
+                      }}
+                    >
+                      <span>
+                        {new Date(post.created_at).toLocaleDateString("sq-AL")}
+                      </span>
+                      <span>Shiko detajet →</span>
+                    </div>
+                  </div>
                 </div>
               </article>
             </Link>
