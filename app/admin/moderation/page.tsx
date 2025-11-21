@@ -66,13 +66,13 @@ export default async function AdminModerationPage() {
   const supabase = getSupabaseAnon();
 
   const { data, error } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("status", "pending")
-    .order("created_at", { ascending: false }) as {
+  .from("posts")
+  .select("*")
+  .order("created_at", { ascending: false }) as {
     data: Post[] | null;
     error: any;
   };
+
 
   if (error) {
     console.error("Supabase error në /admin/moderation:", error.message);
