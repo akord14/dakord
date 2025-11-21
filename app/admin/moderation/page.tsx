@@ -25,17 +25,51 @@ function getSupabaseAnon() {
   return createClient(url, key);
 }
 
-// e detyrojmë të jetë dynamic (mos u pre-rendero me static config)
 export const dynamic = "force-dynamic";
+
+// ------------------------------
+// FUNKSIONI DELETE
+// ------------------------------
+function DeleteButton({ id }: { id: string }) {
+  async function handleDelete() {
+    if (!confirm("A je i sigurt që dëshiron ta fshish këtë postim?")) return;
+
+    const res = await fetch("/api/delete-post", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      alert("Posti u fshi me sukses.");
+      window.location.reload();
+    } else {
+      alert("Ndodhi një gabim gjatë fshirjes.");
+    }
+  }
+
+  return (
+    <button
+      onClick={handleDelete}
+      className="px-3 py-2 bg-red-600 text-white rounded-lg text-xs hover:bg-red-700"
+    >
+      Fshije
+    </button>
+  );
+}
+
+// ------------------------------
 
 export default async function AdminModerationPage() {
   const supabase = getSupabaseAnon();
 
- const { data, error } = await supabase
-  .from("posts")
-  .select("*")
-  .eq("status", "pending")
-  .order("created_at", { ascending: false }) as {
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("status", "pending")
+    .order("created_at", { ascending: false }) as {
     data: Post[] | null;
     error: any;
   };
@@ -76,10 +110,15 @@ export default async function AdminModerationPage() {
                   </span>
                   <h2 className="font-semibold">{post.title}</h2>
                 </div>
-                
-                {/* @ts-ignore – prano postId si prop edhe nëse tipi i ApproveButtons nuk e deklaron */}
-<ApproveButtons postId={post.id} />
 
+                <div className="flex gap-2">
+                  {/* APPROVE / REFUSE */}
+                  {/* @ts-ignore */}
+                  <ApproveButtons postId={post.id} />
+                  
+                  {/* DELETE BUTTON */}
+                  <DeleteButton id={post.id} />
+                </div>
               </div>
 
               <p className="text-sm text-gray-700 mb-2">{post.description}</p>
