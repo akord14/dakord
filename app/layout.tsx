@@ -34,8 +34,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Link href="/" className="flex items-center">
             <Image
               src="/akord-icon.png"
-              width={40}
-              height={40}
+              width={64}
+              height={64}
               alt="Akord.al"
             />
           </Link>
