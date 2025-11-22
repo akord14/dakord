@@ -102,8 +102,12 @@ interface PageProps {
 // PAGE – LISTA E POSTIMEVE
 // ------------------------------
 
-export default async function PostsPage({ searchParams }: PageProps) {
-  const params = searchParams ?? {};
+export default async function PostsPage(
+  props: { searchParams?: { [key: string]: string | string[] } }
+) {
+  const searchParams = props.searchParams ?? {};
+  const params = searchParams;
+
 
   const typeParam =
     typeof params.type === "string"
