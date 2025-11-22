@@ -91,9 +91,10 @@ async function getPosts(filters: SearchFilters): Promise<Post[]> {
 // PAGE PROPS – Next 15 format
 // ------------------------------
 
-type PageProps = {
-  searchParams?: Record<string, string | string[] | undefined>;
-};
+interface PageProps {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
 
 // ------------------------------
 // PAGE – LISTA E POSTIMEVE
