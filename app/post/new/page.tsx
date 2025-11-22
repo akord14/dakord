@@ -1,10 +1,20 @@
-"use client";
-
-import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
+import ProfessionIcon from "../components/ProfessionIcon";
 
-type PostType = "seeking" | "offering";
-type WorkTime = "full_time" | "part_time" | "";
+type Post = {
+  id: string;
+  type: "seeking" | "offering";
+  title: string;
+  description: string | null;
+  contact: string;
+  status: string;
+  created_at: string;
+  city?: string | null;
+  profession?: string | null;
+  age?: number | null;
+  work_time?: "full_time" | "part_time" | null;
+};
 
 function getSupabaseAnon() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -19,636 +29,245 @@ function getSupabaseAnon() {
   return createClient(url, key);
 }
 
-const CITIES = [
-  "Tiranë",
-  "Durrës",
-  "Vlorë",
-  "Shkodër",
-  "Fier",
-  "Elbasan",
-  "Korçë",
-  "Berat",
-  "Gjirokastër",
-  "Lezhë",
-  "Kukës",
-  "Dibër",
-  "Sarandë",
-  "Pogradec",
-  "Lushnjë",
-  "Kavajë",
-  "Laç",
-  "Patos",
-  "Të tjera",
-];
+function formatType(type: Post["type"]) {
+  if (type === "seeking") return "Kërkoj punë";
+  if (type === "offering") return "Ofroj punë";
+  return "";
+}
 
-const PROFESSIONS = [
-  "Elektricist",
-  "Instalues kamerash sigurie",
-  "Teknik alarmi",
-  "Montim kondicionerësh",
-  "Instalues interneti / rrjeti",
-  "Teknik mirëmbajtjeje",
-  "Hidraulik",
-  "Montues mobilerie",
-  "Punëtor ndërtimi",
-  "Murator / Suvatues",
-  "Saldator",
-  "Gjeometër",
-  "Shofer furgoni",
-  "Shofer kamioni",
-  "Shofer taksie",
-  "Shofer personal",
-  "Korrier / Delivery",
-  "Magazinier",
-  "Punëtor magazine",
-  "Ngarkim / Shkarkim",
-  "Operator forklift",
-  "Operator Call Center",
-  "Asistent administrativ",
-  "Sekretar/e",
-  "Financier / Kontabilist",
-  "Ekonomist",
-  "Data Entry",
-  "Shitës / Shitëse dyqani",
-  "Konsulent shitjesh",
-  "Agjent shitjesh terren",
-  "Shërbim klienti",
-  "IT / Support",
-  "Programues / Developer",
-  "Web Designer",
-  "Social Media Manager",
-  "Digital Marketing",
-  "Grafik Designer",
-  "Kamarier",
-  "Banakier",
-  "Kuzhinier",
-  "Ndihmës kuzhinier",
-  "Picajol",
-  "Pastiçier",
-  "Parukier/e",
-  "Estetiste",
-  "Manikyr / Pedikyr",
-  "Punëtor fasonerie",
-  "Punëtor pastrimi",
-  "Baby-sitter / Kujdestar fëmijësh",
-  "Kujdestar të moshuarish",
-  "Arsimtar / Mësues privat",
-  "Tjetër",
-];
+function formatWorkTime(work?: Post["work_time"]) {
+  if (work === "full_time") return "Full time";
+  if (work === "part_time") return "Part time";
+  return "";
+}
 
-const CURRENCIES = ["LEK", "EUR", "USD"];
+type SearchFilters = {
+  type?: string;
+  work_time?: string;
+};
 
-// Mosha 18–70
-const AGES = Array.from({ length: 70 - 18 + 1 }, (_, i) => 18 + i);
+async function getPosts(filters: SearchFilters): Promise<Post[]> {
+  const supabase = getSupabaseAnon();
 
-export default function NewPostPage() {
-  const [type, setType] = useState<PostType>("seeking");
-  const [fullName, setFullName] = useState("");
-  const [profession, setProfession] = useState("");
-  const [experience, setExperience] = useState<"me" | "pa" | "">("");
-  const [age, setAge] = useState<string>(""); // ruajmë si string në formë
-  const [workTime, setWorkTime] = useState<WorkTime>(""); // full_time / part_time
-  const [city, setCity] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [description, setDescription] = useState("");
-  const [salary, setSalary] = useState("");
-  const [salaryApprox, setSalaryApprox] = useState(false);
-  const [salaryCurrency, setSalaryCurrency] = useState("LEK");
-  const [fileList, setFileList] = useState<FileList | null>(null);
+  let query = supabase
+    .from("posts")
+    .select("*")
+    .eq("status", "approved")
+    .order("created_at", { ascending: false });
 
-  const [loading, setLoading] = useState(false);
-  const [successMsg, setSuccessMsg] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const type = filters.type;
+  const workTime = filters.work_time;
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setErrorMsg("");
-    setSuccessMsg("");
-
-    if (!fullName.trim())
-      return setErrorMsg("Emri / kompania është e detyrueshme.");
-    if (!profession.trim())
-      return setErrorMsg("Profesioni është i detyrueshëm.");
-    if (!city.trim()) return setErrorMsg("Qyteti është i detyrueshëm.");
-    if (!phone.trim())
-      return setErrorMsg("Numri i telefonit është i detyrueshëm.");
-    if (!age) return setErrorMsg("Mosha është e detyrueshme.");
-    if (!workTime) return setErrorMsg("Orari i punës është i detyrueshëm.");
-
-    const title = `${fullName.trim()} — ${profession.trim()}`;
-    const descParts: string[] = [];
-
-    if (description.trim()) descParts.push(description.trim());
-    descParts.push(`Qyteti: ${city}`);
-
-    if (experience === "me") descParts.push("Me eksperiencë");
-    if (experience === "pa") descParts.push("Pa eksperiencë");
-
-    if (age) {
-      descParts.push(`Mosha: ${age} vjeç`);
-    }
-
-    if (workTime) {
-      descParts.push(
-        `Orari: ${workTime === "full_time" ? "Full time" : "Part time"}`
-      );
-    }
-
-    if (salary.trim()) {
-      descParts.push(
-        `Paga: ${salaryApprox ? "afërsisht " : ""}${salary} ${salaryCurrency}`
-      );
-    }
-
-    if (fileList?.length) {
-      descParts.push(`Foto: ${fileList.length} skedar/e`);
-    } else {
-      descParts.push("Foto: ikonë automatike sipas profesionit");
-    }
-
-    const finalDescription = descParts.join(" | ");
-
-    const contactParts = [];
-    if (phone.trim()) contactParts.push(`Tel: ${phone.trim()}`);
-    if (email.trim()) contactParts.push(`Email: ${email.trim()}`);
-    const contact = contactParts.join(" • ");
-
-    const ageNumber = age ? Number(age) : null;
-
-    setLoading(true);
-
-    try {
-      const supabase = getSupabaseAnon();
-      const { error } = await supabase.from("posts").insert([
-        {
-          type,
-          title,
-          description: finalDescription,
-          contact,
-          status: "pending",
-          age: ageNumber,
-          work_time: workTime || null,
-        },
-      ]);
-
-      if (error) return setErrorMsg("Gabim gjatë ruajtjes së postimit.");
-
-      setSuccessMsg("Postimi u dërgua për aprovim!");
-      setFullName("");
-      setProfession("");
-      setExperience("");
-      setAge("");
-      setWorkTime("");
-      setCity("");
-      setPhone("");
-      setEmail("");
-      setDescription("");
-      setSalary("");
-      setSalaryApprox(false);
-      setSalaryCurrency("LEK");
-      setFileList(null);
-    } catch {
-      setErrorMsg("Gabim i papritur. Provo përsëri.");
-    }
-
-    setLoading(false);
+  if (type === "seeking" || type === "offering") {
+    query = query.eq("type", type);
   }
 
+  if (workTime === "full_time" || workTime === "part_time") {
+    query = query.eq("work_time", workTime);
+  }
+
+  const { data, error } = await query;
+
+  if (error || !data) {
+    console.error("Gabim duke lexuar postimet:", error);
+    return [];
+  }
+
+  return data as Post[];
+}
+
+// ⚠️ KJO PJESË është ndryshimi kryesor për Next 15
+type PageProps = {
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
+
+export default async function PostsPage({ searchParams }: PageProps) {
+  const params = searchParams ?? {};
+
+  const typeParam =
+    typeof params.type === "string"
+      ? params.type
+      : Array.isArray(params.type)
+      ? params.type[0]
+      : undefined;
+
+  const workTimeParam =
+    typeof params.work_time === "string"
+      ? params.work_time
+      : Array.isArray(params.work_time)
+      ? params.work_time[0]
+      : undefined;
+
+  const posts = await getPosts({
+    type: typeParam,
+    work_time: workTimeParam,
+  });
+
+  const activeType =
+    typeParam === "seeking" || typeParam === "offering"
+      ? typeParam
+      : undefined;
+
+  const activeWorkTime =
+    workTimeParam === "full_time" || workTimeParam === "part_time"
+      ? workTimeParam
+      : undefined;
+
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#f5f7fb",
-        color: "#111827",
-        fontFamily: "system-ui, sans-serif",
-        paddingBottom: 60,
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 900,
-          margin: "0 auto",
-          padding: "24px 16px 60px",
-        }}
-      >
-        <h1 style={{ fontSize: 26, fontWeight: 700, marginBottom: 8 }}>
-          Krijo postimin tënd
-        </h1>
-
-        <p style={{ fontSize: 14, color: "#4b5563", marginBottom: 24 }}>
-          Plotëso të dhënat. Postimi shfaqet vetëm pasi ta aprovojë
-          administratori.
-        </p>
-
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            background: "white",
-            borderRadius: 20,
-            padding: 20,
-            boxShadow: "0 18px 40px rgba(0,0,0,0.07)",
-            display: "grid",
-            gap: 20,
-          }}
-        >
-          {/* LLOJI */}
+    <main className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
+      <div className="mx-auto max-w-5xl px-4 py-8">
+        {/* Titulli */}
+        <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <label style={{ fontWeight: 600, fontSize: 13 }}>
-              Lloji i postimit
-            </label>
-            <div style={{ display: "flex", gap: 12, marginTop: 6 }}>
-              {["seeking", "offering"].map((v) => (
-                <button
-                  key={v}
-                  type="button"
-                  onClick={() => setType(v as PostType)}
-                  style={{
-                    padding: "8px 14px",
-                    borderRadius: 999,
-                    border:
-                      type === v ? "2px solid #0ea5e9" : "1px solid #d1d5db",
-                    background: type === v ? "#e0f2fe" : "white",
-                    cursor: "pointer",
-                    flex: 1,
-                  }}
-                >
-                  {v === "seeking" ? "Kërkoj punë" : "Ofroj punë"}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* EMRI */}
-          <div>
-            <label style={{ fontWeight: 600, fontSize: 13 }}>
-              Emër Mbiemër / Kompania *
-            </label>
-            <input
-              type="text"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              placeholder="p.sh. Ismet Cungu / Alba Security"
-              style={{
-                width: "100%",
-                padding: "10px 12px",
-                borderRadius: 10,
-                border: "1px solid #d1d5db",
-                fontSize: 14,
-              }}
-            />
-          </div>
-
-          {/* PROFESIONI + EKSPERIENCA */}
-          <div style={{ display: "grid", gap: 16 }}>
-            <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>
-                Profesioni *
-              </label>
-              <select
-                value={profession}
-                onChange={(e) => setProfession(e.target.value)}
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d1d5db",
-                  fontSize: 14,
-                }}
-              >
-                <option value="">Zgjidh profesionin</option>
-                {PROFESSIONS.map((p) => (
-                  <option key={p} value={p}>
-                    {p}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>
-                Eksperienca
-              </label>
-
-              <div style={{ display: "flex", gap: 8 }}>
-                <button
-                  type="button"
-                  onClick={() => setExperience("me")}
-                  style={{
-                    flex: 1,
-                    padding: "8px 10px",
-                    borderRadius: 10,
-                    border:
-                      experience === "me"
-                        ? "2px solid #0ea5e9"
-                        : "1px solid #d1d5db",
-                    background: experience === "me" ? "#e0f2fe" : "white",
-                    cursor: "pointer",
-                  }}
-                >
-                  Me eksperiencë
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setExperience("pa")}
-                  style={{
-                    flex: 1,
-                    padding: "8px 10px",
-                    borderRadius: 10,
-                    border:
-                      experience === "pa"
-                        ? "2px solid #0ea5e9"
-                        : "1px solid #d1d5db",
-                    background: experience === "pa" ? "#e0f2fe" : "white",
-                    cursor: "pointer",
-                  }}
-                >
-                  Pa eksperiencë
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* MOSHA + ORARI I PUNËS */}
-          <div style={{ display: "grid", gap: 16 }}>
-            <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>Mosha *</label>
-              <select
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d1d5db",
-                  fontSize: 14,
-                }}
-              >
-                <option value="">Zgjidh moshën</option>
-                {AGES.map((a) => (
-                  <option key={a} value={a}>
-                    {a} vjeç
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>
-                Orari i punës *
-              </label>
-              <div style={{ display: "flex", gap: 8 }}>
-                <button
-                  type="button"
-                  onClick={() => setWorkTime("full_time")}
-                  style={{
-                    flex: 1,
-                    padding: "8px 10px",
-                    borderRadius: 10,
-                    border:
-                      workTime === "full_time"
-                        ? "2px solid #0ea5e9"
-                        : "1px solid #d1d5db",
-                    background:
-                      workTime === "full_time" ? "#e0f2fe" : "white",
-                    cursor: "pointer",
-                  }}
-                >
-                  Full time
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setWorkTime("part_time")}
-                  style={{
-                    flex: 1,
-                    padding: "8px 10px",
-                    borderRadius: 10,
-                    border:
-                      workTime === "part_time"
-                        ? "2px solid #0ea5e9"
-                        : "1px solid #d1d5db",
-                    background:
-                      workTime === "part_time" ? "#e0f2fe" : "white",
-                    cursor: "pointer",
-                  }}
-                >
-                  Part time
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* QYTETI + TEL + EMAIL */}
-          <div style={{ display: "grid", gap: 16 }}>
-            <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>Qyteti *</label>
-              <select
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d1d5db",
-                  fontSize: 14,
-                }}
-              >
-                <option value="">Zgjidh qytetin</option>
-                {CITIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>
-                Numër telefoni *
-              </label>
-              <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="p.sh. 068 00 00 000"
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d1d5db",
-                  fontSize: 14,
-                }}
-              />
-            </div>
-
-            <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>
-                Email (opsionale)
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="p.sh. info@kompania.al"
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d1d5db",
-                  fontSize: 14,
-                }}
-              />
-            </div>
-          </div>
-
-          {/* PERSHKRIMI */}
-          <div>
-            <label style={{ fontWeight: 600, fontSize: 13 }}>
-              Përshkrimi i punës (opsional)
-            </label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={4}
-              placeholder="Shkruaj detajet e punës…"
-              style={{
-                width: "100%",
-                padding: "10px 12px",
-                borderRadius: 12,
-                border: "1px solid #d1d5db",
-                fontSize: 14,
-                resize: "vertical",
-              }}
-            />
-          </div>
-
-          {/* PAGA */}
-          <div style={{ display: "grid", gap: 16 }}>
-            <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>
-                Paga (opsionale)
-              </label>
-              <input
-                type="text"
-                value={salary}
-                onChange={(e) => setSalary(e.target.value)}
-                placeholder="p.sh. 60 000 / 4.5 orë"
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d1d5db",
-                  fontSize: 14,
-                }}
-              />
-            </div>
-
-            <label
-              style={{ display: "flex", alignItems: "center", gap: 6 }}
-            >
-              <input
-                type="checkbox"
-                checked={salaryApprox}
-                onChange={(e) => setSalaryApprox(e.target.checked)}
-              />
-              Afërsisht
-            </label>
-
-            <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>Monedha</label>
-              <select
-                value={salaryCurrency}
-                onChange={(e) => setSalaryCurrency(e.target.value)}
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: "1px solid #d1d5db",
-                  fontSize: 14,
-                }}
-              >
-                {CURRENCIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* FOTO */}
-          <div>
-            <label style={{ fontWeight: 600, fontSize: 13 }}>
-              Foto (opsionale)
-            </label>
-            <input
-              type="file"
-              multiple
-              onChange={(e) => setFileList(e.target.files)}
-              style={{ fontSize: 13 }}
-            />
-            <p
-              style={{
-                fontSize: 12,
-                color: "#6b7280",
-                marginTop: 4,
-              }}
-            >
-              Nëse nuk ngarkon foto, përdoret automatikisht një ikon profesionit.
+            <h1 className="text-2xl font-bold tracking-tight">Postime pune</h1>
+            <p className="mt-1 text-sm text-slate-600">
+              Shfleto postimet e aprovuara. Mund të filtroni sipas llojit dhe
+              orarit të punës.
             </p>
           </div>
 
-          {/* ERROR / SUCCESS */}
-          {errorMsg && (
-            <div
-              style={{
-                background: "#fee2e2",
-                color: "#b91c1c",
-                padding: "10px 12px",
-                borderRadius: 10,
-                fontSize: 13,
-              }}
-            >
-              {errorMsg}
-            </div>
-          )}
-
-          {successMsg && (
-            <div
-              style={{
-                background: "#dcfce7",
-                color: "#166534",
-                padding: "10px 12px",
-                borderRadius: 10,
-                fontSize: 13,
-              }}
-            >
-              {successMsg}
-            </div>
-          )}
-
-          {/* BUTTON */}
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              padding: "12px 22px",
-              borderRadius: 999,
-              background:
-                "linear-gradient(135deg, #38bdf8, #0ea5e9, #0f172a)",
-              color: "white",
-              fontWeight: 600,
-              fontSize: 15,
-              cursor: loading ? "default" : "pointer",
-              opacity: loading ? 0.6 : 1,
-              border: "none",
-            }}
+          <Link
+            href="/post/new"
+            className="inline-flex items-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-lg hover:opacity-90"
           >
-            {loading ? "Duke dërguar…" : "Posto"}
-          </button>
-        </form>
+            + Krijo postim
+          </Link>
+        </header>
+
+        {/* Filtrat e shpejtë */}
+        <section className="mb-6 flex flex-wrap gap-2">
+          <Link
+            href="/post"
+            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
+              !activeType && !activeWorkTime
+                ? "bg-sky-600 text-white border-sky-600"
+                : "bg-white text-slate-700 border-slate-200"
+            }`}
+          >
+            Të gjitha
+          </Link>
+
+          <Link
+            href="/post?type=seeking"
+            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
+              activeType === "seeking"
+                ? "bg-sky-600 text-white border-sky-600"
+                : "bg-white text-slate-700 border-slate-200"
+            }`}
+          >
+            Kërkoj punë
+          </Link>
+
+          <Link
+            href="/post?type=offering"
+            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
+              activeType === "offering"
+                ? "bg-sky-600 text-white border-sky-600"
+                : "bg-white text-slate-700 border-slate-200"
+            }`}
+          >
+            Ofroj punë
+          </Link>
+
+          <Link
+            href="/post?work_time=full_time"
+            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
+              activeWorkTime === "full_time"
+                ? "bg-sky-600 text-white border-sky-600"
+                : "bg-white text-slate-700 border-slate-200"
+            }`}
+          >
+            Full time
+          </Link>
+
+          <Link
+            href="/post?work_time=part_time"
+            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
+              activeWorkTime === "part_time"
+                ? "bg-sky-600 text-white border-sky-600"
+                : "bg-white text-slate-700 border-slate-200"
+            }`}
+          >
+            Part time
+          </Link>
+        </section>
+
+        {/* Lista e postimeve */}
+        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.length === 0 && (
+            <p className="text-sm text-slate-500">
+              Nuk u gjetën postime me këtë filtër. Provo filtra të tjerë.
+            </p>
+          )}
+
+          {posts.map((post) => (
+            <Link
+              key={post.id}
+              href={`/post/${post.id}`}
+              className="group text-slate-900 no-underline"
+            >
+              <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+                <div className="flex items-start gap-3">
+                  <div>
+                    <ProfessionIcon
+                      text={`${post.title} ${
+                        post.description ?? ""
+                      } ${post.profession ?? ""}`}
+                    />
+                  </div>
+
+                  <div className="flex flex-1 flex-col gap-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <span
+                        className={[
+                          "inline-flex items-center rounded-full px-3 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
+                          post.type === "seeking"
+                            ? "border border-cyan-200 bg-cyan-50 text-cyan-700"
+                            : "border border-indigo-200 bg-indigo-50 text-indigo-700",
+                        ].join(" ")}
+                      >
+                        {formatType(post.type)}
+                      </span>
+
+                      {post.city && (
+                        <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-0.5 text-[11px] text-slate-700">
+                          {post.city}
+                        </span>
+                      )}
+                    </div>
+
+                    <h3 className="line-clamp-2 text-[15px] font-semibold text-slate-900">
+                      {post.title}
+                    </h3>
+
+                    <div className="flex flex-wrap gap-1 text-[11px] text-slate-500">
+                      {post.profession && (
+                        <span className="mr-2">{post.profession}</span>
+                      )}
+                      {post.age && <span>Mosha: {post.age} vjeç</span>}
+                      {post.work_time && (
+                        <span>· {formatWorkTime(post.work_time)}</span>
+                      )}
+                    </div>
+
+                    <p className="line-clamp-3 text-sm text-slate-600">
+                      {post.description || "Nuk ka përshkrim të detajuar."}
+                    </p>
+
+                    <div className="mt-2 flex items-center justify_between text-[11px] text-slate-400">
+                      <span>
+                        {new Date(post.created_at).toLocaleDateString("sq-AL")}
+                      </span>
+                      <span className="text-slate-500 group-hover:text-slate-700">
+                        Shiko detajet →
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </Link>
+          ))}
+        </section>
       </div>
     </main>
   );
