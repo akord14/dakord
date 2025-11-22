@@ -2,9 +2,6 @@ import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import ProfessionIcon from "../components/ProfessionIcon";
 
-// -------------------------------------------------------
-// Lloji i Postimit
-// -------------------------------------------------------
 type Post = {
   id: string;
   type: "seeking" | "offering";
@@ -19,9 +16,6 @@ type Post = {
   work_time?: "full_time" | "part_time" | null;
 };
 
-// -------------------------------------------------------
-// Supabase anon client
-// -------------------------------------------------------
 function getSupabaseAnon() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -34,9 +28,7 @@ function getSupabaseAnon() {
 }
 
 function formatType(type: Post["type"]) {
-  if (type === "seeking") return "Kërkoj punë";
-  if (type === "offering") return "Ofroj punë";
-  return "";
+  return type === "seeking" ? "Kërkoj punë" : "Ofroj punë";
 }
 
 function formatWorkTime(work?: Post["work_time"]) {
@@ -45,20 +37,15 @@ function formatWorkTime(work?: Post["work_time"]) {
   return "";
 }
 
-// -------------------------------------------------------
-// Filtrat (për Next.js 15 searchParams)
-// -------------------------------------------------------
+// ---- SEARCH PARAMS (Next.js 15 OK) ----
 type PageProps = {
-  searchParams?: {
-    type?: string | string[];
-    work_time?: string | string[];
-  };
+  searchParams?: Record<string, string | string[] | undefined>;
 };
 
-// -------------------------------------------------------
-// Leximi i postimeve nga Supabase me filtra
-// -------------------------------------------------------
-async function getPosts(filters: { type?: string; work_time?: string }): Promise<Post[]> {
+async function getPosts(filter: {
+  type?: string;
+  work_time?: string;
+}): Promise<Post[]> {
   const supabase = getSupabaseAnon();
 
   let query = supabase
@@ -67,87 +54,66 @@ async function getPosts(filters: { type?: string; work_time?: string }): Promise
     .eq("status", "approved")
     .order("created_at", { ascending: false });
 
-  if (filters.type === "seeking" || filters.type === "offering") {
-    query = query.eq("type", filters.type);
+  if (filter.type === "seeking" || filter.type === "offering") {
+    query = query.eq("type", filter.type);
   }
 
-  if (filters.work_time === "full_time" || filters.work_time === "part_time") {
-    query = query.eq("work_time", filters.work_time);
+  if (filter.work_time === "full_time" || filter.work_time === "part_time") {
+    query = query.eq("work_time", filter.work_time);
   }
 
   const { data, error } = await query;
-
-  if (error || !data) {
-    console.error("Gabim duke lexuar postimet:", error);
-    return [];
-  }
-
+  if (error || !data) return [];
   return data as Post[];
 }
 
-// -------------------------------------------------------
-// FAQJA KRYESORE E LISTËS SË POSTIMEVE
-// -------------------------------------------------------
 export default async function PostsPage({ searchParams }: PageProps) {
-  const params = searchParams ?? {};
-
   const typeParam =
-    typeof params.type === "string"
-      ? params.type
-      : Array.isArray(params.type)
-      ? params.type[0]
+    typeof searchParams?.type === "string"
+      ? searchParams.type
+      : Array.isArray(searchParams?.type)
+      ? searchParams?.type[0]
       : undefined;
 
-  const workTimeParam =
-    typeof params.work_time === "string"
-      ? params.work_time
-      : Array.isArray(params.work_time)
-      ? params.work_time[0]
+  const workParam =
+    typeof searchParams?.work_time === "string"
+      ? searchParams.work_time
+      : Array.isArray(searchParams?.work_time)
+      ? searchParams?.work_time[0]
       : undefined;
 
   const posts = await getPosts({
     type: typeParam,
-    work_time: workTimeParam,
+    work_time: workParam,
   });
 
-  const activeType =
-    typeParam === "seeking" || typeParam === "offering" ? typeParam : undefined;
-
-  const activeWorkTime =
-    workTimeParam === "full_time" || workTimeParam === "part_time" ? workTimeParam : undefined;
-
-  // -------------------------------------------------------
-  // RENDER
-  // -------------------------------------------------------
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
+    <main className="min-h-screen bg-slate-50 text-slate-900 pb-20">
       <div className="mx-auto max-w-5xl px-4 py-8">
-        
-        {/* TITULLI */}
         <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Postime pune</h1>
-            <p className="mt-1 text-sm text-slate-600">
-              Shfleto postimet e aprovuara. Filtroni sipas llojit dhe orarit të punës.
+            <h1 className="text-2xl font-bold">Postime pune</h1>
+            <p className="text-sm text-slate-600">
+              Shfleto postimet e aprovuara — filtro sipas llojit dhe orarit.
             </p>
           </div>
 
           <Link
             href="/post/new"
-            className="inline-flex items-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-lg hover:opacity-90"
+            className="bg-sky-600 text-white px-5 py-2 rounded-full text-sm font-semibold shadow hover:opacity-90"
           >
             + Krijo postim
           </Link>
         </header>
 
-        {/* FILTRAT */}
-        <section className="mb-6 flex flex-wrap gap-2">
+        {/* FILTER BUTTONS */}
+        <div className="mb-6 flex flex-wrap gap-2">
           <Link
             href="/post"
-            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
-              !activeType && !activeWorkTime
+            className={`px-4 py-1.5 rounded-full text-xs border ${
+              !typeParam && !workParam
                 ? "bg-sky-600 text-white border-sky-600"
-                : "bg-white text-slate-700 border-slate-200"
+                : "bg-white border-slate-200"
             }`}
           >
             Të gjitha
@@ -155,10 +121,10 @@ export default async function PostsPage({ searchParams }: PageProps) {
 
           <Link
             href="/post?type=seeking"
-            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
-              activeType === "seeking"
+            className={`px-4 py-1.5 rounded-full text-xs border ${
+              typeParam === "seeking"
                 ? "bg-sky-600 text-white border-sky-600"
-                : "bg-white text-slate-700 border-slate-200"
+                : "bg-white border-slate-200"
             }`}
           >
             Kërkoj punë
@@ -166,10 +132,10 @@ export default async function PostsPage({ searchParams }: PageProps) {
 
           <Link
             href="/post?type=offering"
-            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
-              activeType === "offering"
+            className={`px-4 py-1.5 rounded-full text-xs border ${
+              typeParam === "offering"
                 ? "bg-sky-600 text-white border-sky-600"
-                : "bg-white text-slate-700 border-slate-200"
+                : "bg-white border-slate-200"
             }`}
           >
             Ofroj punë
@@ -177,10 +143,10 @@ export default async function PostsPage({ searchParams }: PageProps) {
 
           <Link
             href="/post?work_time=full_time"
-            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
-              activeWorkTime === "full_time"
+            className={`px-4 py-1.5 rounded-full text-xs border ${
+              workParam === "full_time"
                 ? "bg-sky-600 text-white border-sky-600"
-                : "bg-white text-slate-700 border-slate-200"
+                : "bg-white border-slate-200"
             }`}
           >
             Full time
@@ -188,21 +154,21 @@ export default async function PostsPage({ searchParams }: PageProps) {
 
           <Link
             href="/post?work_time=part_time"
-            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
-              activeWorkTime === "part_time"
+            className={`px-4 py-1.5 rounded-full text-xs border ${
+              workParam === "part_time"
                 ? "bg-sky-600 text-white border-sky-600"
-                : "bg-white text-slate-700 border-slate-200"
+                : "bg-white border-slate-200"
             }`}
           >
             Part time
           </Link>
-        </section>
+        </div>
 
-        {/* LISTA */}
+        {/* POST LIST */}
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {posts.length === 0 && (
             <p className="text-sm text-slate-500">
-              Nuk u gjetën postime. Provo filtra të tjerë.
+              Nuk u gjetën postime. Provo një filtër tjetër.
             </p>
           )}
 
@@ -210,50 +176,38 @@ export default async function PostsPage({ searchParams }: PageProps) {
             <Link
               key={post.id}
               href={`/post/${post.id}`}
-              className="group text-slate-900 no-underline"
+              className="group no-underline"
             >
-              <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-
-                <div className="flex items-start gap-3">
+              <article className="rounded-2xl border bg-white p-4 shadow-sm hover:shadow-md transition">
+                <div className="flex gap-3 items-start">
                   <ProfessionIcon
                     text={`${post.title} ${post.description ?? ""} ${post.profession ?? ""}`}
                   />
 
-                  <div className="flex flex-1 flex-col gap-2">
-                    <div className="flex items-center justify-between gap-2">
-                      <span
-                        className={[
-                          "inline-flex items-center rounded-full px-3 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
-                          post.type === "seeking"
-                            ? "border border-cyan-200 bg-cyan-50 text-cyan-700"
-                            : "border border-indigo-200 bg-indigo-50 text-indigo-700",
-                        ].join(" ")}
-                      >
-                        {formatType(post.type)}
-                      </span>
+                  <div className="flex flex-col gap-2 flex-1">
+                    <span
+                      className={`px-3 py-0.5 rounded-full text-[11px] font-semibold uppercase ${
+                        post.type === "seeking"
+                          ? "border border-cyan-200 bg-cyan-50 text-cyan-700"
+                          : "border border-indigo-200 bg-indigo-50 text-indigo-700"
+                      }`}
+                    >
+                      {formatType(post.type)}
+                    </span>
 
-                      {post.city && (
-                        <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-0.5 text-[11px] text-slate-700">
-                          {post.city}
-                        </span>
-                      )}
-                    </div>
+                    <h3 className="text-[15px] font-semibold line-clamp-2">
+                      {post.title}
+                    </h3>
 
-                    <h3 className="line-clamp-2 text-[15px] font-semibold">{post.title}</h3>
-
-                    <div className="flex flex-wrap gap-1 text-[11px] text-slate-500">
-                      {post.profession && <span>{post.profession}</span>}
-                      {post.age && <span>Mosha: {post.age} vjeç</span>}
-                      {post.work_time && <span>· {formatWorkTime(post.work_time)}</span>}
-                    </div>
-
-                    <p className="line-clamp-3 text-sm text-slate-600">
+                    <p className="text-sm line-clamp-3 text-slate-600">
                       {post.description || "Nuk ka përshkrim të detajuar."}
                     </p>
 
-                    <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400">
-                      <span>{new Date(post.created_at).toLocaleDateString("sq-AL")}</span>
-                      <span className="text-slate-500 group-hover:text-slate-700">
+                    <div className="flex justify-between text-[11px] text-slate-400">
+                      <span>
+                        {new Date(post.created_at).toLocaleDateString("sq-AL")}
+                      </span>
+                      <span className="group-hover:text-slate-700 text-sky-600">
                         Shiko detajet →
                       </span>
                     </div>
