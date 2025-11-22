@@ -4,53 +4,110 @@ import { FormEvent, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 type PostType = "seeking" | "offering";
+type WorkTime = "full_time" | "part_time" | "";
 
 function getSupabaseAnon() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !key) {
-    throw new Error("Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY");
+    throw new Error(
+      "Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    );
   }
 
   return createClient(url, key);
 }
 
 const CITIES = [
-  "Tiranë", "Durrës", "Vlorë", "Shkodër", "Fier", "Elbasan",
-  "Korçë", "Berat", "Gjirokastër", "Lezhë", "Kukës", "Dibër",
-  "Sarandë", "Pogradec", "Lushnjë", "Kavajë", "Laç", "Patos", "Të tjera",
+  "Tiranë",
+  "Durrës",
+  "Vlorë",
+  "Shkodër",
+  "Fier",
+  "Elbasan",
+  "Korçë",
+  "Berat",
+  "Gjirokastër",
+  "Lezhë",
+  "Kukës",
+  "Dibër",
+  "Sarandë",
+  "Pogradec",
+  "Lushnjë",
+  "Kavajë",
+  "Laç",
+  "Patos",
+  "Të tjera",
 ];
 
 const PROFESSIONS = [
-  "Elektricist", "Instalues kamerash sigurie", "Teknik alarmi",
-  "Montim kondicionerësh", "Instalues interneti / rrjeti", "Teknik mirëmbajtjeje",
-  "Hidraulik", "Montues mobilerie", "Punëtor ndërtimi", "Murator / Suvatues",
-  "Saldator", "Gjeometër",
-  "Shofer furgoni", "Shofer kamioni", "Shofer taksie", "Shofer personal",
+  "Elektricist",
+  "Instalues kamerash sigurie",
+  "Teknik alarmi",
+  "Montim kondicionerësh",
+  "Instalues interneti / rrjeti",
+  "Teknik mirëmbajtjeje",
+  "Hidraulik",
+  "Montues mobilerie",
+  "Punëtor ndërtimi",
+  "Murator / Suvatues",
+  "Saldator",
+  "Gjeometër",
+  "Shofer furgoni",
+  "Shofer kamioni",
+  "Shofer taksie",
+  "Shofer personal",
   "Korrier / Delivery",
-  "Magazinier", "Punëtor magazine", "Ngarkim / Shkarkim", "Operator forklift",
-  "Operator Call Center", "Asistent administrativ", "Sekretar/e",
-  "Financier / Kontabilist", "Ekonomist", "Data Entry",
-  "Shitës / Shitëse dyqani", "Konsulent shitjesh", "Agjent shitjesh terren",
+  "Magazinier",
+  "Punëtor magazine",
+  "Ngarkim / Shkarkim",
+  "Operator forklift",
+  "Operator Call Center",
+  "Asistent administrativ",
+  "Sekretar/e",
+  "Financier / Kontabilist",
+  "Ekonomist",
+  "Data Entry",
+  "Shitës / Shitëse dyqani",
+  "Konsulent shitjesh",
+  "Agjent shitjesh terren",
   "Shërbim klienti",
-  "IT / Support", "Programues / Developer", "Web Designer",
-  "Social Media Manager", "Digital Marketing", "Grafik Designer",
-  "Kamarier", "Banakier", "Kuzhinier", "Ndihmës kuzhinier", "Picajol", "Pastiçier",
-  "Parukier/e", "Estetiste", "Manikyr / Pedikyr",
-  "Punëtor fasonerie", "Punëtor pastrimi",
-  "Baby-sitter / Kujdestar fëmijësh", "Kujdestar të moshuarish",
+  "IT / Support",
+  "Programues / Developer",
+  "Web Designer",
+  "Social Media Manager",
+  "Digital Marketing",
+  "Grafik Designer",
+  "Kamarier",
+  "Banakier",
+  "Kuzhinier",
+  "Ndihmës kuzhinier",
+  "Picajol",
+  "Pastiçier",
+  "Parukier/e",
+  "Estetiste",
+  "Manikyr / Pedikyr",
+  "Punëtor fasonerie",
+  "Punëtor pastrimi",
+  "Baby-sitter / Kujdestar fëmijësh",
+  "Kujdestar të moshuarish",
   "Arsimtar / Mësues privat",
   "Tjetër",
 ];
 
 const CURRENCIES = ["LEK", "EUR", "USD"];
 
+// Mosha 18–70
+const AGES = Array.from({ length: 70 - 18 + 1 }, (_, i) => 18 + i);
+
 export default function NewPostPage() {
   const [type, setType] = useState<PostType>("seeking");
   const [fullName, setFullName] = useState("");
   const [profession, setProfession] = useState("");
   const [experience, setExperience] = useState<"me" | "pa" | "">("");
+  const [age, setAge] = useState<string>(""); // ruajmë si string në formë
+  const [workTime, setWorkTime] = useState<WorkTime>(""); // full_time / part_time
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -69,10 +126,15 @@ export default function NewPostPage() {
     setErrorMsg("");
     setSuccessMsg("");
 
-    if (!fullName.trim()) return setErrorMsg("Emri / kompania është e detyrueshme.");
-    if (!profession.trim()) return setErrorMsg("Profesioni është i detyrueshëm.");
+    if (!fullName.trim())
+      return setErrorMsg("Emri / kompania është e detyrueshme.");
+    if (!profession.trim())
+      return setErrorMsg("Profesioni është i detyrueshëm.");
     if (!city.trim()) return setErrorMsg("Qyteti është i detyrueshëm.");
-    if (!phone.trim()) return setErrorMsg("Numri i telefonit është i detyrueshëm.");
+    if (!phone.trim())
+      return setErrorMsg("Numri i telefonit është i detyrueshëm.");
+    if (!age) return setErrorMsg("Mosha është e detyrueshme.");
+    if (!workTime) return setErrorMsg("Orari i punës është i detyrueshëm.");
 
     const title = `${fullName.trim()} — ${profession.trim()}`;
     const descParts: string[] = [];
@@ -83,8 +145,20 @@ export default function NewPostPage() {
     if (experience === "me") descParts.push("Me eksperiencë");
     if (experience === "pa") descParts.push("Pa eksperiencë");
 
+    if (age) {
+      descParts.push(`Mosha: ${age} vjeç`);
+    }
+
+    if (workTime) {
+      descParts.push(
+        `Orari: ${workTime === "full_time" ? "Full time" : "Part time"}`
+      );
+    }
+
     if (salary.trim()) {
-      descParts.push(`Paga: ${salaryApprox ? "afërsisht " : ""}${salary} ${salaryCurrency}`);
+      descParts.push(
+        `Paga: ${salaryApprox ? "afërsisht " : ""}${salary} ${salaryCurrency}`
+      );
     }
 
     if (fileList?.length) {
@@ -100,22 +174,40 @@ export default function NewPostPage() {
     if (email.trim()) contactParts.push(`Email: ${email.trim()}`);
     const contact = contactParts.join(" • ");
 
+    const ageNumber = age ? Number(age) : null;
+
     setLoading(true);
 
     try {
       const supabase = getSupabaseAnon();
       const { error } = await supabase.from("posts").insert([
-        { type, title, description: finalDescription, contact, status: "pending" },
+        {
+          type,
+          title,
+          description: finalDescription,
+          contact,
+          status: "pending",
+          age: ageNumber,
+          work_time: workTime || null,
+        },
       ]);
 
       if (error) return setErrorMsg("Gabim gjatë ruajtjes së postimit.");
 
       setSuccessMsg("Postimi u dërgua për aprovim!");
-      setFullName(""); setProfession(""); setExperience("");
-      setCity(""); setPhone(""); setEmail("");
-      setDescription(""); setSalary(""); setSalaryApprox(false);
-      setSalaryCurrency("LEK"); setFileList(null);
-
+      setFullName("");
+      setProfession("");
+      setExperience("");
+      setAge("");
+      setWorkTime("");
+      setCity("");
+      setPhone("");
+      setEmail("");
+      setDescription("");
+      setSalary("");
+      setSalaryApprox(false);
+      setSalaryCurrency("LEK");
+      setFileList(null);
     } catch {
       setErrorMsg("Gabim i papritur. Provo përsëri.");
     }
@@ -145,7 +237,8 @@ export default function NewPostPage() {
         </h1>
 
         <p style={{ fontSize: 14, color: "#4b5563", marginBottom: 24 }}>
-          Plotëso të dhënat. Postimi shfaqet vetëm pasi ta aprovojë administratori.
+          Plotëso të dhënat. Postimi shfaqet vetëm pasi ta aprovojë
+          administratori.
         </p>
 
         <form
@@ -161,7 +254,9 @@ export default function NewPostPage() {
         >
           {/* LLOJI */}
           <div>
-            <label style={{ fontWeight: 600, fontSize: 13 }}>Lloji i postimit</label>
+            <label style={{ fontWeight: 600, fontSize: 13 }}>
+              Lloji i postimit
+            </label>
             <div style={{ display: "flex", gap: 12, marginTop: 6 }}>
               {["seeking", "offering"].map((v) => (
                 <button
@@ -171,7 +266,8 @@ export default function NewPostPage() {
                   style={{
                     padding: "8px 14px",
                     borderRadius: 999,
-                    border: type === v ? "2px solid #0ea5e9" : "1px solid #d1d5db",
+                    border:
+                      type === v ? "2px solid #0ea5e9" : "1px solid #d1d5db",
                     background: type === v ? "#e0f2fe" : "white",
                     cursor: "pointer",
                     flex: 1,
@@ -194,8 +290,11 @@ export default function NewPostPage() {
               onChange={(e) => setFullName(e.target.value)}
               placeholder="p.sh. Ismet Cungu / Alba Security"
               style={{
-                width: "100%", padding: "10px 12px", borderRadius: 10,
-                border: "1px solid #d1d5db", fontSize: 14,
+                width: "100%",
+                padding: "10px 12px",
+                borderRadius: 10,
+                border: "1px solid #d1d5db",
+                fontSize: 14,
               }}
             />
           </div>
@@ -203,24 +302,33 @@ export default function NewPostPage() {
           {/* PROFESIONI + EKSPERIENCA */}
           <div style={{ display: "grid", gap: 16 }}>
             <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>Profesioni *</label>
+              <label style={{ fontWeight: 600, fontSize: 13 }}>
+                Profesioni *
+              </label>
               <select
                 value={profession}
                 onChange={(e) => setProfession(e.target.value)}
                 style={{
-                  width: "100%", padding: "10px 12px", borderRadius: 10,
-                  border: "1px solid #d1d5db", fontSize: 14,
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: 10,
+                  border: "1px solid #d1d5db",
+                  fontSize: 14,
                 }}
               >
                 <option value="">Zgjidh profesionin</option>
                 {PROFESSIONS.map((p) => (
-                  <option key={p} value={p}>{p}</option>
+                  <option key={p} value={p}>
+                    {p}
+                  </option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>Eksperienca</label>
+              <label style={{ fontWeight: 600, fontSize: 13 }}>
+                Eksperienca
+              </label>
 
               <div style={{ display: "flex", gap: 8 }}>
                 <button
@@ -262,6 +370,76 @@ export default function NewPostPage() {
             </div>
           </div>
 
+          {/* MOSHA + ORARI I PUNËS */}
+          <div style={{ display: "grid", gap: 16 }}>
+            <div>
+              <label style={{ fontWeight: 600, fontSize: 13 }}>Mosha *</label>
+              <select
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: 10,
+                  border: "1px solid #d1d5db",
+                  fontSize: 14,
+                }}
+              >
+                <option value="">Zgjidh moshën</option>
+                {AGES.map((a) => (
+                  <option key={a} value={a}>
+                    {a} vjeç
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label style={{ fontWeight: 600, fontSize: 13 }}>
+                Orari i punës *
+              </label>
+              <div style={{ display: "flex", gap: 8 }}>
+                <button
+                  type="button"
+                  onClick={() => setWorkTime("full_time")}
+                  style={{
+                    flex: 1,
+                    padding: "8px 10px",
+                    borderRadius: 10,
+                    border:
+                      workTime === "full_time"
+                        ? "2px solid #0ea5e9"
+                        : "1px solid #d1d5db",
+                    background:
+                      workTime === "full_time" ? "#e0f2fe" : "white",
+                    cursor: "pointer",
+                  }}
+                >
+                  Full time
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setWorkTime("part_time")}
+                  style={{
+                    flex: 1,
+                    padding: "8px 10px",
+                    borderRadius: 10,
+                    border:
+                      workTime === "part_time"
+                        ? "2px solid #0ea5e9"
+                        : "1px solid #d1d5db",
+                    background:
+                      workTime === "part_time" ? "#e0f2fe" : "white",
+                    cursor: "pointer",
+                  }}
+                >
+                  Part time
+                </button>
+              </div>
+            </div>
+          </div>
+
           {/* QYTETI + TEL + EMAIL */}
           <div style={{ display: "grid", gap: 16 }}>
             <div>
@@ -279,35 +457,47 @@ export default function NewPostPage() {
               >
                 <option value="">Zgjidh qytetin</option>
                 {CITIES.map((c) => (
-                  <option key={c} value={c}>{c}</option>
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>Numër telefoni *</label>
+              <label style={{ fontWeight: 600, fontSize: 13 }}>
+                Numër telefoni *
+              </label>
               <input
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="p.sh. 068 00 00 000"
                 style={{
-                  width: "100%", padding: "10px 12px", borderRadius: 10,
-                  border: "1px solid #d1d5db", fontSize: 14,
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: 10,
+                  border: "1px solid #d1d5db",
+                  fontSize: 14,
                 }}
               />
             </div>
 
             <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>Email (opsionale)</label>
+              <label style={{ fontWeight: 600, fontSize: 13 }}>
+                Email (opsionale)
+              </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="p.sh. info@kompania.al"
                 style={{
-                  width: "100%", padding: "10px 12px", borderRadius: 10,
-                  border: "1px solid #d1d5db", fontSize: 14,
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: 10,
+                  border: "1px solid #d1d5db",
+                  fontSize: 14,
                 }}
               />
             </div>
@@ -324,8 +514,11 @@ export default function NewPostPage() {
               rows={4}
               placeholder="Shkruaj detajet e punës…"
               style={{
-                width: "100%", padding: "10px 12px", borderRadius: 12,
-                border: "1px solid #d1d5db", fontSize: 14,
+                width: "100%",
+                padding: "10px 12px",
+                borderRadius: 12,
+                border: "1px solid #d1d5db",
+                fontSize: 14,
                 resize: "vertical",
               }}
             />
@@ -334,20 +527,27 @@ export default function NewPostPage() {
           {/* PAGA */}
           <div style={{ display: "grid", gap: 16 }}>
             <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>Paga (opsionale)</label>
+              <label style={{ fontWeight: 600, fontSize: 13 }}>
+                Paga (opsionale)
+              </label>
               <input
                 type="text"
                 value={salary}
                 onChange={(e) => setSalary(e.target.value)}
                 placeholder="p.sh. 60 000 / 4.5 orë"
                 style={{
-                  width: "100%", padding: "10px 12px", borderRadius: 10,
-                  border: "1px solid #d1d5db", fontSize: 14,
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: 10,
+                  border: "1px solid #d1d5db",
+                  fontSize: 14,
                 }}
               />
             </div>
 
-            <label style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <label
+              style={{ display: "flex", alignItems: "center", gap: 6 }}
+            >
               <input
                 type="checkbox"
                 checked={salaryApprox}
@@ -370,7 +570,9 @@ export default function NewPostPage() {
                 }}
               >
                 {CURRENCIES.map((c) => (
-                  <option key={c} value={c}>{c}</option>
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
                 ))}
               </select>
             </div>
@@ -378,14 +580,22 @@ export default function NewPostPage() {
 
           {/* FOTO */}
           <div>
-            <label style={{ fontWeight: 600, fontSize: 13 }}>Foto (opsionale)</label>
+            <label style={{ fontWeight: 600, fontSize: 13 }}>
+              Foto (opsionale)
+            </label>
             <input
               type="file"
               multiple
               onChange={(e) => setFileList(e.target.files)}
               style={{ fontSize: 13 }}
             />
-            <p style={{ fontSize: 12, color: "#6b7280", marginTop: 4 }}>
+            <p
+              style={{
+                fontSize: 12,
+                color: "#6b7280",
+                marginTop: 4,
+              }}
+            >
               Nëse nuk ngarkon foto, përdoret automatikisht një ikon profesionit.
             </p>
           </div>
@@ -426,7 +636,8 @@ export default function NewPostPage() {
             style={{
               padding: "12px 22px",
               borderRadius: 999,
-              background: "linear-gradient(135deg, #38bdf8, #0ea5e9, #0f172a)",
+              background:
+                "linear-gradient(135deg, #38bdf8, #0ea5e9, #0f172a)",
               color: "white",
               fontWeight: 600,
               fontSize: 15,
