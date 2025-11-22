@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
-import ProfessionIcon from "../../../components/ProfessionIcon";
+import ProfessionIcon from "@/components/ProfessionIcon";
+
 
 
 type Post = {
