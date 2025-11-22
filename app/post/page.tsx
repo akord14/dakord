@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
-import ProfessionIcon from "../components/ProfessionIcon";
+// ⬇️ NDRYSHO KËTË RRESHT
+import ProfessionIcon from "../../components/ProfessionIcon";
 
 // --------------------
 // Tipi i Postimeve
