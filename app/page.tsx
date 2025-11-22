@@ -72,57 +72,56 @@ export default async function HomePage() {
           </Link>
         </header>
 
-        {/* HERO */}
-        <section className="mb-8 grid gap-6 md:grid-cols-2 md:items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 leading-snug md:text-4xl">
-  Puna e duhur, në kohën e duhur
-</h1>
+             {/* HERO */}
+      <section className="mb-8 grid gap-6 md:grid-cols-2 md:items-center">
+        <div>
+          <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 leading-snug">
+            Puna e duhur, në kohën e duhur
+          </h1>
 
+          <p className="mt-3 text-base text-slate-600 leading-relaxed">
+            Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë, me fokus te
+            thjeshtësia, qartësia dhe respekti për kohën tënde.
+          </p>
 
-            <p className="mb-5 text-sm text-slate-600 sm:text-[15px]">
-              Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë,
-              me fokus te thjeshtësia, qartësia dhe respekti për kohën tënde.
-            </p>
+          <div className="flex flex-col gap-3 mt-5">
+            <Link
+              href="/post/new"
+              className="inline-flex items-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90"
+            >
+              KRIJO POSTIMIN TËND
+            </Link>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="flex gap-3">
               <Link
-                href="/post/new"
-                className="inline-flex items-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-6 py-2.5 text-sm font-semibold text-white shadow-xl shadow-slate-800/30"
+                href="/post?type=seeking"
+                className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
               >
-                KRIJO POSTIMIN TËND
+                KËRKOJ PUNË
               </Link>
-
-              <div className="flex gap-2">
-                <Link
-                  href="/post?type=seeking"
-                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 hover:bg-slate-50 sm:text-sm"
-                >
-                  KËRKOJ PUNË
-                </Link>
-                <Link
-                  href="/post?type=offering"
-                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 hover:bg-slate-50 sm:text-sm"
-                >
-                  OFROJ PUNË
-                </Link>
-              </div>
+              <Link
+                href="/post?type=offering"
+                className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
+              >
+                OFROJ PUNË
+              </Link>
             </div>
           </div>
+        </div>
 
-          {/* Kuti anësore */}
-          <div className="rounded-3xl bg-slate-900 p-5 text-slate-50 shadow-2xl shadow-slate-900/60">
-            <p className="mb-3 text-sm/5 opacity-90">Përdor Akord.al për:</p>
-            <ul className="mb-3 grid list-none gap-2 text-sm">
-              <li>• Punë të dyta dhe punë me kohë të pjesshme</li>
-              <li>• Punë të shpejta në lagjen tënde</li>
-              <li>• Punëtorë për biznesin tënd lokal</li>
-            </ul>
-            <div className="border-t border-slate-600/50 pt-3 text-xs text-slate-300">
-              Çdo postim miratohet nga admini përpara se të shfaqet publikisht.
-            </div>
+        {/* Kuti anësore */}
+        <div className="bg-[#0A1A2F] text-white p-5 rounded-2xl shadow-lg">
+          <p className="mb-3 text-sm/5 opacity-90">Përdor Akord.al për:</p>
+          <ul className="mb-3 grid list-none gap-2 text-sm">
+            <li>• Punë të dyta dhe punë me kohë të pjesshme</li>
+            <li>• Punë të shpejta në lagjen tënde</li>
+            <li>• Punëtorë për biznesin tënd lokal</li>
+          </ul>
+          <div className="border-t border-slate-600/50 pt-3 text-xs text-slate-300">
+            Çdo postim miratohet nga admini përpara se të shfaqet publikisht.
           </div>
-        </section>
+        </div>
+      </section>
 
         {/* HEADLINE POSTIME */}
         <section className="mb-4 flex flex-wrap items-center justify-between gap-3">
