@@ -92,29 +92,66 @@ export default async function HomePage() {
             </p>
 
             <div className="flex flex-col gap-3 mt-5">
-              <Link
-                href="/post/new"
-                className="inline-flex items-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90"
-              >
-                KRIJO POSTIMIN TËND
-              </Link>
+  {/* Butoni kryesor */}
+  <Link
+    href="/post/new"
+    className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90"
+  >
+    KRIJO POSTIMIN TËND
+  </Link>
 
-              <div className="flex gap-3">
-                <Link
-                  href="/post?type=seeking"
-                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
-                >
-                  KËRKOJ PUNË
-                </Link>
-                <Link
-                  href="/post?type=offering"
-                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
-                >
-                  OFROJ PUNË
-                </Link>
-              </div>
-            </div>
-          </div>
+  {/* Rreshti i filtreve */}
+  <div className="flex flex-wrap gap-2 sm:gap-3">
+    {/* Kërkoj punë */}
+    <Link
+      href="/post?type=seeking"
+      className="inline-flex items-center justify-center rounded-full px-4 py-2 text-[11px] sm:text-xs font-semibold text-slate-800
+                 border border-sky-300 bg-white/90
+                 shadow-[0_8px_20px_rgba(56,189,248,0.18)]
+                 hover:bg-sky-50 hover:shadow-[0_12px_30px_rgba(56,189,248,0.25)]
+                 hover:-translate-y-0.5 transition-all duration-150 ease-out"
+    >
+      KËRKOJ PUNË
+    </Link>
+
+    {/* Ofroj punë */}
+    <Link
+      href="/post?type=offering"
+      className="inline-flex items-center justify-center rounded-full px-4 py-2 text-[11px] sm:text-xs font-semibold text-slate-800
+                 border border-sky-300 bg-white/90
+                 shadow-[0_8px_20px_rgba(56,189,248,0.18)]
+                 hover:bg-sky-50 hover:shadow-[0_12px_30px_rgba(56,189,248,0.25)]
+                 hover:-translate-y-0.5 transition-all duration-150 ease-out"
+    >
+      OFROJ PUNË
+    </Link>
+
+    {/* Full time */}
+    <Link
+      href="/post?work_time=full_time"
+      className="inline-flex items-center justify-center rounded-full px-4 py-2 text-[11px] sm:text-xs font-semibold text-slate-800
+                 border border-sky-300 bg-white/90
+                 shadow-[0_8px_20px_rgba(56,189,248,0.18)]
+                 hover:bg-sky-50 hover:shadow-[0_12px_30px_rgba(56,189,248,0.25)]
+                 hover:-translate-y-0.5 transition-all duration-150 ease-out"
+    >
+      FULL TIME
+    </Link>
+
+    {/* Part time */}
+    <Link
+      href="/post?work_time=part_time"
+      className="inline-flex items-center justify-center rounded-full px-4 py-2 text-[11px] sm:text-xs font-semibold text-slate-800
+                 border border-sky-300 bg-white/90
+                 shadow-[0_8px_20px_rgba(56,189,248,0.18)]
+                 hover:bg-sky-50 hover:shadow-[0_12px_30px_rgba(56,189,248,0.25)]
+                 hover:-translate-y-0.5 transition-all duration-150 ease-out"
+    >
+      PART TIME
+    </Link>
+  </div>
+</div>
+
 
           {/* BOKSI ANËSOR */}
           <div className="bg-[#0A1A2F] text-white p-5 rounded-2xl shadow-lg">

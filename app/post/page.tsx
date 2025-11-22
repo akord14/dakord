@@ -1,136 +1,257 @@
-import { supabaseServer } from "@/lib/supabaseServer";
-const PROF_TO_IMG: Record<string, string> = {
-  // Shoferë
-  "Shofer furgoni": "/images/professions/driver.svg",
-  "Shofer kamioni": "/images/professions/driver.svg",
-  "Shofer taksie": "/images/professions/driver.svg",
-  "Shofer personal": "/images/professions/driver.svg",
-  "Korrier / Delivery": "/images/professions/driver.svg",
-
-  // Elektrik & instalime
-  "Elektricist": "/images/professions/electrician.svg",
-  "Instalues kamerash sigurie": "/images/professions/electrician.svg",
-  "Teknik alarmi": "/images/professions/electrician.svg",
-  "Montim kondicionerësh": "/images/professions/electrician.svg",
-  "Instalues interneti / rrjeti": "/images/professions/electrician.svg",
-  "Teknik mirëmbajtjeje": "/images/professions/electrician.svg",
-
-  // Call center & operator
-  "Operator Call Center": "/images/professions/operator.svg",
-
-  // Default për çdo profesion tjetër
-  Tjetër: "/images/professions/other.svg",
-};
+import Link from "next/link";
+import { createClient } from "@supabase/supabase-js";
+import ProfessionIcon from "../../components/ProfessionIcon";
 
 type Post = {
   id: string;
+  type: "seeking" | "offering";
   title: string;
   description: string | null;
-  contact: string | null;
-  payment: string | null;
-  payment_currency: "EUR" | "USD" | "ALL" | null;
-  profession: string | null;
-  image: string | null;
-  type: "seeking" | "offering";
-  status: "pending" | "approved" | "rejected";
+  contact: string;
+  status: string;
   created_at: string;
+  city?: string | null;
+  profession?: string | null;
+  age?: number | null;
+  work_time?: "full_time" | "part_time" | null;
 };
 
-export const revalidate = 0; // pa cache gjatë zhvillimit
+function getSupabaseAnon() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-export default async function PostsPage() {
-  const supabase = supabaseServer();
-  const { data, error } = await supabase
+  if (!url || !key) {
+    throw new Error(
+      "Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    );
+  }
+
+  return createClient(url, key);
+}
+
+function formatType(type: Post["type"]) {
+  if (type === "seeking") return "Kërkoj punë";
+  if (type === "offering") return "Ofroj punë";
+  return "";
+}
+
+function formatWorkTime(work?: Post["work_time"]) {
+  if (work === "full_time") return "Full time";
+  if (work === "part_time") return "Part time";
+  return "";
+}
+
+type SearchParams = {
+  type?: string;
+  work_time?: string;
+};
+
+async function getPosts(searchParams: SearchParams): Promise<Post[]> {
+  const supabase = getSupabaseAnon();
+
+  let query = supabase
     .from("posts")
-    .select(
-      "id,title,description,contact,payment,payment_currency,profession,image,type,status,created_at"
-    )
+    .select("*")
     .eq("status", "approved")
     .order("created_at", { ascending: false });
 
-  if (error) {
-    return (
-      <div className="max-w-6xl mx-auto p-6">
-        Gabim gjatë leximit të postimeve: {error.message}
-      </div>
-    );
+  const type = searchParams.type;
+  const workTime = searchParams.work_time;
+
+  if (type === "seeking" || type === "offering") {
+    query = query.eq("type", type);
   }
 
-  const posts = (data ?? []) as Post[];
-
-    if (posts.length === 0) {
-    return (
-      <div className="max-w-6xl mx-auto p-6 text-center text-gray-600">
-        Nuk ka ende postime të aprovuara.
-      </div>
-    );
+  if (workTime === "full_time" || workTime === "part_time") {
+    query = query.eq("work_time", workTime);
   }
+
+  const { data, error } = await query;
+
+  if (error || !data) {
+    console.error("Gabim duke lexuar postimet:", error);
+    return [];
+  }
+
+  return data as Post[];
+}
+
+export default async function PostsPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const posts = await getPosts(searchParams);
+
+  const activeType =
+    searchParams.type === "seeking" || searchParams.type === "offering"
+      ? searchParams.type
+      : undefined;
+
+  const activeWorkTime =
+    searchParams.work_time === "full_time" ||
+    searchParams.work_time === "part_time"
+      ? searchParams.work_time
+      : undefined;
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-2xl font-semibold mb-6">Postimet</h1>
+    <main className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
+      <div className="mx-auto max-w-5xl px-4 py-8">
+        {/* Titulli */}
+        <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">
+              Postime pune
+            </h1>
+            <p className="mt-1 text-sm text-slate-600">
+              Shfleto postimet e aprovuara. Mund të filtroni sipas llojit dhe
+              orarit të punës.
+            </p>
+          </div>
 
-      {/* Grid responsive 1 → 2 → 3 kolona */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {posts.map((p) => {
-          const desc = (p.description ?? "").trim();
-          const short =
-            desc.length > 140 ? desc.slice(0, 140).trimEnd() + "..." : desc;
-          const professionKey = p.profession ?? "Tjetër";
-          const imageSrc = PROF_TO_IMG[professionKey] || "/images/professions/other.svg";
-          return (
-            <article
-              key={p.id}
-              className="rounded-2xl border bg-white shadow-sm hover:shadow-md transition overflow-hidden"
+          <Link
+            href="/post/new"
+            className="inline-flex items-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-lg hover:opacity-90"
+          >
+            + Krijo postim
+          </Link>
+        </header>
+
+        {/* Filtrat e shpejtë */}
+        <section className="mb-6 flex flex-wrap gap-2">
+          <Link
+            href="/post"
+            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
+              !activeType && !activeWorkTime
+                ? "bg-sky-600 text-white border-sky-600"
+                : "bg-white text-slate-700 border-slate-200"
+            }`}
+          >
+            Të gjitha
+          </Link>
+
+          <Link
+            href="/post?type=seeking"
+            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
+              activeType === "seeking"
+                ? "bg-sky-600 text-white border-sky-600"
+                : "bg-white text-slate-700 border-slate-200"
+            }`}
+          >
+            Kërkoj punë
+          </Link>
+
+          <Link
+            href="/post?type=offering"
+            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
+              activeType === "offering"
+                ? "bg-sky-600 text-white border-sky-600"
+                : "bg-white text-slate-700 border-slate-200"
+            }`}
+          >
+            Ofroj punë
+          </Link>
+
+          <Link
+            href="/post?work_time=full_time"
+            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
+              activeWorkTime === "full_time"
+                ? "bg-sky-600 text-white border-sky-600"
+                : "bg-white text-slate-700 border-slate-200"
+            }`}
+          >
+            Full time
+          </Link>
+
+          <Link
+            href="/post?work_time=part_time"
+            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
+              activeWorkTime === "part_time"
+                ? "bg-sky-600 text-white border-sky-600"
+                : "bg-white text-slate-700 border-slate-200"
+            }`}
+          >
+            Part time
+          </Link>
+        </section>
+
+        {/* Lista e postimeve */}
+        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.length === 0 && (
+            <p className="text-sm text-slate-500">
+              Nuk u gjetën postime me këtë filtër. Provo filtra të tjerë.
+            </p>
+          )}
+
+          {posts.map((post) => (
+            <Link
+              key={post.id}
+              href={`/post/${post.id}`}
+              className="group text-slate-900 no-underline"
             >
-              {/* Ilustrimi sipër */}
-              <div className="relative w-full aspect-[16/9] bg-gray-50">
-                <img
-                  src={imageSrc}
-                  alt={p.profession ?? "Ikonë profesion"}
-                  className="absolute inset-0 w-full h-full object-contain p-6"
-                  loading="lazy"
-                />
-              </div>
-
-              <div className="p-4 space-y-3">
-                {/* Titulli + badge tipi */}
-                <div className="flex items-start justify-between gap-3">
-                  <h2 className="font-semibold leading-snug">{p.title}</h2>
-                  <span className="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-600">
-                    {p.type === "seeking" ? "Kërkoj" : "Ofroj"}
-                  </span>
-                </div>
-
-                {/* Përshkrim i shkurtuar */}
-                {short ? (
-                  <p className="text-sm text-gray-600">{short}</p>
-                ) : null}
-
-                {/* Kontakt si kuti */}
-                {p.contact ? (
-                  <div className="mt-2 rounded-md border border-gray-200 bg-white px-3 py-2 text-xs text-gray-900">
-                    <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
-                      Kontakt
-                    </p>
-                    <p className="mt-1 text-sm font-semibold">{p.contact}</p>
+              <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+                <div className="flex items-start gap-3">
+                  <div>
+                    <ProfessionIcon
+                      text={`${post.title} ${
+                        post.description ?? ""
+                      } ${post.profession ?? ""}`}
+                    />
                   </div>
-                ) : null}
 
-                {/* Link "Shiko më shumë" */}
-                <div className="pt-2">
-                  <a
-                    href={`/post/${p.id}`}
-                    className="text-blue-600 text-sm hover:underline"
-                  >
-                    Shiko më shumë →
-                  </a>
+                  <div className="flex flex-1 flex-col gap-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <span
+                        className={[
+                          "inline-flex items-center rounded-full px-3 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
+                          post.type === "seeking"
+                            ? "border border-cyan-200 bg-cyan-50 text-cyan-700"
+                            : "border border-indigo-200 bg-indigo-50 text-indigo-700",
+                        ].join(" ")}
+                      >
+                        {formatType(post.type)}
+                      </span>
+
+                      {post.city && (
+                        <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-0.5 text-[11px] text-slate-700">
+                          {post.city}
+                        </span>
+                      )}
+                    </div>
+
+                    <h3 className="line-clamp-2 text-[15px] font-semibold text-slate-900">
+                      {post.title}
+                    </h3>
+
+                    <div className="flex flex-wrap gap-1 text-[11px] text-slate-500">
+                      {post.profession && (
+                        <span className="mr-2">{post.profession}</span>
+                      )}
+                      {post.age && <span>Mosha: {post.age} vjeç</span>}
+                      {post.work_time && (
+                        <span>· {formatWorkTime(post.work_time)}</span>
+                      )}
+                    </div>
+
+                    <p className="line-clamp-3 text-sm text-slate-600">
+                      {post.description || "Nuk ka përshkrim të detajuar."}
+                    </p>
+
+                    <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400">
+                      <span>
+                        {new Date(post.created_at).toLocaleDateString("sq-AL")}
+                      </span>
+                      <span className="text-slate-500 group-hover:text-slate-700">
+                        Shiko detajet →
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </article>
-          );
-        })}
+              </article>
+            </Link>
+          ))}
+        </section>
       </div>
-    </div>
+    </main>
   );
 }
