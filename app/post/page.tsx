@@ -79,19 +79,29 @@ async function getPosts(searchParams: SearchParams): Promise<Post[]> {
 export default async function PostsPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  // Forma që pret Next.js 15 për searchParams
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const posts = await getPosts(searchParams);
+  // Normalizojmë në tipin tonë të thjeshtë
+  const normalized: SearchParams = {
+    type:
+      typeof searchParams?.type === "string" ? searchParams.type : undefined,
+    work_time:
+      typeof searchParams?.work_time === "string"
+        ? searchParams.work_time
+        : undefined,
+  };
+
+  const posts = await getPosts(normalized);
 
   const activeType =
-    searchParams.type === "seeking" || searchParams.type === "offering"
-      ? searchParams.type
+    normalized.type === "seeking" || normalized.type === "offering"
+      ? normalized.type
       : undefined;
 
   const activeWorkTime =
-    searchParams.work_time === "full_time" ||
-    searchParams.work_time === "part_time"
-      ? searchParams.work_time
+    normalized.work_time === "full_time" || normalized.work_time === "part_time"
+      ? normalized.work_time
       : undefined;
 
   return (
@@ -100,9 +110,7 @@ export default async function PostsPage({
         {/* Titulli */}
         <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">
-              Postime pune
-            </h1>
+            <h1 className="text-2xl font-bold tracking-tight">Postime pune</h1>
             <p className="mt-1 text-sm text-slate-600">
               Shfleto postimet e aprovuara. Mund të filtroni sipas llojit dhe
               orarit të punës.
