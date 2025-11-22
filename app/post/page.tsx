@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
-import ProfessionIcon from "../../components/ProfessionIcon";
+import ProfessionIcon from "../components/ProfessionIcon";
 
-
-
+// -------------------------------------------------------
+// Lloji i Postimit
+// -------------------------------------------------------
 type Post = {
   id: string;
   type: "seeking" | "offering";
@@ -18,14 +19,15 @@ type Post = {
   work_time?: "full_time" | "part_time" | null;
 };
 
+// -------------------------------------------------------
+// Supabase anon client
+// -------------------------------------------------------
 function getSupabaseAnon() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !key) {
-    throw new Error(
-      "Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY"
-    );
+    throw new Error("Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY");
   }
 
   return createClient(url, key);
@@ -43,11 +45,21 @@ function formatWorkTime(work?: Post["work_time"]) {
   return "";
 }
 
-async function getPosts(params: any): Promise<Post[]> {
-  const supabase = getSupabaseAnon();
+// -------------------------------------------------------
+// Filtrat (për Next.js 15 searchParams)
+// -------------------------------------------------------
+type PageProps = {
+  searchParams?: {
+    type?: string | string[];
+    work_time?: string | string[];
+  };
+};
 
-  const type = params?.type as string | undefined;
-  const workTime = params?.work_time as string | undefined;
+// -------------------------------------------------------
+// Leximi i postimeve nga Supabase me filtra
+// -------------------------------------------------------
+async function getPosts(filters: { type?: string; work_time?: string }): Promise<Post[]> {
+  const supabase = getSupabaseAnon();
 
   let query = supabase
     .from("posts")
@@ -55,12 +67,12 @@ async function getPosts(params: any): Promise<Post[]> {
     .eq("status", "approved")
     .order("created_at", { ascending: false });
 
-  if (type === "seeking" || type === "offering") {
-    query = query.eq("type", type);
+  if (filters.type === "seeking" || filters.type === "offering") {
+    query = query.eq("type", filters.type);
   }
 
-  if (workTime === "full_time" || workTime === "part_time") {
-    query = query.eq("work_time", workTime);
+  if (filters.work_time === "full_time" || filters.work_time === "part_time") {
+    query = query.eq("work_time", filters.work_time);
   }
 
   const { data, error } = await query;
@@ -73,34 +85,50 @@ async function getPosts(params: any): Promise<Post[]> {
   return data as Post[];
 }
 
-export default async function PostsPage(props: any) {
-  // Nxjerrim searchParams nga props dhe, nëse është Promise, bëjmë await.
-  const raw = props?.searchParams;
-  const params =
-    raw && typeof raw.then === "function" ? await raw : raw ?? {};
+// -------------------------------------------------------
+// FAQJA KRYESORE E LISTËS SË POSTIMEVE
+// -------------------------------------------------------
+export default async function PostsPage({ searchParams }: PageProps) {
+  const params = searchParams ?? {};
 
-  const posts = await getPosts(params);
+  const typeParam =
+    typeof params.type === "string"
+      ? params.type
+      : Array.isArray(params.type)
+      ? params.type[0]
+      : undefined;
+
+  const workTimeParam =
+    typeof params.work_time === "string"
+      ? params.work_time
+      : Array.isArray(params.work_time)
+      ? params.work_time[0]
+      : undefined;
+
+  const posts = await getPosts({
+    type: typeParam,
+    work_time: workTimeParam,
+  });
 
   const activeType =
-    params?.type === "seeking" || params?.type === "offering"
-      ? (params.type as string)
-      : undefined;
+    typeParam === "seeking" || typeParam === "offering" ? typeParam : undefined;
 
   const activeWorkTime =
-    params?.work_time === "full_time" || params?.work_time === "part_time"
-      ? (params.work_time as string)
-      : undefined;
+    workTimeParam === "full_time" || workTimeParam === "part_time" ? workTimeParam : undefined;
 
+  // -------------------------------------------------------
+  // RENDER
+  // -------------------------------------------------------
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
       <div className="mx-auto max-w-5xl px-4 py-8">
-        {/* Titulli */}
+        
+        {/* TITULLI */}
         <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Postime pune</h1>
             <p className="mt-1 text-sm text-slate-600">
-              Shfleto postimet e aprovuara. Mund të filtroni sipas llojit dhe
-              orarit të punës.
+              Shfleto postimet e aprovuara. Filtroni sipas llojit dhe orarit të punës.
             </p>
           </div>
 
@@ -112,7 +140,7 @@ export default async function PostsPage(props: any) {
           </Link>
         </header>
 
-        {/* Filtrat e shpejtë */}
+        {/* FILTRAT */}
         <section className="mb-6 flex flex-wrap gap-2">
           <Link
             href="/post"
@@ -170,11 +198,11 @@ export default async function PostsPage(props: any) {
           </Link>
         </section>
 
-        {/* Lista e postimeve */}
+        {/* LISTA */}
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {posts.length === 0 && (
             <p className="text-sm text-slate-500">
-              Nuk u gjetën postime me këtë filtër. Provo filtra të tjerë.
+              Nuk u gjetën postime. Provo filtra të tjerë.
             </p>
           )}
 
@@ -185,14 +213,11 @@ export default async function PostsPage(props: any) {
               className="group text-slate-900 no-underline"
             >
               <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+
                 <div className="flex items-start gap-3">
-                  <div>
-                    <ProfessionIcon
-                      text={`${post.title} ${
-                        post.description ?? ""
-                      } ${post.profession ?? ""}`}
-                    />
-                  </div>
+                  <ProfessionIcon
+                    text={`${post.title} ${post.description ?? ""} ${post.profession ?? ""}`}
+                  />
 
                   <div className="flex flex-1 flex-col gap-2">
                     <div className="flex items-center justify-between gap-2">
@@ -214,18 +239,12 @@ export default async function PostsPage(props: any) {
                       )}
                     </div>
 
-                    <h3 className="line-clamp-2 text-[15px] font-semibold text-slate-900">
-                      {post.title}
-                    </h3>
+                    <h3 className="line-clamp-2 text-[15px] font-semibold">{post.title}</h3>
 
                     <div className="flex flex-wrap gap-1 text-[11px] text-slate-500">
-                      {post.profession && (
-                        <span className="mr-2">{post.profession}</span>
-                      )}
+                      {post.profession && <span>{post.profession}</span>}
                       {post.age && <span>Mosha: {post.age} vjeç</span>}
-                      {post.work_time && (
-                        <span>· {formatWorkTime(post.work_time)}</span>
-                      )}
+                      {post.work_time && <span>· {formatWorkTime(post.work_time)}</span>}
                     </div>
 
                     <p className="line-clamp-3 text-sm text-slate-600">
@@ -233,9 +252,7 @@ export default async function PostsPage(props: any) {
                     </p>
 
                     <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400">
-                      <span>
-                        {new Date(post.created_at).toLocaleDateString("sq-AL")}
-                      </span>
+                      <span>{new Date(post.created_at).toLocaleDateString("sq-AL")}</span>
                       <span className="text-slate-500 group-hover:text-slate-700">
                         Shiko detajet →
                       </span>
