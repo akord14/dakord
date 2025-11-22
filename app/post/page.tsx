@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
-import ProfessionIcon from "../../components/ProfessionIcon";
+import ProfessionIcon from "../components/ProfessionIcon";
 
 type Post = {
   id: string;
@@ -41,12 +41,14 @@ function formatWorkTime(work?: Post["work_time"]) {
   return "";
 }
 
-type SearchParams = {
-  type?: string;
-  work_time?: string;
-};
+// Këtu nuk përdorim më tipin tonë SearchParams që po
+// konfliktonte me Next.js. Përdorim një objekt të thjeshtë.
+async function getPosts(rawParams: any): Promise<Post[]> {
+  const params = (rawParams ?? {}) as { [key: string]: any };
 
-async function getPosts(searchParams: SearchParams): Promise<Post[]> {
+  const type = params.type as string | undefined;
+  const workTime = params.work_time as string | undefined;
+
   const supabase = getSupabaseAnon();
 
   let query = supabase
@@ -54,9 +56,6 @@ async function getPosts(searchParams: SearchParams): Promise<Post[]> {
     .select("*")
     .eq("status", "approved")
     .order("created_at", { ascending: false });
-
-  const type = searchParams.type;
-  const workTime = searchParams.work_time;
 
   if (type === "seeking" || type === "offering") {
     query = query.eq("type", type);
@@ -76,32 +75,19 @@ async function getPosts(searchParams: SearchParams): Promise<Post[]> {
   return data as Post[];
 }
 
-export default async function PostsPage({
-  searchParams,
-}: {
-  // Forma që pret Next.js 15 për searchParams
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-  // Normalizojmë në tipin tonë të thjeshtë
-  const normalized: SearchParams = {
-    type:
-      typeof searchParams?.type === "string" ? searchParams.type : undefined,
-    work_time:
-      typeof searchParams?.work_time === "string"
-        ? searchParams.work_time
-        : undefined,
-  };
-
-  const posts = await getPosts(normalized);
+export default async function PostsPage({ searchParams }: any) {
+  // Në Next 15 searchParams vjen si Promise, prandaj bëjmë await.
+  const params = await searchParams;
+  const posts = await getPosts(params);
 
   const activeType =
-    normalized.type === "seeking" || normalized.type === "offering"
-      ? normalized.type
+    params?.type === "seeking" || params?.type === "offering"
+      ? (params.type as string)
       : undefined;
 
   const activeWorkTime =
-    normalized.work_time === "full_time" || normalized.work_time === "part_time"
-      ? normalized.work_time
+    params?.work_time === "full_time" || params?.work_time === "part_time"
+      ? (params.work_time as string)
       : undefined;
 
   return (
