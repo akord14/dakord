@@ -2,10 +2,26 @@ import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import ProfessionIcon from "../../components/ProfessionIcon";
 
+// ------------------------------
+// FORMATIME – e vendosim këtu lart që të mos ketë më gabime
+// ------------------------------
 
-// --------------------
-// Tipi i Postimeve
-// --------------------
+function formatType(type?: string) {
+  if (type === "seeking") return "Kërkoj punë";
+  if (type === "offering") return "Ofroj punë";
+  return "";
+}
+
+function formatWorkTime(work?: string) {
+  if (work === "full_time") return "Full time";
+  if (work === "part_time") return "Part time";
+  return "";
+}
+
+// ------------------------------
+// TIPI I POSTIMEVE
+// ------------------------------
+
 type Post = {
   id: string;
   type: "seeking" | "offering";
@@ -20,48 +36,30 @@ type Post = {
   work_time?: "full_time" | "part_time" | null;
 };
 
-// --------------------
-// Supabase Client
-// --------------------
+// ------------------------------
+// SUPABASE CLIENT
+// ------------------------------
+
 function getSupabaseAnon() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !key) {
-    throw new Error(
-      "Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY"
-    );
+    throw new Error("Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY");
   }
 
   return createClient(url, key);
 }
 
-// --------------------
-// Formatimet
-// --------------------
-function formatType(type: Post["type"]) {
-  if (type === "seeking") return "Kërkoj punë";
-  if (type === "offering") return "Ofroj punë";
-  return "";
-}
+// ------------------------------
+// FUNKSIONI getPosts()
+// ------------------------------
 
-function formatWorkTime(work?: Post["work_time"]) {
-  if (work === "full_time") return "Full time";
-  if (work === "part_time") return "Part time";
-  return "";
-}
-
-// --------------------
-// Filtrat
-// --------------------
 type SearchFilters = {
   type?: string;
   work_time?: string;
 };
 
-// --------------------
-// FUNKSIONI KRYESOR getPosts()
-// --------------------
 async function getPosts(filters: SearchFilters): Promise<Post[]> {
   const supabase = getSupabaseAnon();
 
@@ -89,17 +87,19 @@ async function getPosts(filters: SearchFilters): Promise<Post[]> {
   return data as Post[];
 }
 
-// --------------------
-// PROPS për këtë faqe (emër tjetër, JO PageProps)
-// --------------------
-type PostListPageProps = {
-  searchParams?: { [key: string]: string | string[] | undefined };
+// ------------------------------
+// PAGE PROPS – Next 15 format
+// ------------------------------
+
+type PageProps = {
+  searchParams?: Record<string, string | string[] | undefined>;
 };
 
-// --------------------
-// Page.tsx (LISTA E POSTEVE)
-// --------------------
-export default async function PostsPage({ searchParams }: PostListPageProps) {
+// ------------------------------
+// PAGE – LISTA E POSTIMEVE
+// ------------------------------
+
+export default async function PostsPage({ searchParams }: PageProps) {
   const params = searchParams ?? {};
 
   const typeParam =
@@ -132,12 +132,12 @@ export default async function PostsPage({ searchParams }: PostListPageProps) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
       <div className="mx-auto max-w-5xl px-4 py-8">
+        {/* HEADER */}
         <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Postime pune</h1>
             <p className="mt-1 text-sm text-slate-600">
-              Shfleto postimet e aprovuara. Mund të filtroni sipas llojit dhe
-              orarit të punës.
+              Shfleto postimet e aprovuara. Mund të filtroni sipas llojit dhe orarit të punës.
             </p>
           </div>
 
@@ -149,7 +149,7 @@ export default async function PostsPage({ searchParams }: PostListPageProps) {
           </Link>
         </header>
 
-        {/* Filtrat */}
+        {/* FILTRAT */}
         <section className="mb-6 flex flex-wrap gap-2">
           <Link
             href="/post"
@@ -207,7 +207,7 @@ export default async function PostsPage({ searchParams }: PostListPageProps) {
           </Link>
         </section>
 
-        {/* Lista e posteve */}
+        {/* LISTA E POSTEVE */}
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {posts.length === 0 && (
             <p className="text-sm text-slate-500">
@@ -216,17 +216,11 @@ export default async function PostsPage({ searchParams }: PostListPageProps) {
           )}
 
           {posts.map((post) => (
-            <Link
-              key={post.id}
-              href={`/post/${post.id}`}
-              className="group text-slate-900 no-underline"
-            >
+            <Link key={post.id} href={`/post/${post.id}`} className="group text-slate-900 no-underline">
               <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
                 <div className="flex items-start gap-3">
                   <ProfessionIcon
-                    text={`${post.title} ${
-                      post.description ?? ""
-                    } ${post.profession ?? ""}`}
+                    text={`${post.title} ${post.description ?? ""} ${post.profession ?? ""}`}
                   />
 
                   <div className="flex flex-1 flex-col gap-2">
@@ -253,13 +247,9 @@ export default async function PostsPage({ searchParams }: PostListPageProps) {
                     </h3>
 
                     <div className="flex flex-wrap gap-1 text-[11px] text-slate-500">
-                      {post.profession && (
-                        <span className="mr-2">{post.profession}</span>
-                      )}
+                      {post.profession && <span className="mr-2">{post.profession}</span>}
                       {post.age && <span>Mosha: {post.age} vjeç</span>}
-                      {post.work_time && (
-                        <span>· {formatWorkTime(post.work_time)}</span>
-                      )}
+                      {post.work_time && <span>· {formatWorkTime(post.work_time)}</span>}
                     </div>
 
                     <p className="line-clamp-3 text-sm text-slate-600">
@@ -267,12 +257,8 @@ export default async function PostsPage({ searchParams }: PostListPageProps) {
                     </p>
 
                     <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400">
-                      <span>
-                        {new Date(post.created_at).toLocaleDateString("sq-AL")}
-                      </span>
-                      <span className="text-slate-500 group-hover:text-slate-700">
-                        Shiko detajet →
-                      </span>
+                      <span>{new Date(post.created_at).toLocaleDateString("sq-AL")}</span>
+                      <span className="text-slate-500 group-hover:text-slate-700">Shiko detajet →</span>
                     </div>
                   </div>
                 </div>
