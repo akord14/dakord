@@ -34,28 +34,16 @@ function getSupabaseAnon() {
 }
 
 // --------------------
-// Formatimet
-// --------------------
-function formatType(type: Post["type"]) {
-  return type === "seeking" ? "Kërkoj punë" : "Ofroj punë";
-}
-
-function formatWorkTime(work?: Post["work_time"]) {
-  return work === "full_time" ? "Full time" : work === "part_time" ? "Part time" : "";
-}
-
-// --------------------
 // Filtrat
 // --------------------
-type SearchFilters = {
-  type?: string;
-  work_time?: string;
+type SearchParams = {
+  [key: string]: string | string[] | undefined;
 };
 
 // --------------------
 // getPosts()
 // --------------------
-async function getPosts(filters: SearchFilters): Promise<Post[]> {
+async function getPosts(filters: { type?: string; work_time?: string }): Promise<Post[]> {
   const supabase = getSupabaseAnon();
 
   let query = supabase
@@ -83,12 +71,12 @@ async function getPosts(filters: SearchFilters): Promise<Post[]> {
 }
 
 // --------------------
-// PAGE – LISTA E POSTEVE (VERSIONI 100% i saktë për Next.js 15)
+// PAGE – LISTA E POSTEVE
 // --------------------
 export default async function PostsPage({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: SearchParams;
 }) {
   const params = searchParams ?? {};
 
@@ -122,8 +110,6 @@ export default async function PostsPage({
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
       <div className="mx-auto max-w-5xl px-4 py-8">
-
-        {/* HEADER */}
         <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Postime pune</h1>
@@ -140,7 +126,6 @@ export default async function PostsPage({
           </Link>
         </header>
 
-        {/* FILTRAT */}
         <section className="mb-6 flex flex-wrap gap-2">
           <Link
             href="/post"
@@ -198,7 +183,6 @@ export default async function PostsPage({
           </Link>
         </section>
 
-        {/* LISTA E POSTEVE */}
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {posts.length === 0 && (
             <p className="text-sm text-slate-500">
@@ -207,56 +191,16 @@ export default async function PostsPage({
           )}
 
           {posts.map((post) => (
-            <Link
-              key={post.id}
-              href={`/post/${post.id}`}
-              className="group text-slate-900 no-underline"
-            >
+            <Link key={post.id} href={`/post/${post.id}`} className="group text-slate-900 no-underline">
               <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
                 <div className="flex items-start gap-3">
                   <ProfessionIcon
                     text={`${post.title} ${post.description ?? ""} ${post.profession ?? ""}`}
                   />
-
                   <div className="flex flex-1 flex-col gap-2">
-                    <div className="flex items-center justify-between gap-2">
-                      <span
-                        className={`inline-flex items-center rounded-full px-3 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${
-                          post.type === "seeking"
-                            ? "border border-cyan-200 bg-cyan-50 text-cyan-700"
-                            : "border border-indigo-200 bg-indigo-50 text-indigo-700"
-                        }`}
-                      >
-                        {formatType(post.type)}
-                      </span>
-
-                      {post.city && (
-                        <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-0.5 text-[11px] text-slate-700">
-                          {post.city}
-                        </span>
-                      )}
-                    </div>
-
                     <h3 className="line-clamp-2 text-[15px] font-semibold text-slate-900">
                       {post.title}
                     </h3>
-
-                    <div className="flex flex-wrap gap-1 text-[11px] text-slate-500">
-                      {post.profession && <span className="mr-2">{post.profession}</span>}
-                      {post.age && <span>Mosha: {post.age} vjeç</span>}
-                      {post.work_time && <span>· {formatWorkTime(post.work_time)}</span>}
-                    </div>
-
-                    <p className="line-clamp-3 text-sm text-slate-600">
-                      {post.description || "Nuk ka përshkrim të detajuar."}
-                    </p>
-
-                    <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400">
-                      <span>{new Date(post.created_at).toLocaleDateString("sq-AL")}</span>
-                      <span className="text-slate-500 group-hover:text-slate-700">
-                        Shiko detajet →
-                      </span>
-                    </div>
                   </div>
                 </div>
               </article>
