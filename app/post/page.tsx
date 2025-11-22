@@ -41,15 +41,11 @@ function formatWorkTime(work?: Post["work_time"]) {
   return "";
 }
 
-// Këtu nuk përdorim më tipin tonë SearchParams që po
-// konfliktonte me Next.js. Përdorim një objekt të thjeshtë.
-async function getPosts(rawParams: any): Promise<Post[]> {
-  const params = (rawParams ?? {}) as { [key: string]: any };
-
-  const type = params.type as string | undefined;
-  const workTime = params.work_time as string | undefined;
-
+async function getPosts(params: any): Promise<Post[]> {
   const supabase = getSupabaseAnon();
+
+  const type = params?.type as string | undefined;
+  const workTime = params?.work_time as string | undefined;
 
   let query = supabase
     .from("posts")
@@ -75,9 +71,12 @@ async function getPosts(rawParams: any): Promise<Post[]> {
   return data as Post[];
 }
 
-export default async function PostsPage({ searchParams }: any) {
-  // Në Next 15 searchParams vjen si Promise, prandaj bëjmë await.
-  const params = await searchParams;
+export default async function PostsPage(props: any) {
+  // Nxjerrim searchParams nga props dhe, nëse është Promise, bëjmë await.
+  const raw = props?.searchParams;
+  const params =
+    raw && typeof raw.then === "function" ? await raw : raw ?? {};
+
   const posts = await getPosts(params);
 
   const activeType =
