@@ -92,8 +92,9 @@ async function getPosts(filters: SearchFilters): Promise<Post[]> {
 // ------------------------------
 
 interface PageProps {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Record<string, string | string[] | undefined>;
 }
+
 
 
 // ------------------------------
