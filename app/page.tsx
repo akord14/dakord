@@ -75,11 +75,10 @@ export default async function HomePage() {
         {/* HERO */}
         <section className="mb-8 grid gap-6 md:grid-cols-2 md:items-center">
           <div>
-            <h1 className="mb-3 text-2xl font-semibold leading-snug text-slate-900 sm:text-3xl">
-              Gjej njerëzit e duhur për punë.
-              <br />
-              Ose gjej punën që të përshtatet.
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-900 leading-tight md:text-4xl">
+  Puna e duhur, në kohën e duhur
+</h1>
+
             <p className="mb-5 text-sm text-slate-600 sm:text-[15px]">
               Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë,
               me fokus te thjeshtësia, qartësia dhe respekti për kohën tënde.
