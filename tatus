@@ -1,0 +1,15 @@
+[33m214e38d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Add full create-post form to /post/new
+[33me01fcec[m Fix ProfessionIcon imports correct paths
+[33m26fc91b[m Fix new post page
+[33m6de57af[m Fix ProfessionIcon import path
+[33ma3f32ff[m Fix import path for ProfessionIcon
+[33m2316e8c[m Fix ProfessionIcon path
+[33m584a9fe[m Update ProfessionIcon import and fix build
+[33mcab6c93[m Fix ProfessionIcon import path
+[33md85f86f[m Fix posts page filters for Next 15
+[33mead3358[m Shto moshen dhe orarin e punes te krijimi i postimit
+[33mc710b7f[m updated new post page - responsive
+[33m9d28442[m Updated icons + professions + contact UI
+[33m047cb64[m New homepage, post form & admin moderation panel
+[33m4c9bafa[m Updated professions icons + success page + post cards
+[33mefb2618[m Clean initial commit (no node_modules)
