@@ -75,9 +75,10 @@ export default async function HomePage() {
         {/* HERO */}
         <section className="mb-8 grid gap-6 md:grid-cols-2 md:items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 leading-tight md:text-4xl">
+            <h1 className="text-2xl font-bold text-gray-900 leading-snug md:text-4xl">
   Puna e duhur, në kohën e duhur
 </h1>
+
 
             <p className="mb-5 text-sm text-slate-600 sm:text-[15px]">
               Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë,
