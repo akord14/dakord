@@ -58,8 +58,9 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
       <div className="mx-auto max-w-5xl px-4 py-6 md:py-10">
-        {/* HEADER */}
-        <header className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+
+        {/* HEADER – LOGO MAJTAS / BUTON DJATHTAS */}
+        <header className="mb-8 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Image
               src="/akord-icon.png"
@@ -115,7 +116,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Kuti anësore */}
+          {/* BOKSI ANËSOR */}
           <div className="bg-[#0A1A2F] text-white p-5 rounded-2xl shadow-lg">
             <p className="mb-3 text-sm/5 opacity-90">Përdor Akord.al për:</p>
             <ul className="mb-3 grid list-none gap-2 text-sm">
@@ -143,12 +144,11 @@ export default async function HomePage() {
           </Link>
         </section>
 
-        {/* LISTA E POSTIMEVE */}
+        {/* LISTA */}
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {latestPosts.length === 0 && (
             <p className="text-sm text-slate-500">
-              Nuk ka ende postime të aprovuara. Bëhu i pari që krijon një
-              postim.
+              Nuk ka ende postime të aprovuara. Bëhu i pari që krijon një postim.
             </p>
           )}
 
@@ -160,13 +160,11 @@ export default async function HomePage() {
             >
               <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
                 <div className="flex items-start gap-3">
-                  <div>
-                    <ProfessionIcon
-                      text={`${post.title} ${
-                        post.description ?? ""
-                      } ${post.profession ?? ""}`}
-                    />
-                  </div>
+                  <ProfessionIcon
+                    text={`${post.title} ${post.description ?? ""} ${
+                      post.profession ?? ""
+                    }`}
+                  />
 
                   <div className="flex flex-1 flex-col gap-2">
                     <div className="flex items-center justify-between gap-2">
@@ -218,7 +216,7 @@ export default async function HomePage() {
         </section>
       </div>
 
-      {/* Butoni WhatsApp Suport */}
+      {/* WhatsApp */}
       <a
         href="https://wa.me/355695111179"
         target="_blank"
