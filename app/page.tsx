@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
 import ProfessionIcon from "../components/ProfessionIcon";
 
@@ -60,7 +61,12 @@ export default async function HomePage() {
         {/* HEADER */}
         <header className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <Link href="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-sky-400 to-sky-500" />
+            <Image
+              src="/akord-icon.png"
+              width={40}
+              height={40}
+              alt="Akord.al"
+            />
             <span className="text-xl font-bold tracking-tight">Akord.al</span>
           </Link>
 
@@ -72,56 +78,56 @@ export default async function HomePage() {
           </Link>
         </header>
 
-             {/* HERO */}
-      <section className="mb-8 grid gap-6 md:grid-cols-2 md:items-center">
-        <div>
-          <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 leading-snug">
-            Puna e duhur, në kohën e duhur
-          </h1>
+        {/* HERO */}
+        <section className="mb-8 grid gap-6 md:grid-cols-2 md:items-center">
+          <div>
+            <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 leading-snug">
+              Puna e duhur, në kohën e duhur
+            </h1>
 
-          <p className="mt-3 text-base text-slate-600 leading-relaxed">
-            Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë, me fokus te
-            thjeshtësia, qartësia dhe respekti për kohën tënde.
-          </p>
+            <p className="mt-3 text-base text-slate-600 leading-relaxed">
+              Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë, me
+              fokus te thjeshtësia, qartësia dhe respekti për kohën tënde.
+            </p>
 
-          <div className="flex flex-col gap-3 mt-5">
-            <Link
-              href="/post/new"
-              className="inline-flex items-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90"
-            >
-              KRIJO POSTIMIN TËND
-            </Link>
-
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-3 mt-5">
               <Link
-                href="/post?type=seeking"
-                className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
+                href="/post/new"
+                className="inline-flex items-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90"
               >
-                KËRKOJ PUNË
+                KRIJO POSTIMIN TËND
               </Link>
-              <Link
-                href="/post?type=offering"
-                className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
-              >
-                OFROJ PUNË
-              </Link>
+
+              <div className="flex gap-3">
+                <Link
+                  href="/post?type=seeking"
+                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
+                >
+                  KËRKOJ PUNË
+                </Link>
+                <Link
+                  href="/post?type=offering"
+                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
+                >
+                  OFROJ PUNË
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Kuti anësore */}
-        <div className="bg-[#0A1A2F] text-white p-5 rounded-2xl shadow-lg">
-          <p className="mb-3 text-sm/5 opacity-90">Përdor Akord.al për:</p>
-          <ul className="mb-3 grid list-none gap-2 text-sm">
-            <li>• Punë të dyta dhe punë me kohë të pjesshme</li>
-            <li>• Punë të shpejta në lagjen tënde</li>
-            <li>• Punëtorë për biznesin tënd lokal</li>
-          </ul>
-          <div className="border-t border-slate-600/50 pt-3 text-xs text-slate-300">
-            Çdo postim miratohet nga admini përpara se të shfaqet publikisht.
+          {/* Kuti anësore */}
+          <div className="bg-[#0A1A2F] text-white p-5 rounded-2xl shadow-lg">
+            <p className="mb-3 text-sm/5 opacity-90">Përdor Akord.al për:</p>
+            <ul className="mb-3 grid list-none gap-2 text-sm">
+              <li>• Punë të dyta dhe punë me kohë të pjesshme</li>
+              <li>• Punë të shpejta në lagjen tënde</li>
+              <li>• Punëtorë për biznesin tënd lokal</li>
+            </ul>
+            <div className="border-t border-slate-600/50 pt-3 text-xs text-slate-300">
+              Çdo postim miratohet nga admini përpara se të shfaqet publikisht.
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
         {/* HEADLINE POSTIME */}
         <section className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -141,7 +147,8 @@ export default async function HomePage() {
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {latestPosts.length === 0 && (
             <p className="text-sm text-slate-500">
-              Nuk ka ende postime të aprovuara. Bëhu i pari që krijon një postim.
+              Nuk ka ende postime të aprovuara. Bëhu i pari që krijon një
+              postim.
             </p>
           )}
 
