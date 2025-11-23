@@ -106,8 +106,8 @@ export default function NewPostPage() {
   const [fullName, setFullName] = useState("");
   const [profession, setProfession] = useState("");
   const [experience, setExperience] = useState<"me" | "pa" | "">("");
-  const [age, setAge] = useState<string>(""); // ruajmë si string në formë
-  const [workTime, setWorkTime] = useState<WorkTime>(""); // full_time / part_time
+  const [age, setAge] = useState<string>("");
+  const [workTime, setWorkTime] = useState<WorkTime>("");
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -189,6 +189,7 @@ export default function NewPostPage() {
           status: "pending",
           age: ageNumber,
           work_time: workTime || null,
+          city,
         },
       ]);
 
@@ -232,6 +233,21 @@ export default function NewPostPage() {
           padding: "24px 16px 60px",
         }}
       >
+
+        {/* BUTONI KTHEHU MBRAPA */}
+        <a
+          href="/"
+          style={{
+            display: "inline-block",
+            marginBottom: 12,
+            fontSize: 14,
+            color: "#2563eb",
+            textDecoration: "none",
+          }}
+        >
+          ← Kthehu mbrapa
+        </a>
+
         <h1 style={{ fontSize: 26, fontWeight: 700, marginBottom: 8 }}>
           Krijo postimin tënd
         </h1>
@@ -342,7 +358,8 @@ export default function NewPostPage() {
                       experience === "me"
                         ? "2px solid #0ea5e9"
                         : "1px solid #d1d5db",
-                    background: experience === "me" ? "#e0f2fe" : "white",
+                    background:
+                      experience === "me" ? "#e0f2fe" : "white",
                     cursor: "pointer",
                   }}
                 >
@@ -360,7 +377,8 @@ export default function NewPostPage() {
                       experience === "pa"
                         ? "2px solid #0ea5e9"
                         : "1px solid #d1d5db",
-                    background: experience === "pa" ? "#e0f2fe" : "white",
+                    background:
+                      experience === "pa" ? "#e0f2fe" : "white",
                     cursor: "pointer",
                   }}
                 >
@@ -549,7 +567,7 @@ export default function NewPostPage() {
               style={{ display: "flex", alignItems: "center", gap: 6 }}
             >
               <input
-                type="checkbox"
+                type="checkbox" 
                 checked={salaryApprox}
                 onChange={(e) => setSalaryApprox(e.target.checked)}
               />
@@ -596,11 +614,11 @@ export default function NewPostPage() {
                 marginTop: 4,
               }}
             >
-              Nëse nuk ngarkon foto, përdoret automatikisht një ikon profesionit.
+              Nëse nuk ngarkon foto, përdoret automatikisht një ikonë sipas profesionit.
             </p>
           </div>
 
-          {/* ERROR / SUCCESS */}
+          {/* ERROR */}
           {errorMsg && (
             <div
               style={{
@@ -615,6 +633,7 @@ export default function NewPostPage() {
             </div>
           )}
 
+          {/* SUCCESS */}
           {successMsg && (
             <div
               style={{
