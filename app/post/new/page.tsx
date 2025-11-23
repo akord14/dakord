@@ -175,32 +175,39 @@ export default function NewPostPage() {
     }
 
     // --------------------------------------------------
-    // FOTO → Supabase Storage (bucket: post-images)
-    // --------------------------------------------------
-    const supabase = getSupabaseAnon();
-    let imageUrl: string | null = null;
+// FOTO → Supabase Storage (bucket: post-images)
+// --------------------------------------------------
+const supabase = getSupabaseAnon();
+let imageUrl: string | null = null;
 
-    if (file) {
-      const ext = file.name.split(".").pop() || "jpg";
-      const safeName = file.name.replace(/\s+/g, "-").toLowerCase();
-      const filePath = `${Date.now()}-${safeName}.${ext}`;
+if (file) {
+  const ext = file.name.split(".").pop() || "jpg";
 
-      const { error: uploadError } = await supabase.storage
-        .from("post-images")
-        .upload(filePath, file);
+  const base = file.name.replace(/\.[^/.]+$/, ""); // heq .png / .jpg
+  const safeName = base.replace(/\s+/g, "-").toLowerCase();
 
-      if (uploadError) {
-        console.error(uploadError);
-        setErrorMsg("Fotoja nuk u ngarkua. Provo përsëri pa foto ose më vonë.");
-        return;
-      }
+  const filePath = `${Date.now()}-${safeName}.${ext}`;
 
-      const { data: publicData } = supabase.storage
-        .from("post-images")
-        .getPublicUrl(filePath);
+  const { error: uploadError } = await supabase.storage
+    .from("post-images")
+    .upload(filePath, file, {
+      cacheControl: "3600",
+      upsert: false,
+    });
 
-      imageUrl = publicData?.publicUrl ?? null;
-    }
+  if (uploadError) {
+    console.error(uploadError);
+    setErrorMsg("Fotoja nuk u ngarkua. Provo përsëri pa foto ose më vonë.");
+    return;
+  }
+
+  const { data: publicData } = supabase.storage
+    .from("post-images")
+    .getPublicUrl(filePath);
+
+  imageUrl = publicData.publicUrl;
+}
+
 
     // --------------------------------------------------
     // Kontaktet
