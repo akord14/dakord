@@ -90,7 +90,6 @@ async function getPosts(filters: SearchFilters): Promise<Post[]> {
 
 // --------------------
 // PAGE – LISTA E POSTEVE
-// ❗ VËRE: props është ANY – s’ka më PageProps, SearchParams etj
 // --------------------
 export default async function PostsPage(props: any) {
   const searchParams = props?.searchParams ?? {};
@@ -125,13 +124,13 @@ export default async function PostsPage(props: any) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
       <div className="mx-auto max-w-5xl px-4 py-8">
+
         {/* HEADER */}
         <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Postime pune</h1>
             <p className="mt-1 text-sm text-slate-600">
-              Shfleto postimet e aprovuara. Mund të filtroni sipas llojit dhe
-              orarit të punës.
+              Shfleto postimet e aprovuara. Mund të filtroni sipas llojit dhe orarit të punës.
             </p>
           </div>
 
@@ -143,62 +142,105 @@ export default async function PostsPage(props: any) {
           </Link>
         </header>
 
-        {/* FILTRAT */}
+        {/* FILTRAT – STIL I RI */}
         <section className="mb-6 flex flex-wrap gap-2">
+
+          {/* Të gjitha */}
           <Link
             href="/post"
-            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
-              !activeType && !activeWorkTime
-                ? "bg-sky-600 text-white border-sky-600"
-                : "bg-white text-slate-700 border-slate-200"
-            }`}
+            className="inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium shadow-sm"
+            style={{
+              background:
+                !activeType && !activeWorkTime
+                  ? "linear-gradient(135deg, #a5d8ff, #cfe8ff)"
+                  : "linear-gradient(135deg, #e0f2ff, #f8fbff)",
+              border:
+                !activeType && !activeWorkTime
+                  ? "1px solid #60a5fa"
+                  : "1px solid #dbeafe",
+              color:
+                !activeType && !activeWorkTime ? "#ffffff" : "#1e3a8a",
+            }}
           >
             Të gjitha
           </Link>
 
+          {/* Kërkoj punë */}
           <Link
             href="/post?type=seeking"
-            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
-              activeType === "seeking"
-                ? "bg-sky-600 text-white border-sky-600"
-                : "bg-white text-slate-700 border-slate-200"
-            }`}
+            className="inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium shadow-sm"
+            style={{
+              background:
+                activeType === "seeking"
+                  ? "linear-gradient(135deg, #a5d8ff, #cfe8ff)"
+                  : "linear-gradient(135deg, #e0f2ff, #f8fbff)",
+              border:
+                activeType === "seeking"
+                  ? "1px solid #60a5fa"
+                  : "1px solid #dbeafe",
+              color: activeType === "seeking" ? "#ffffff" : "#1e3a8a",
+            }}
           >
             Kërkoj punë
           </Link>
 
+          {/* Ofroj punë */}
           <Link
             href="/post?type=offering"
-            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
-              activeType === "offering"
-                ? "bg-sky-600 text-white border-sky-600"
-                : "bg-white text-slate-700 border-slate-200"
-            }`}
+            className="inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium shadow-sm"
+            style={{
+              background:
+                activeType === "offering"
+                  ? "linear-gradient(135deg, #a5d8ff, #cfe8ff)"
+                  : "linear-gradient(135deg, #e0f2ff, #f8fbff)",
+              border:
+                activeType === "offering"
+                  ? "1px solid #60a5fa"
+                  : "1px solid #dbeafe",
+              color: activeType === "offering" ? "#ffffff" : "#1e3a8a",
+            }}
           >
             Ofroj punë
           </Link>
 
+          {/* Full time */}
           <Link
             href="/post?work_time=full_time"
-            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
-              activeWorkTime === "full_time"
-                ? "bg-sky-600 text-white border-sky-600"
-                : "bg-white text-slate-700 border-slate-200"
-            }`}
+            className="inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium shadow-sm"
+            style={{
+              background:
+                activeWorkTime === "full_time"
+                  ? "linear-gradient(135deg, #a5d8ff, #cfe8ff)"
+                  : "linear-gradient(135deg, #e0f2ff, #f8fbff)",
+              border:
+                activeWorkTime === "full_time"
+                  ? "1px solid #60a5fa"
+                  : "1px solid #dbeafe",
+              color: activeWorkTime === "full_time" ? "#ffffff" : "#1e3a8a",
+            }}
           >
             Full time
           </Link>
 
+          {/* Part time */}
           <Link
             href="/post?work_time=part_time"
-            className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium border ${
-              activeWorkTime === "part_time"
-                ? "bg-sky-600 text-white border-sky-600"
-                : "bg-white text-slate-700 border-slate-200"
-            }`}
+            className="inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium shadow-sm"
+            style={{
+              background:
+                activeWorkTime === "part_time"
+                  ? "linear-gradient(135deg, #a5d8ff, #cfe8ff)"
+                  : "linear-gradient(135deg, #e0f2ff, #f8fbff)",
+              border:
+                activeWorkTime === "part_time"
+                  ? "1px solid #60a5fa"
+                  : "1px solid #dbeafe",
+              color: activeWorkTime === "part_time" ? "#ffffff" : "#1e3a8a",
+            }}
           >
             Part time
           </Link>
+
         </section>
 
         {/* LISTA E POSTEVE */}
@@ -268,12 +310,14 @@ export default async function PostsPage(props: any) {
                         Shiko detajet →
                       </span>
                     </div>
+
                   </div>
                 </div>
               </article>
             </Link>
           ))}
         </section>
+
       </div>
     </main>
   );
