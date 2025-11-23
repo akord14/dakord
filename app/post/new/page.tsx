@@ -103,6 +103,7 @@ const PROFESSIONS = [
 ];
 
 const CURRENCIES = ["LEK", "EUR", "USD"];
+// Mosha 18–70
 const AGES = Array.from({ length: 53 }, (_, i) => 18 + i);
 
 // --------------------------------------------------
@@ -140,11 +141,14 @@ export default function NewPostPage() {
     setErrorMsg("");
     setSuccessMsg("");
 
-    // Validimet
-    if (!fullName.trim()) return setErrorMsg("Emri / kompania është e detyrueshme.");
-    if (!profession.trim()) return setErrorMsg("Profesioni është i detyrueshëm.");
+    // Validimet bazë
+    if (!fullName.trim())
+      return setErrorMsg("Emri / kompania është e detyrueshme.");
+    if (!profession.trim())
+      return setErrorMsg("Profesioni është i detyrueshëm.");
     if (!city.trim()) return setErrorMsg("Qyteti është i detyrueshëm.");
-    if (!phone.trim()) return setErrorMsg("Numri i telefonit është i detyrueshëm.");
+    if (!phone.trim())
+      return setErrorMsg("Numri i telefonit është i detyrueshëm.");
     if (!age) return setErrorMsg("Mosha është e detyrueshme.");
     if (!workTime) return setErrorMsg("Orari i punës është i detyrueshëm.");
 
@@ -160,7 +164,9 @@ export default function NewPostPage() {
     if (experience === "pa") descParts.push("Pa eksperiencë");
 
     descParts.push(`Mosha: ${age} vjeç`);
-    descParts.push(`Orari: ${workTime === "full_time" ? "Full time" : "Part time"}`);
+    descParts.push(
+      `Orari: ${workTime === "full_time" ? "Full time" : "Part time"}`
+    );
 
     if (salary.trim()) {
       descParts.push(
@@ -169,47 +175,47 @@ export default function NewPostPage() {
     }
 
     // --------------------------------------------------
-    //  FOTO → Ruhet në public/post-images/
+    // FOTO → Supabase Storage (bucket: post-images)
     // --------------------------------------------------
-    let image_url = null;
+    const supabase = getSupabaseAnon();
+    let imageUrl: string | null = null;
 
     if (file) {
-      const ext = file.name.split(".").pop();
-      const fileName = `${Date.now()}.${ext}`;
+      const ext = file.name.split(".").pop() || "jpg";
+      const safeName = file.name.replace(/\s+/g, "-").toLowerCase();
+      const filePath = `${Date.now()}-${safeName}.${ext}`;
 
-      // Krijo path absolut për ruajtje lokale
-      const savePath = `/post-images/${fileName}`;
+      const { error: uploadError } = await supabase.storage
+        .from("post-images")
+        .upload(filePath, file);
 
-      // KRIJO folder-in nqs nuk ekziston
-      // Kjo punon vetëm në dev — në production në Vercel NUK lejohet shkrimi ne filesystem.
-      // Për momentin e lejmë si upload lokal sepse kështu e deshe.
-      const buffer = await file.arrayBuffer();
-      const fs = require("fs");
-      const path = require("path");
+      if (uploadError) {
+        console.error(uploadError);
+        setErrorMsg("Fotoja nuk u ngarkua. Provo përsëri pa foto ose më vonë.");
+        return;
+      }
 
-      const fullPath = path.join(process.cwd(), "public", "post-images", fileName);
-      fs.writeFileSync(fullPath, Buffer.from(buffer));
+      const { data: publicData } = supabase.storage
+        .from("post-images")
+        .getPublicUrl(filePath);
 
-      image_url = savePath;
+      imageUrl = publicData?.publicUrl ?? null;
     }
 
     // --------------------------------------------------
     // Kontaktet
     // --------------------------------------------------
-    const contactParts = [];
+    const contactParts: string[] = [];
     if (phone.trim()) contactParts.push(`Tel: ${phone.trim()}`);
     if (email.trim()) contactParts.push(`Email: ${email.trim()}`);
 
     const contact = contactParts.join(" • ");
     const finalDescription = descParts.join(" | ");
-
     const ageNumber = age ? Number(age) : null;
 
     setLoading(true);
 
     try {
-      const supabase = getSupabaseAnon();
-
       const { error } = await supabase.from("posts").insert([
         {
           type,
@@ -220,30 +226,33 @@ export default function NewPostPage() {
           age: ageNumber,
           work_time: workTime || null,
           city,
-          image_url: image_url,
+          image: imageUrl, // 👉 ruajmë URL në kolonën `image`
         },
       ]);
 
-      if (error) return setErrorMsg("Gabim gjatë ruajtjes së postimit.");
+      if (error) {
+        console.error(error);
+        setErrorMsg("Gabim gjatë ruajtjes së postimit.");
+      } else {
+        setSuccessMsg("Postimi u dërgua për aprovim!");
 
-      setSuccessMsg("Postimi u dërgua për aprovim!");
-
-      // Pastro formën
-      setFullName("");
-      setProfession("");
-      setExperience("");
-      setAge("");
-      setWorkTime("");
-      setCity("");
-      setPhone("");
-      setEmail("");
-      setDescription("");
-      setSalary("");
-      setSalaryApprox(false);
-      setSalaryCurrency("LEK");
-      setFile(null);
+        // Pastro formën
+        setFullName("");
+        setProfession("");
+        setExperience("");
+        setAge("");
+        setWorkTime("");
+        setCity("");
+        setPhone("");
+        setEmail("");
+        setDescription("");
+        setSalary("");
+        setSalaryApprox(false);
+        setSalaryCurrency("LEK");
+        setFile(null);
+      }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setErrorMsg("Gabim i papritur. Provo përsëri.");
     }
 
@@ -303,9 +312,7 @@ export default function NewPostPage() {
             gap: 20,
           }}
         >
-          {/* -------------------------- */}
           {/* LLOJI */}
-          {/* -------------------------- */}
           <div>
             <label style={{ fontWeight: 600, fontSize: 13 }}>
               Lloji i postimit
@@ -333,9 +340,7 @@ export default function NewPostPage() {
             </div>
           </div>
 
-          {/* -------------------------- */}
           {/* EMRI */}
-          {/* -------------------------- */}
           <div>
             <label style={{ fontWeight: 600, fontSize: 13 }}>
               Emër Mbiemër / Kompania *
@@ -355,9 +360,7 @@ export default function NewPostPage() {
             />
           </div>
 
-          {/* -------------------------- */}
           {/* PROFESIONI + EKSPERIENCA */}
-          {/* -------------------------- */}
           <div style={{ display: "grid", gap: 16 }}>
             <div>
               <label style={{ fontWeight: 600, fontSize: 13 }}>
@@ -384,7 +387,9 @@ export default function NewPostPage() {
             </div>
 
             <div>
-              <label style={{ fontWeight: 600, fontSize: 13 }}>Eksperienca</label>
+              <label style={{ fontWeight: 600, fontSize: 13 }}>
+                Eksperienca
+              </label>
 
               <div style={{ display: "flex", gap: 8 }}>
                 <button
@@ -426,9 +431,7 @@ export default function NewPostPage() {
             </div>
           </div>
 
-          {/* -------------------------- */}
           {/* MOSHA + ORARI */}
-          {/* -------------------------- */}
           <div style={{ display: "grid", gap: 16 }}>
             <div>
               <label style={{ fontWeight: 600, fontSize: 13 }}>Mosha *</label>
@@ -497,9 +500,7 @@ export default function NewPostPage() {
             </div>
           </div>
 
-          {/* -------------------------- */}
           {/* QYTETI + TEL + EMAIL */}
-          {/* -------------------------- */}
           <div style={{ display: "grid", gap: 16 }}>
             <div>
               <label style={{ fontWeight: 600, fontSize: 13 }}>Qyteti *</label>
@@ -562,9 +563,7 @@ export default function NewPostPage() {
             </div>
           </div>
 
-          {/* -------------------------- */}
-          {/* PERSHKRIMI */}
-          {/* -------------------------- */}
+          {/* PËRSHKRIMI */}
           <div>
             <label style={{ fontWeight: 600, fontSize: 13 }}>
               Përshkrimi i punës (opsional)
@@ -585,9 +584,7 @@ export default function NewPostPage() {
             />
           </div>
 
-          {/* -------------------------- */}
           {/* PAGA */}
-          {/* -------------------------- */}
           <div style={{ display: "grid", gap: 16 }}>
             <div>
               <label style={{ fontWeight: 600, fontSize: 13 }}>
@@ -639,9 +636,7 @@ export default function NewPostPage() {
             </div>
           </div>
 
-          {/* -------------------------- */}
           {/* FOTO */}
-          {/* -------------------------- */}
           <div>
             <label style={{ fontWeight: 600, fontSize: 13 }}>
               Foto (opsionale)
@@ -661,13 +656,12 @@ export default function NewPostPage() {
                 marginTop: 4,
               }}
             >
-              Nëse nuk ngarkon foto, përdoret automatikisht një ikonë sipas profesionit.
+              Nëse nuk ngarkon foto, përdoret automatikisht një ikonë sipas
+              profesionit.
             </p>
           </div>
 
-          {/* -------------------------- */}
           {/* ERROR */}
-          {/* -------------------------- */}
           {errorMsg && (
             <div
               style={{
@@ -682,9 +676,7 @@ export default function NewPostPage() {
             </div>
           )}
 
-          {/* -------------------------- */}
           {/* SUCCESS */}
-          {/* -------------------------- */}
           {successMsg && (
             <div
               style={{
@@ -699,9 +691,7 @@ export default function NewPostPage() {
             </div>
           )}
 
-          {/* -------------------------- */}
           {/* POSTO */}
-          {/* -------------------------- */}
           <button
             type="submit"
             disabled={loading}
