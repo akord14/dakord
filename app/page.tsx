@@ -92,6 +92,7 @@ export default async function HomePage() {
             </p>
 
             <div className="flex flex-col gap-3 mt-5">
+
               <Link
                 href="/post/new"
                 className="inline-flex items-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90"
@@ -99,18 +100,34 @@ export default async function HomePage() {
                 KRIJO POSTIMIN TËND
               </Link>
 
-              <div className="flex gap-3">
+              {/* KATEGORITË – SHTUAM FULL TIME & PART TIME */}
+              <div className="flex flex-wrap gap-3">
                 <Link
                   href="/post?type=seeking"
                   className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
                 >
                   KËRKOJ PUNË
                 </Link>
+
                 <Link
                   href="/post?type=offering"
                   className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
                 >
                   OFROJ PUNË
+                </Link>
+
+                <Link
+                  href="/post?work_time=full_time"
+                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
+                >
+                  FULL TIME
+                </Link>
+
+                <Link
+                  href="/post?work_time=part_time"
+                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
+                >
+                  PART TIME
                 </Link>
               </div>
             </div>
