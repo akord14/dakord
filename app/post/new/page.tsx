@@ -224,18 +224,24 @@ if (file) {
 
     try {
       const { error } = await supabase.from("posts").insert([
-        {
-          type,
-          title,
-          description: finalDescription,
-          contact,
-          status: "pending",
-          age: ageNumber,
-          work_time: workTime || null,
-          city,
-          image: imageUrl, // 👉 ruajmë URL në kolonën `image`
-        },
-      ]);
+  {
+    type,
+    title,
+    description: finalDescription,
+    contact,
+    status: "pending",
+    age: ageNumber,
+    work_time: workTime || null,
+    city,
+    image: imageUrl,
+
+    // 🔵 SHTOHEN KËTO (shumë të rëndësishme)
+    payment: salary || null,
+    payment_currency: salaryCurrency || null,
+    profession: profession || null,
+  },
+]);
+
 
       if (error) {
         console.error(error);
