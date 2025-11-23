@@ -11,6 +11,13 @@ type Post = {
   contact: string;
   status: string;
   created_at: string;
+  image: string | null;
+  age: number | null;
+  work_time: string | null;
+  payment: number | null;
+  payment_currency: string | null;
+  profession: string | null;
+  city: string | null;
 };
 
 function getSupabaseAnon() {
@@ -34,13 +41,12 @@ export default async function AdminModerationPage() {
   const supabase = getSupabaseAnon();
 
   const { data, error } = await supabase
-  .from("posts")
-  .select("*")
-  .order("created_at", { ascending: false }) as {
+    .from("posts")
+    .select("*")
+    .order("created_at", { ascending: false }) as {
     data: Post[] | null;
     error: any;
   };
-
 
   if (error) {
     console.error("Supabase error në /admin/moderation:", error.message);
@@ -61,9 +67,7 @@ export default async function AdminModerationPage() {
       <h1 className="text-2xl font-semibold mb-4">Moderimi i postimeve</h1>
 
       {posts.length === 0 ? (
-        <p className="text-sm text-gray-500">
-          Nuk ka postime në pritje për moderim.
-        </p>
+        <p className="text-sm text-gray-500">Nuk ka postime në pritje për moderim.</p>
       ) : (
         <ul className="space-y-4">
           {posts.map((post) => (
@@ -71,6 +75,15 @@ export default async function AdminModerationPage() {
               key={post.id}
               className="border border-gray-200 rounded-2xl p-4 bg-white shadow-sm"
             >
+              {/* Foto e postimit */}
+              {post.image && (
+                <img
+                  src={post.image}
+                  alt="Foto"
+                  className="w-24 h-24 object-cover rounded-xl mb-3"
+                />
+              )}
+
               <div className="flex items-start justify-between gap-3 mb-2">
                 <div>
                   <span className="inline-flex items-center rounded-full border px-3 py-0.5 text-[11px] font-medium uppercase tracking-wide mb-1">
@@ -83,13 +96,14 @@ export default async function AdminModerationPage() {
                   {/* APPROVE / REFUSE */}
                   {/* @ts-ignore */}
                   <ApproveButtons postId={post.id} />
-                  
+
                   {/* DELETE BUTTON */}
                   <DeleteButton id={post.id} />
                 </div>
               </div>
 
               <p className="text-sm text-gray-700 mb-2">{post.description}</p>
+
               <p className="text-xs text-gray-500 break-all">
                 Kontakt: {post.contact}
               </p>
