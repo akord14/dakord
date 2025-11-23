@@ -59,15 +59,10 @@ export default async function HomePage() {
     <main className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
       <div className="mx-auto max-w-5xl px-4 py-6 md:py-10">
 
-        {/* HEADER – LOGO MAJTAS / BUTON DJATHTAS */}
+        {/* HEADER */}
         <header className="mb-8 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/akord-icon.png"
-              width={40}
-              height={40}
-              alt="Akord.al"
-            />
+            <Image src="/akord-icon.png" width={40} height={40} alt="Akord.al" />
             <span className="text-xl font-bold tracking-tight">Akord.al</span>
           </Link>
 
@@ -100,40 +95,33 @@ export default async function HomePage() {
                 KRIJO POSTIMIN TËND
               </Link>
 
-              {/* KATEGORITË – SHTUAM FULL TIME & PART TIME */}
+              {/* KATEGORITË */}
               <div className="flex flex-wrap gap-3">
-                <Link
-                  href="/post?type=seeking"
-                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
-                >
-                  KËRKOJ PUNË
-                </Link>
 
-                <Link
-                  href="/post?type=offering"
-                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
-                >
-                  OFROJ PUNË
-                </Link>
+                {/* BUTTON STYLE – SUPER I BUTË */}
+                {[
+                  { href: "/post?type=seeking", label: "KËRKOJ PUNË" },
+                  { href: "/post?type=offering", label: "OFROJ PUNË" },
+                  { href: "/post?work_time=full_time", label: "FULL TIME" },
+                  { href: "/post?work_time=part_time", label: "PART TIME" },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="inline-flex items-center rounded-full px-4 py-2 text-xs font-medium 
+                    bg-gradient-to-b from-sky-50 to-white 
+                    border border-sky-100 
+                    text-slate-900 shadow-sm hover:shadow transition"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
 
-                <Link
-                  href="/post?work_time=full_time"
-                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
-                >
-                  FULL TIME
-                </Link>
-
-                <Link
-                  href="/post?work_time=part_time"
-                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-900 shadow-sm"
-                >
-                  PART TIME
-                </Link>
               </div>
             </div>
           </div>
 
-          {/* BOKSI ANËSOR */}
+          {/* BOX ANËSOR */}
           <div className="bg-[#0A1A2F] text-white p-5 rounded-2xl shadow-lg">
             <p className="mb-3 text-sm/5 opacity-90">Përdor Akord.al për:</p>
             <ul className="mb-3 grid list-none gap-2 text-sm">
@@ -147,7 +135,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* HEADLINE POSTIME */}
+        {/* POSTIMET E FUNDIT */}
         <section className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-[17px] font-semibold text-slate-900">
             Postimet e fundit
