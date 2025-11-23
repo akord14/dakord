@@ -1,38 +1,44 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}
+
 export async function POST(req: Request) {
   try {
-    const formData = await req.formData();
+    const form = await req.formData();
 
-    const type = formData.get("type") as string;
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
-    const contact = formData.get("contact") as string;
-    const age = formData.get("age") ? Number(formData.get("age")) : null;
-    const work_time = formData.get("work_time") as string | null;
-    const city = formData.get("city") as string;
+    const title = form.get("title") as string;
+    const description = form.get("description") as string;
+    const city = form.get("city") as string;
+    const profession = form.get("profession") as string;
+    const age = form.get("age") as string;
+    const work_time = form.get("work_time") as string;
+    const payment = form.get("payment") as string;
+    const payment_currency = form.get("payment_currency") as string;
+    const contact = form.get("contact") as string;
+    const type = form.get("type") as string;
 
-    const file = formData.get("file") as File | null;
+    const file = form.get("image") as File | null;
 
-    // Supabase
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    const supabase = createClient(url, anon);
+    const supabase = getSupabase();
+    let image_url: string | null = null;
 
-    let image_url = null;
+    // ---------------------------------------------------
+    // 1️⃣ Nese ka file → ngarko ne Supabase Storage
+    // ---------------------------------------------------
+    if (file && file.size > 0) {
+      const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+      const safeName = file.name.replace(/\s+/g, "-").toLowerCase();
+      const filePath = `post-${Date.now()}-${safeName}`;
 
-    // ------------------------------------------------------
-    // Upload Foto në Supabase Storage (nëse ekziston)
-    // ------------------------------------------------------
-    if (file) {
-      const ext = file.name.split(".").pop();
-      const fileName = `post-${Date.now()}.${ext}`;
-
-      // upload
-      const { data, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from("post-images")
-        .upload(fileName, file, { contentType: file.type });
+        .upload(filePath, file);
 
       if (uploadError) {
         console.error(uploadError);
@@ -42,30 +48,37 @@ export async function POST(req: Request) {
         );
       }
 
-      // marrim URL publike
-      const { data: publicUrlData } = supabase.storage
+      const { data } = supabase.storage
         .from("post-images")
-        .getPublicUrl(fileName);
+        .getPublicUrl(filePath);
 
-      image_url = publicUrlData.publicUrl;
+      image_url = data.publicUrl;
     }
 
-    // ------------------------------------------------------
-    // Futja në tabelën posts
-    // ------------------------------------------------------
-    const { error: insertError } = await supabase.from("posts").insert([
-      {
-        type,
-        title,
-        description,
-        contact,
-        status: "pending",
-        age,
-        work_time,
-        city,
-        image_url,
-      },
-    ]);
+    // ---------------------------------------------------
+    // 2️⃣ Nese NUK ka foto → perdor ikonë profesioni
+    // ---------------------------------------------------
+    if (!image_url) {
+      image_url = `/images/professions/${profession.toLowerCase()}.svg`;
+    }
+
+    // ---------------------------------------------------
+    // 3️⃣ Ruaj POST-in në tabelë
+    // ---------------------------------------------------
+    const { error: insertError } = await supabase.from("posts").insert({
+      title,
+      description,
+      city,
+      profession,
+      age,
+      work_time,
+      payment,
+      payment_currency,
+      contact,
+      type,
+      status: "pending",
+      image: image_url, // FIX i madh
+    });
 
     if (insertError) {
       console.error(insertError);
@@ -77,9 +90,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("API ERROR:", err);
+    console.error(err);
     return NextResponse.json(
-      { error: "Gabim në server. Provo përsëri." },
+      { error: "Gabim i papritur në server." },
       { status: 500 }
     );
   }
