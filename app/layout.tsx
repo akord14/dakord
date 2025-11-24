@@ -16,21 +16,29 @@ const PROF_TO_IMG: Record<string, string> = {
   "Tjetër…": "other.svg",
 };
 
-export const metadata: Metadata = {
-  title: "akord.al – Kërkoj punë | Ofroj punë",
-  description: "Ura mes punëkërkuesve dhe punëdhënësve",
+export const metadata = {
+  title: "Akord.al",
+  description:
+    "Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
-const YEAR = new Date().getUTCFullYear();
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const YEAR = new Date().getFullYear();
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="sq">
       <body>
         {/* MAIN */}
-        <main className="max-w-6xl mx-auto px-4 py-8">
-          {children}
-        </main>
+        <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
 
         {/* FOOTER */}
         <footer className="max-w-6xl mx-auto px-4 py-8">
@@ -40,3 +48,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
