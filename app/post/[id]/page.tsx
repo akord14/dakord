@@ -1,6 +1,7 @@
 // app/post/[id]/page.tsx
 import { createClient } from "@supabase/supabase-js";
 import { notFound } from "next/navigation";
+import Image from "next/image";                      //  ✅ SHTUAR KJO
 import ContactActions from "./ContactActions";
 
 type Post = {
@@ -11,6 +12,7 @@ type Post = {
   contact: string;
   status: string;
   created_at: string;
+  image?: string | null;   // ➜ SHTUAR
 };
 
 function getSupabaseAnon() {
@@ -31,7 +33,6 @@ type PageProps = {
 };
 
 export default async function PostPage(props: PageProps) {
-  // Next 15: params është Promise → e presim
   const { id } = await props.params;
 
   const supabase = getSupabaseAnon();
@@ -73,35 +74,48 @@ export default async function PostPage(props: PageProps) {
       </div>
 
       {/* BOXI I POSTIMIT */}
-      <section className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-8">
-        
-        <div className="flex items-center justify-between gap-3 mb-3">
-          <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wide">
-            {typeLabel}
-          </span>
+      <section className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
 
-          {createdAt && (
-            <span className="text-xs text-gray-500 whitespace-nowrap">
-              {createdAt}
+        {/* FOTO E MADHE E POSTIMIT */}
+        {post.image && (
+          <div className="relative w-full h-60 md:h-80">
+            <Image
+              src={post.image}
+              alt={post.title}
+              fill
+              className="object-cover"
+            />
+          </div>
+        )}
+
+        <div className="p-6 md:p-8">
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wide">
+              {typeLabel}
             </span>
-          )}
+
+            {createdAt && (
+              <span className="text-xs text-gray-500 whitespace-nowrap">
+                {createdAt}
+              </span>
+            )}
+          </div>
+
+          <h1 className="text-2xl md:text-3xl font-semibold mb-4">
+            {post.title}
+          </h1>
+
+          <p className="text-gray-700 leading-relaxed whitespace-pre-line mb-8">
+            {post.description}
+          </p>
+
+          <div className="border-t pt-4 mt-4 flex flex-col gap-2">
+            <h2 className="text-sm font-semibold text-gray-800">Kontakti</h2>
+            <p className="text-base font-medium break-all">{post.contact}</p>
+
+            <ContactActions contact={post.contact} />
+          </div>
         </div>
-
-        <h1 className="text-2xl md:text-3xl font-semibold mb-4">
-          {post.title}
-        </h1>
-
-        <p className="text-gray-700 leading-relaxed whitespace-pre-line mb-8">
-          {post.description}
-        </p>
-
-        <div className="border-t pt-4 mt-4 flex flex-col gap-2">
-          <h2 className="text-sm font-semibold text-gray-800">Kontakti</h2>
-          <p className="text-base font-medium break-all">{post.contact}</p>
-
-          <ContactActions contact={post.contact} />
-        </div>
-
       </section>
     </main>
   );

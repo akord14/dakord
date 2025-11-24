@@ -13,6 +13,7 @@ type Post = {
   created_at: string;
   city?: string | null;
   profession?: string | null;
+  image?: string | null;   // ➜ SHTUAM KËTË
 };
 
 function getSupabaseAnon() {
@@ -163,8 +164,22 @@ export default async function HomePage() {
               href={`/post/${post.id}`}
               className="group text-slate-900 no-underline"
             >
-              <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-                <div className="flex items-start gap-3">
+             <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md overflow-hidden">
+
+  {/* FOTO E POSTIMIT */}
+  {post.image && (
+    <div className="relative w-full h-40">
+      <Image
+        src={post.image}
+        alt={post.title}
+        fill
+        className="object-cover"
+      />
+    </div>
+  )}
+
+  <div className="p-4 flex items-start gap-3">
+
                   <ProfessionIcon
                     text={`${post.title} ${post.description ?? ""} ${
                       post.profession ?? ""
