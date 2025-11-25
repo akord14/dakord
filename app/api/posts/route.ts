@@ -12,11 +12,26 @@ function getSupabaseAdmin() {
   return createClient(url, key);
 }
 
+// -----------------------------
+// FUNKSIONI PËR SLUG
+// -----------------------------
+function createSlug(title: string) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9ëç\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
     const supabase = getSupabaseAdmin();
+
+    // Gjenerojmë slug automatikisht nga titulli
+    const slug = createSlug(body.title);
 
     const { error } = await supabase.from("posts").insert([
       {
@@ -25,10 +40,18 @@ export async function POST(req: Request) {
         description: body.description,
         contact: body.contact,
         status: "pending",
+
+        // Fusha të tjera
         age: body.age || null,
         work_time: body.work_time || null,
         city: body.city || null,
         image: body.image || null,
+        profession: body.profession || null,
+        payment_amount: body.payment_amount || null,
+        payment_currency: body.payment_currency || null,
+
+        // SLUG I RI
+        slug: slug,
       },
     ]);
 

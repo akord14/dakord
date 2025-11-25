@@ -14,6 +14,7 @@ type Post = {
   city?: string | null;
   profession?: string | null;
   image?: string | null;   // ➜ SHTUAM KËTË
+  slug: string | null;
 };
 
 function getSupabaseAnon() {
@@ -161,7 +162,7 @@ export default async function HomePage() {
           {latestPosts.map((post) => (
             <Link
               key={post.id}
-              href={`/post/${post.id}`}
+              href={`/post/${post.id}/${post.slug}`}
               className="group text-slate-900 no-underline"
             >
              <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md overflow-hidden">
