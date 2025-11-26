@@ -64,7 +64,8 @@ export default async function HomePage() {
         {/* HEADER */}
         <header className="mb-8 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/akord-icon.png" width={40} height={40} alt="Akord.al" />
+            <Image src="/logo.png" width={40} height={40} alt="" />
+
             <span className="text-xl font-bold tracking-tight">Akord.al</span>
           </Link>
 
