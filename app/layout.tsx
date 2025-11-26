@@ -21,9 +21,9 @@ export const metadata = {
   description:
     "Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë.",
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.png",
-    apple: "/apple-touch-icon.png",
+  icon: "/favicon-32x32.png",
+  shortcut: "/favicon-32x32.png",
+  apple: "/apple-touch-icon.png",
   },
 };
 
