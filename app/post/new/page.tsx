@@ -136,141 +136,144 @@ export default function NewPostPage() {
   // --------------------------------------------------
   // SUBMIT
   // --------------------------------------------------
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setErrorMsg("");
-    setSuccessMsg("");
+ 
+async function handleSubmit(e: FormEvent) {
+  e.preventDefault();
+  setErrorMsg("");
+  setSuccessMsg("");
 
-    // Validimet bazë
-    if (!fullName.trim())
-      return setErrorMsg("Emri / kompania është e detyrueshme.");
-    if (!profession.trim())
-      return setErrorMsg("Profesioni është i detyrueshëm.");
-    if (!city.trim()) return setErrorMsg("Qyteti është i detyrueshëm.");
-    if (!phone.trim())
-      return setErrorMsg("Numri i telefonit është i detyrueshëm.");
-    if (!age) return setErrorMsg("Mosha është e detyrueshme.");
-    if (!workTime) return setErrorMsg("Orari i punës është i detyrueshëm.");
+  // Validimet bazë
+  if (!fullName.trim())
+    return setErrorMsg("Emri / kompania është e detyrueshme.");
+  if (!profession.trim())
+    return setErrorMsg("Profesioni është i detyrueshëm.");
+  if (!city.trim()) return setErrorMsg("Qyteti është i detyrueshëm.");
+  if (!phone.trim())
+    return setErrorMsg("Numri i telefonit është i detyrueshëm.");
+  if (!age) return setErrorMsg("Mosha është e detyrueshme.");
+  if (!workTime) return setErrorMsg("Orari i punës është i detyrueshëm.");
 
-    const title = `${fullName.trim()} — ${profession.trim()}`;
+  const title = `${fullName.trim()} — ${profession.trim()}`;
 
-    // Ndërtimi i description
-    const descParts: string[] = [];
+  // Ndërtimi i description
+  const descParts: string[] = [];
 
-    if (description.trim()) descParts.push(description.trim());
-    descParts.push(`Qyteti: ${city}`);
+  if (description.trim()) descParts.push(description.trim());
+  descParts.push(`Qyteti: ${city}`);
 
-    if (experience === "me") descParts.push("Me eksperiencë");
-    if (experience === "pa") descParts.push("Pa eksperiencë");
+  if (experience === "me") descParts.push("Me eksperiencë");
+  if (experience === "pa") descParts.push("Pa eksperiencë");
 
-    descParts.push(`Mosha: ${age} vjeç`);
+  descParts.push(`Mosha: ${age} vjeç`);
+  descParts.push(
+    `Orari: ${workTime === "full_time" ? "Full time" : "Part time"}`
+  );
+
+  if (salary.trim()) {
     descParts.push(
-      `Orari: ${workTime === "full_time" ? "Full time" : "Part time"}`
+      `Paga: ${salaryApprox ? "afërsisht " : ""}${salary} ${salaryCurrency}`
     );
+  }
 
-    if (salary.trim()) {
-      descParts.push(
-        `Paga: ${salaryApprox ? "afërsisht " : ""}${salary} ${salaryCurrency}`
-      );
+  const finalDescription = descParts.join(" | ");
+  const ageNumber = age ? Number(age) : null;
+
+  // --------------------------------------------------
+  // FOTO → Supabase Storage
+  // --------------------------------------------------
+  const supabase = getSupabaseAnon();
+  let imageUrl: string | null = null;
+
+  if (file) {
+    const ext = file.name.split(".").pop() || "jpg";
+    const base = file.name.replace(/\.[^/.]+$/, "");
+    const safeName = base.replace(/\s+/g, "-").toLowerCase();
+    const filePath = `${Date.now()}-${safeName}.${ext}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("post-images")
+      .upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.error(uploadError);
+      setErrorMsg("Fotoja nuk u ngarkua. Provo përsëri pa foto ose më vonë.");
+      return;
     }
 
-    // --------------------------------------------------
-// FOTO → Supabase Storage (bucket: post-images)
+    const { data: publicData } = supabase.storage
+      .from("post-images")
+      .getPublicUrl(filePath);
+
+    imageUrl = publicData.publicUrl;
+  }
+
+  // --------------------------------------------------
+  // DËRGIMI TE API /api/posts (krijon edhe slug)
+  // --------------------------------------------------
+  // --------------------------------------------------
+// Kontaktet
 // --------------------------------------------------
-const supabase = getSupabaseAnon();
-let imageUrl: string | null = null;
+const contactParts: string[] = [];
+if (phone.trim()) contactParts.push(`Tel: ${phone.trim()}`);
+if (email.trim()) contactParts.push(`Email: ${email.trim()}`);
 
-if (file) {
-  const ext = file.name.split(".").pop() || "jpg";
+const contact = contactParts.join(" • ");
 
-  const base = file.name.replace(/\.[^/.]+$/, ""); // heq .png / .jpg
-  const safeName = base.replace(/\s+/g, "-").toLowerCase();
+  setLoading(true);
 
-  const filePath = `${Date.now()}-${safeName}.${ext}`;
-
-  const { error: uploadError } = await supabase.storage
-    .from("post-images")
-    .upload(filePath, file, {
-      cacheControl: "3600",
-      upsert: false,
+  try {
+    const response = await fetch("/api/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type,
+        title,
+        description: finalDescription,
+        contact,
+        age: ageNumber,
+        work_time: workTime,
+        city,
+        image: imageUrl,
+        payment_amount: salary || null,
+        payment_currency: salaryCurrency || null,
+        profession: profession || null,
+      }),
     });
 
-  if (uploadError) {
-    console.error(uploadError);
-    setErrorMsg("Fotoja nuk u ngarkua. Provo përsëri pa foto ose më vonë.");
-    return;
-  }
+    const result = await response.json();
 
-  const { data: publicData } = supabase.storage
-    .from("post-images")
-    .getPublicUrl(filePath);
-
-  imageUrl = publicData.publicUrl;
-}
-
-
-    // --------------------------------------------------
-    // Kontaktet
-    // --------------------------------------------------
-    const contactParts: string[] = [];
-    if (phone.trim()) contactParts.push(`Tel: ${phone.trim()}`);
-    if (email.trim()) contactParts.push(`Email: ${email.trim()}`);
-
-    const contact = contactParts.join(" • ");
-    const finalDescription = descParts.join(" | ");
-    const ageNumber = age ? Number(age) : null;
-
-    setLoading(true);
-
-    try {
-      const { error } = await supabase.from("posts").insert([
-  {
-    type,
-    title,
-    description: finalDescription,
-    contact,
-    status: "pending",
-    age: ageNumber,
-    work_time: workTime || null,
-    city,
-    image: imageUrl,
-
-    // 🔵 SHTOHEN KËTO (shumë të rëndësishme)
-    payment: salary || null,
-    payment_currency: salaryCurrency || null,
-    profession: profession || null,
-  },
-]);
-
-
-      if (error) {
-        console.error(error);
-        setErrorMsg("Gabim gjatë ruajtjes së postimit.");
-      } else {
-        setSuccessMsg("Postimi u dërgua për aprovim!");
-
-        // Pastro formën
-        setFullName("");
-        setProfession("");
-        setExperience("");
-        setAge("");
-        setWorkTime("");
-        setCity("");
-        setPhone("");
-        setEmail("");
-        setDescription("");
-        setSalary("");
-        setSalaryApprox(false);
-        setSalaryCurrency("LEK");
-        setFile(null);
-      }
-    } catch (err) {
-      console.error(err);
-      setErrorMsg("Gabim i papritur. Provo përsëri.");
+    if (!response.ok) {
+      console.error("API error:", response);
+      setErrorMsg("Gabim gjatë ruajtjes së postimit.");
+      return;
     }
 
+    setSuccessMsg("Postimi u dërgua për aprovim!");
+
+    // Pastro formën
+    setFullName("");
+    setProfession("");
+    setExperience("");
+    setAge("");
+    setWorkTime("");
+    setCity("");
+    setPhone("");
+    setEmail("");
+    setDescription("");
+    setSalary("");
+    setSalaryApprox(false);
+    setSalaryCurrency("LEK");
+    setFile(null);
+  } catch (err) {
+    console.error(err);
+    setErrorMsg("Gabim i papritur. Provo përsëri.");
+  } finally {
     setLoading(false);
   }
+}
 
   // --------------------------------------------------
   // RENDER

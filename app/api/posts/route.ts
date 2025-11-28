@@ -47,21 +47,24 @@ export async function POST(req: Request) {
         city: body.city || null,
         image: body.image || null,
         profession: body.profession || null,
-        payment_amount: body.payment_amount || null,
-        payment_currency: body.payment_currency || null,
 
+        // Fusha e rregulluar
+      
         // SLUG I RI
         slug: slug,
       },
     ]);
 
     if (error) {
-      console.error("Supabase insert error:", error);
-      return NextResponse.json(
-        { error: "DB_INSERT_ERROR" },
-        { status: 500 }
-      );
-    }
+  console.log("❌ SUPABASE ERROR:");
+  console.log(JSON.stringify(error, null, 2));
+
+  return NextResponse.json(
+    { error: error.message || error },
+    { status: 500 }
+  );
+}
+
 
     return NextResponse.json({ success: true });
   } catch (err) {

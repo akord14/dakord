@@ -163,7 +163,7 @@ export default async function HomePage() {
           {latestPosts.map((post) => (
             <Link
               key={post.id}
-              href={`/post/${post.id}/${post.slug}`}
+              href={`/post/${post.slug}`}
               className="group text-slate-900 no-underline"
             >
              <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md overflow-hidden">

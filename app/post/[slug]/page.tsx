@@ -1,36 +1,29 @@
-// app/post/[id]/[slug]/page.tsx
+// app/post/[slug]/page.tsx
 import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
-import ContactActions from "../ContactActions";
+import ContactActions from "./ContactActions";
 
 
-export default async function PostPage({ params }: any) {
+
+export default async function PostPage(props: any) {
+  const params = await props.params;
+  const slug = params.slug;
+
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  const { id, slug } = params;
 
-  // 🚀 Marrim postimin saktë sipas ID-së
+  // 🔥 Marrim postimin sipas SLUG
   const { data: post } = await supabase
     .from("posts")
     .select("*")
-    .eq("id", id)
+    .eq("slug", slug)
     .single();
 
   if (!post) {
     return <div className="p-6">Postimi nuk u gjet.</div>;
-  }
-
-  // 🔥 Nëse slug është gabim → ridrejto në slugun e saktë
-  if (post.slug && post.slug !== slug) {
-    return (
-      <meta
-        httpEquiv="refresh"
-        content={`0; url=/post/${post.id}/${post.slug}`}
-      />
-    );
   }
 
   return (
