@@ -35,8 +35,11 @@ async function getLatestPosts(): Promise<Post[]> {
 
   const { data, error } = await supabase
     .from("posts")
-    .select("id, title,slug, image, type, city, experience, age, work_time,created_at, contact, description, status")
-    .eq("status", "approved")
+  .select(
+  "id, title, slug, image, type, city, age, work_time, created_at, contact, description, status, profession"
+)
+.eq("status", "approved")
+
     .order("created_at", { ascending: false })
     .limit(6);
 
