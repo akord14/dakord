@@ -18,6 +18,7 @@ type Post = {
   payment_currency: string | null;
   profession: string | null;
   city: string | null;
+  visibility: string | null;
 };
 
 function getSupabaseAnon() {
@@ -90,6 +91,19 @@ export default async function AdminModerationPage() {
                     {post.type === "offering" ? "Ofroj punë" : "Kërkoj punë"}
                   </span>
                   <h2 className="font-semibold">{post.title}</h2>
+                {/* BADGE për publik / konfidencial */}
+<div className="mt-1 mb-2">
+  {post.visibility === "private" ? (
+    <span className="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-lg">
+      Konfidencial
+    </span>
+  ) : (
+    <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg">
+      Publik
+    </span>
+  )}
+</div>
+
                 </div>
 
                 <div className="flex gap-2">
