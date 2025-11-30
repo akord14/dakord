@@ -109,7 +109,8 @@ const AGES = Array.from({ length: 53 }, (_, i) => 18 + i);
 // --------------------------------------------------
 export default function NewPostPage() {
  const [queryProfession, setQueryProfession] = useState("");
-
+ const [showProfessions, setShowProfessions] = useState(false);
+ 
   const [type, setType] = useState<PostType>("seeking");
   const [visibility, setVisibility] = useState<"public" | "private">("public");
 
@@ -452,84 +453,88 @@ export default function NewPostPage() {
               />
             </div>
 
-            {/* PROFESIONI + EKSPERIENCA */}
-            <div style={{ display: "grid", gap: 16 }}>
-              <div>
-                <label style={{ fontWeight: 600, fontSize: 13 }}>
-                  Profesioni *
-                </label>
-                <div style={{ position: "relative" }}>
-  <input
-    type="text"
-    value={queryProfession}
-    onChange={(e) => {
-      setQueryProfession(e.target.value);
-      setProfession(e.target.value);
-    }}
-    placeholder="Shkruaj profesionin…"
-    style={{
-      width: "100%",
-      padding: "10px 12px",
-      borderRadius: 10,
-      border: "1px solid #d1d5db",
-      fontSize: 14,
-    }}
-    autoComplete="off"
-  />
+           {/* PROFESIONI + EKSPERIENCA */}
+<div style={{ display: "grid", gap: 16 }}>
+  <div>
+    <label style={{ fontWeight: 600, fontSize: 13 }}>Profesioni *</label>
 
-  {queryProfession.length > 0 && (
-    <div
-      style={{
-        position: "absolute",
-        top: "100%",
-        left: 0,
-        right: 0,
-        background: "white",
-        border: "1px solid #d1d5db",
-        borderRadius: 10,
-        marginTop: 4,
-        maxHeight: 180,
-        overflowY: "auto",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.07)",
-        zIndex: 50,
-      }}
-    >
-      {PROFESSIONS.filter((p) =>
-        p.toLowerCase().startsWith(queryProfession.toLowerCase())
-      ).map((p) => (
-        <div
-          key={p}
-          onClick={() => {
-            setProfession(p);
-            setQueryProfession(p);
-          }}
-          style={{
-            padding: "10px 12px",
-            fontSize: 14,
-            cursor: "pointer",
-          }}
-        >
-          {p}
-        </div>
-      ))}
+    <div style={{ position: "relative" }}>
+      <input
+        type="text"
+        value={queryProfession}
+        onChange={(e) => {
+          setQueryProfession(e.target.value);
+          setProfession(e.target.value);
+          setShowProfessions(true);
+        }}
+        onFocus={() => setShowProfessions(true)}
+        onBlur={() => setTimeout(() => setShowProfessions(false), 150)}
+        placeholder="Shkruaj profesionin…"
+        style={{
+          width: "100%",
+          padding: "10px 12px",
+          borderRadius: 10,
+          border: "1px solid #d1d5db",
+          fontSize: 14,
+        }}
+        autoComplete="off"
+      />
 
-      {PROFESSIONS.filter((p) =>
-        p.toLowerCase().startsWith(queryProfession.toLowerCase())
-      ).length === 0 && (
+      {showProfessions && queryProfession.length > 0 && (
         <div
           style={{
-            padding: "10px 12px",
-            fontSize: 14,
-            color: "#6b7280",
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            right: 0,
+            background: "white",
+            border: "1px solid #d1d5db",
+            borderRadius: 10,
+            marginTop: 4,
+            maxHeight: 180,
+            overflowY: "auto",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.07)",
+            zIndex: 50,
           }}
         >
-          Asnjë rezultat
+          {PROFESSIONS.filter((p) =>
+            p.toLowerCase().startsWith(queryProfession.toLowerCase())
+          ).map((p) => (
+            <div
+              key={p}
+              onMouseDown={() => {
+                setProfession(p);
+                setQueryProfession(p);
+                setShowProfessions(false);
+              }}
+              style={{
+                padding: "10px 12px",
+                fontSize: 14,
+                cursor: "pointer",
+              }}
+            >
+              {p}
+            </div>
+          ))}
+
+          {PROFESSIONS.filter((p) =>
+            p.toLowerCase().startsWith(queryProfession.toLowerCase())
+          ).length === 0 && (
+            <div
+              style={{
+                padding: "10px 12px",
+                fontSize: 14,
+                color: "#6b7280",
+              }}
+            >
+              Asnjë rezultat
+            </div>
+          )}
         </div>
       )}
     </div>
-  )}
-</div>
-</div>   {/* mbyll seksionin e profesionit */}
+  </div>
+
 
               <div>
                 <label style={{ fontWeight: 600, fontSize: 13 }}>

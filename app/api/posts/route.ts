@@ -35,24 +35,24 @@ export async function POST(req: Request) {
 
     const { error } = await supabase.from("posts").insert([
       {
-        type: body.type,
-        title: body.title,
-        description: body.description,
-        contact: body.contact,
-        status: "pending",
+  type: body.type,
+  visibility: body.visibility,   // ← SHTUAR KËTU
+  title: body.title,
+  description: body.description,
+  contact: body.contact,
+  status: "pending",
 
-        // Fusha të tjera
-        age: body.age || null,
-        work_time: body.work_time || null,
-        city: body.city || null,
-        image: body.image || null,
-        profession: body.profession || null,
+  // Fusha te tjera
+  age: body.age || null,
+  work_time: body.work_time || null,
+  city: body.city || null,
+  image: body.image || null,
+  profession: body.profession || null,
 
-        // Fusha e rregulluar
-      
-        // SLUG I RI
-        slug: slug,
-      },
+  // SLUG I RI
+  slug: slug,
+},
+
     ]);
 
     if (error) {
