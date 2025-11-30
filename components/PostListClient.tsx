@@ -108,9 +108,20 @@ export default function PostListClient({ initialPosts }: any) {
                   {/* FIX: Datë identike server + client */}
                   <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400">
                     <span>{formatDate(post.created_at)}</span>
-                    <span className="text-slate-500 group-hover:text-slate-700">
-                      Shiko detajet →
-                    </span>
+                    <span className="flex items-center gap-1 text-slate-500 group-hover:text-slate-700 transition">
+  Shiko detajet
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-3 h-3 group-hover:translate-x-1 transition-transform"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+  </svg>
+</span>
+
                   </div>
                 </div>
               </div>
@@ -122,11 +133,19 @@ export default function PostListClient({ initialPosts }: any) {
       {posts.length >= 6 && (
         <div className="flex justify-center mt-6">
           <button
-            onClick={loadMore}
-            className="px-6 py-2 rounded-full bg-sky-600 text-white text-sm font-medium hover:bg-sky-700 transition"
-          >
-            {loading ? "Duke ngarkuar..." : "Shiko më shumë"}
-          </button>
+  onClick={loadMore}
+  className="
+    relative px-6 py-2 rounded-full 
+    text-white text-sm font-semibold 
+    transition-all duration-300 
+    bg-gradient-to-r from-sky-500 to-blue-600
+    shadow-md hover:shadow-blue-400/40 
+    hover:-translate-y-0.5 hover:brightness-110
+  "
+>
+  {loading ? "Duke ngarkuar..." : "Shiko më shumë"}
+</button>
+
         </div>
       )}
     </>
