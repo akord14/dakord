@@ -1,4 +1,44 @@
-<svg width="512" height="512" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="12" cy="7" r="4" stroke="#4B5563" stroke-width="2"/>
-  <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="#4B5563" stroke-width="2" stroke-linecap="round"/>
+<svg
+  width="512"
+  height="512"
+  viewBox="0 0 128 128"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <!-- Shkrirja e lehtë blu -->
+    <linearGradient id="bgGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38BDF8"/>   <!-- blu e çelët -->
+      <stop offset="100%" stop-color="#1D4ED8"/> <!-- blu pak me e errët -->
+    </linearGradient>
+  </defs>
+
+  <!-- Sfond me gradient -->
+  <rect
+    x="0"
+    y="0"
+    width="128"
+    height="128"
+    rx="28"
+    fill="url(#bgGradient)"
+  />
+
+  <!-- Koka e avatarit -->
+  <circle
+    cx="64"
+    cy="44"
+    r="20"
+    stroke="white"
+    stroke-width="6"
+    fill="none"
+  />
+
+  <!-- Supet e avatarit -->
+  <path
+    d="M32 96C32 78.327 46.327 64 64 64C81.673 64 96 78.327 96 96"
+    stroke="white"
+    stroke-width="6"
+    stroke-linecap="round"
+    fill="none"
+  />
 </svg>
