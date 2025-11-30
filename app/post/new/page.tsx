@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+const [queryProfession, setQueryProfession] = useState("");
 
 type PostType = "seeking" | "offering";
 type WorkTime = "full_time" | "part_time" | "";
@@ -456,24 +457,78 @@ export default function NewPostPage() {
                 <label style={{ fontWeight: 600, fontSize: 13 }}>
                   Profesioni *
                 </label>
-                <select
-                  value={profession}
-                  onChange={(e) => setProfession(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "10px 12px",
-                    borderRadius: 10,
-                    border: "1px solid #d1d5db",
-                    fontSize: 14,
-                  }}
-                >
-                  <option value="">Zgjidh profesionin</option>
-                  {PROFESSIONS.map((p) => (
-                    <option key={p} value={p}>
-                      {p}
-                    </option>
-                  ))}
-                </select>
+                <div style={{ position: "relative" }}>
+  <input
+    type="text"
+    value={queryProfession}
+    onChange={(e) => {
+      setQueryProfession(e.target.value);
+      setProfession(e.target.value);
+    }}
+    placeholder="Shkruaj profesionin…"
+    style={{
+      width: "100%",
+      padding: "10px 12px",
+      borderRadius: 10,
+      border: "1px solid #d1d5db",
+      fontSize: 14,
+    }}
+    autoComplete="off"
+  />
+
+  {queryProfession.length > 0 && (
+    <div
+      style={{
+        position: "absolute",
+        top: "100%",
+        left: 0,
+        right: 0,
+        background: "white",
+        border: "1px solid #d1d5db",
+        borderRadius: 10,
+        marginTop: 4,
+        maxHeight: 180,
+        overflowY: "auto",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.07)",
+        zIndex: 50,
+      }}
+    >
+      {PROFESSIONS.filter((p) =>
+        p.toLowerCase().startsWith(queryProfession.toLowerCase())
+      ).map((p) => (
+        <div
+          key={p}
+          onClick={() => {
+            setProfession(p);
+            setQueryProfession(p);
+          }}
+          style={{
+            padding: "10px 12px",
+            fontSize: 14,
+            cursor: "pointer",
+          }}
+        >
+          {p}
+        </div>
+      ))}
+
+      {PROFESSIONS.filter((p) =>
+        p.toLowerCase().startsWith(queryProfession.toLowerCase())
+      ).length === 0 && (
+        <div
+          style={{
+            padding: "10px 12px",
+            fontSize: 14,
+            color: "#6b7280",
+          }}
+        >
+          Asnjë rezultat
+        </div>
+      )}
+    </div>
+  )}
+</div>
+
               </div>
 
               <div>
