@@ -44,6 +44,21 @@ export default function RootLayout({
         <footer className="max-w-6xl mx-auto px-4 py-8">
           © {YEAR} akord.al · Kërkoj punë · Ofroj punë
         </footer>
+        {/* VIP WhatsApp Support Button */}
+<a
+  href="https://wa.me/355695111179"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="fixed bottom-6 right-6 bg-white border border-gray-200 shadow-xl rounded-2xl px-4 py-3 flex items-center gap-3 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+  style={{ zIndex: 999 }}
+>
+  <img src="/whatsapp.svg" className="w-7 h-7" alt="WhatsApp" />
+  <div className="leading-tight">
+    <p className="font-semibold text-gray-800">Support</p>
+    <p className="text-sm text-gray-500 -mt-1">Na shkruani në WhatsApp</p>
+  </div>
+</a>
+
       </body>
     </html>
   );
