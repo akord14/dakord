@@ -1,0 +1,309 @@
+[33m29a6e4c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mstable-restore[m[33m)[m Fix visibility + full API fields
+[33m430bbdf[m Revert moderation route
+[33med8a2eb[m Fix visibility in API and save all post fields
+[33mc659892[m Fix visibility in API and save all post fields
+[33m38eab8c[m Remove stray comment
+[33mc493e92[m Moved queryProfession state inside component
+[33m264ce8d[m Fix missing closing div for profession section
+[33m42ede84[m Autocomplete professions
+[33mfbf37fd[m Added new default profession icon (other.svg)
+[33mfa154d9[m Fix homepage posts query
+[33m8edaa7c[m Added visibility badge in admin moderation
+[33m9919fd9[m Added visibility + privacy options + optional age
+[33m769af07[m Fix slug URL
+[33m37ef32d[m fix: slug + include status
+[33m841f328[m slug fix
+[33mdda7447[m Fix favicon paths
+[33m3ddd1a9[m Updated header logo
+[33mda99e7a[m Updated all logo files
+[33mec70ba6[m Fix ContactActions import
+[33m14b1859[m Add slug route page
+[33mb83dc4d[m Remove old /post/[id] route
+[33m5fffcad[m Remove old /post/[id] route
+[33m7ef13f0[m Add slug field to Post types and fix post links
+[33m7aeab7f[m Fix layout metadata + favicon setup
+[33m623adb9[m Added image support on homepage and post details
+[33m9cc060c[m Admin panel - added image support
+[33m194bbb2[m Fix create post form: add payment fields & image handling
+[33m7d7215f[m Restore working route.ts
+[33m4edda87[m Restore stable post endpoint
+[33ma93eb01[m Fix API route posts
+[33m298914b[m Fix API route - moved back to /api/posts
+[33m7679527[m Restore stable post API
+[33m909f472[m Rollback to working version
+[33m5a606eb[m Fix API endpoint folder
+[33mfda51ce[m Enable image upload with Supabase Storage
+[33mf561c48[m Fix image upload with Supabase Storage
+[33m8e26615[m Fixed photo upload with Supabase Storage
+[33mb4acb47[m Upload foto me Supabase Storage te post-images
+[33m9760940[m Add image upload to new post form
+[33mc9c2c84[m Foto upload
+[33m0570864[m Stilova butonat e kategorive (super të butë) në Home Page
+[33m6d13d64[m Stilizova 4 butonat me gradient blu super të butë
+[33ma626f08[m Shtova butonin Kthehu mbrapa te /post/new
+[33md7f11ba[m Shtova butonin Kthehu mbrapa te faqja e postimit
+[33mcdfa6fe[m Shtova kategorite full time dhe part time ne homepage
+[33m3e5891f[m Restore old /post/new form (c170b7f)
+[33m25d26e2[m Rollback to stable version
+[33m214e38d[m Add full create-post form to /post/new
+[33m9c02b76[m Fix post list page props any
+[33m1423f4b[m Fix page.tsx props
+[33m1fabff4[m Fix Next 15 searchParams implementation
+[33m4aa1423[m Fix ProfessionIcon import path
+[33mc2216c1[m Fix posts page props for Next 15
+[33ma28490a[m Fix PageProps for Next.js 15
+[33m60ae395[m Fix PageProps type compatibility for Vercel
+[33m2399f54[m trigger deploy
+[33m117d176[m Fix PageProps for Next 15
+[33m6571ea1[m Fix PageProps for Vercel
+[33m00c460a[m Fix post list page
+[33mdfd1783[m Fix ProfessionIcon import
+[33m5b9dada[m Fix /post page types and ProfessionIcon import
+[33me01fcec[m Fix ProfessionIcon imports correct paths
+[33me333d88[m Fix page.tsx with getPosts
+[33m001e601[m Fix searchParams error
+[33m12c767f[m update
+[33mfe18764[m Fix posts page for Next 15 + ProfessionIcon
+[33m26fc91b[m Fix new post page
+[33m5e15cf2[m Fix posts page
+[33m6de57af[m Fix ProfessionIcon import path
+[33ma3f32ff[m Fix import path for ProfessionIcon
+[33m2316e8c[m Fix ProfessionIcon path
+[33m7fdd2f2[m Fix ProfessionIcon import paths
+[33m584a9fe[m Update ProfessionIcon import and fix build
+[33m8120898[m Fix posts page searchParams typing
+[33me97ce02[m Fix searchParams type for posts page
+[33m5a2a3b5[m Fix searchParams type for posts page
+[33mcab6c93[m Fix ProfessionIcon import path
+[33md85f86f[m Fix posts page filters for Next 15
+[33mdd57cb1[m Rregullim home page + filtrat post
+[33mbe49a88[m Filtro postimet sipas type dhe work_time te faqja /post
+[33mead3358[m Shto moshen dhe orarin e punes te krijimi i postimit
+[33m45bd1bd[m Final header alignment: logo left, button right
+[33mfef6243[m Homepage header with logo and no top navbar
+[33m1d4adf7[m Refine hero section on homepage
+[33mdb753f2[m Fix slogan size for mobile
+[33m988c431[m Update homepage slogan
+[33md445740[m Update logo size
+[33me90fbe6[m Update layout with new Akord logo in header
+[33mae9dbec[m Use new Akord icon in header
+[33m1161739[m Revalidate home and posts list after deleting a post
+[33m123a395[m Fix delete button by moving to client component
+[33m7d519b6[m Show all posts in admin moderation
+[33m2d0d9ad[m Added delete post functionality in admin panel
+[33m17e04de[m fix admin buttons
+[33m39c7976[m update homepage layout mepage layout
+[33mc710b7f[m updated new post page - responsive
+[33m6ba1f0c[m Add profession icons on homepage
+[33mb2bd7ed[m Ignore TS prop type for ApproveButtons in admin moderation
+[33md8b5de6[m Fix Supabase typing for Vercel build (remove generic types)
+[33m1e56f74[m Fix Supabase typing for Vercel build
+[33mf9a5b90[m Use anon Supabase client in /admin/moderation to fix Vercel build
+[33ma7e676f[m Add copy contact button on post page
+[33m39f8e15[m Remove old admin moderation route causing Vercel build errors
+[33md94dfba[m Fix Supabase from() typing for Vercel build
+[33mb9f42f6[m Add final post detail page
+[33m2d58eca[m Fix Next.js config to enable dynamic routing
+[33mc9f6b24[m Add static /post/test route for debug
+[33m3f5d088[m Disable vercel.json and middleware for routing test
+[33m727c410[m Ultra simple test PostPage
+[33m7be43d9[m Add simple test PostPage component
+[33mdb606aa[m Test static PostPage route
+[33m9060acc[m Test post detail page without notFound
+[33m44a1777[m Fix post detail page JSX
+[33md360b75[m Relax PostPage params typing for Vercel build
+[33mac06ee6[m Fix post page: dynamic SSR + Supabase client fix
+[33mfdeba6f[m Add password gate to /admin
+[33m621619c[m Type fix: PROF_TO_IMG as Record<string,string>
+[33m2e3b4e3[m Fix imageSrc single-line assignment
+[33m1192918[m Fix imageSrc profession mapping
+[33m9d28442[m Updated icons + professions + contact UI
+[33mf8fdb4e[m Handle moderation errors without crashing page
+[33mfa32f8d[m Moderate posts directly in list
+[33m78a20b2[m Use simple test page for moderation detail
+[33m64e360e[m Simplify admin home page
+[33m7d68907[m Fix moderation admin page
+[33m197bb81[m Fix moderation list link to admin detail
+[33m9096d70[m Fix moderation list link to admin detail page
+[33md849c1b[m Loosen types for moderation detail page params
+[33m3c842b5[m Fix moderation detail page types and stub approve-buttons
+[33mb743352[m Fix admin moderation, add universal action + clean supabaseAdmin
+[33meacf556[m Loosen params typing for admin detail page
+[33m2cbc3a3[m Fix page.tsx for admin moderation
+[33me6ee634[m Add missing approve-buttons component
+[33mcfe483a[m Fix ApproveButtons import path
+[33m67d75e0[m Fix params typing for post detail
+[33m3d750b6[m Fix admin moderation detail params typing
+[33m047cb64[m New homepage, post form & admin moderation panel
+[33mbf7d326[m Add admin variables
+[33mc20e41e[m Fix: remove export from server action
+[33me38e47a[m Fix admin moderation: approve/refuse working + cleaned forms
+[33m07691f5[m Relax admin page searchParams typing
+[33mbc0cf53[m Fix admin page searchParams type
+[33m4d2afdd[m Add admin login + full moderation panel
+[33m4c9bafa[m Updated professions icons + success page + post cards
+[33mb163c07[m fix: change site name Dakord.al to Akord.al
+[33m25dcce6[m fix: ensure app root rewrite for vercel
+[33mf68c10f[m fix: next15 cookieStore await
+[33mddce478[m fix: supabase server function clean
+[33mcf48b3a[m fix: export homepage properly
+[33m81d6036[m feat: add homepage and supabase fixes
+[33m9a0ea92[m feat: homepage /
+[33mc5e8523[m fix(api): dynamic Supabase client for /api/posts + envs
+[33m130b3e8[m fix: supabase dynamic init
+[33m66aed6a[m fix: supabase dynamic init
+[33mefb2618[m [33m29a6e4c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mstable-restore[m[33m)[m Fix visibility + full API fields
+[33m430bbdf[m Revert moderation route
+[33med8a2eb[m Fix visibility in API and save all post fields
+[33mc659892[m Fix visibility in API and save all post fields
+[33m38eab8c[m Remove stray comment
+[33mc493e92[m Moved queryProfession state inside component
+[33m264ce8d[m Fix missing closing div for profession section
+[33m42ede84[m Autocomplete professions
+[33mfbf37fd[m Added new default profession icon (other.svg)
+[33mfa154d9[m Fix homepage posts query
+[33m8edaa7c[m Added visibility badge in admin moderation
+[33m9919fd9[m Added visibility + privacy options + optional age
+[33m769af07[m Fix slug URL
+[33m37ef32d[m fix: slug + include status
+[33m841f328[m slug fix
+[33mdda7447[m Fix favicon paths
+[33m3ddd1a9[m Updated header logo
+[33mda99e7a[m Updated all logo files
+[33mec70ba6[m Fix ContactActions import
+[33m14b1859[m Add slug route page
+[33mb83dc4d[m Remove old /post/[id] route
+[33m5fffcad[m Remove old /post/[id] route
+[33m7ef13f0[m Add slug field to Post types and fix post links
+[33m7aeab7f[m Fix layout metadata + favicon setup
+[33m623adb9[m Added image support on homepage and post details
+[33m9cc060c[m Admin panel - added image support
+[33m194bbb2[m Fix create post form: add payment fields & image handling
+[33m7d7215f[m Restore working route.ts
+[33m4edda87[m Restore stable post endpoint
+[33ma93eb01[m Fix API route posts
+[33m298914b[m Fix API route - moved back to /api/posts
+[33m7679527[m Restore stable post API
+[33m909f472[m Rollback to working version
+[33m5a606eb[m Fix API endpoint folder
+[33mfda51ce[m Enable image upload with Supabase Storage
+[33mf561c48[m Fix image upload with Supabase Storage
+[33m8e26615[m Fixed photo upload with Supabase Storage
+[33mb4acb47[m Upload foto me Supabase Storage te post-images
+[33m9760940[m Add image upload to new post form
+[33mc9c2c84[m Foto upload
+[33m0570864[m Stilova butonat e kategorive (super të butë) në Home Page
+[33m6d13d64[m Stilizova 4 butonat me gradient blu super të butë
+[33ma626f08[m Shtova butonin Kthehu mbrapa te /post/new
+[33md7f11ba[m Shtova butonin Kthehu mbrapa te faqja e postimit
+[33mcdfa6fe[m Shtova kategorite full time dhe part time ne homepage
+[33m3e5891f[m Restore old /post/new form (c170b7f)
+[33m25d26e2[m Rollback to stable version
+[33m214e38d[m Add full create-post form to /post/new
+[33m9c02b76[m Fix post list page props any
+[33m1423f4b[m Fix page.tsx props
+[33m1fabff4[m Fix Next 15 searchParams implementation
+[33m4aa1423[m Fix ProfessionIcon import path
+[33mc2216c1[m Fix posts page props for Next 15
+[33ma28490a[m Fix PageProps for Next.js 15
+[33m60ae395[m Fix PageProps type compatibility for Vercel
+[33m2399f54[m trigger deploy
+[33m117d176[m Fix PageProps for Next 15
+[33m6571ea1[m Fix PageProps for Vercel
+[33m00c460a[m Fix post list page
+[33mdfd1783[m Fix ProfessionIcon import
+[33m5b9dada[m Fix /post page types and ProfessionIcon import
+[33me01fcec[m Fix ProfessionIcon imports correct paths
+[33me333d88[m Fix page.tsx with getPosts
+[33m001e601[m Fix searchParams error
+[33m12c767f[m update
+[33mfe18764[m Fix posts page for Next 15 + ProfessionIcon
+[33m26fc91b[m Fix new post page
+[33m5e15cf2[m Fix posts page
+[33m6de57af[m Fix ProfessionIcon import path
+[33ma3f32ff[m Fix import path for ProfessionIcon
+[33m2316e8c[m Fix ProfessionIcon path
+[33m7fdd2f2[m Fix ProfessionIcon import paths
+[33m584a9fe[m Update ProfessionIcon import and fix build
+[33m8120898[m Fix posts page searchParams typing
+[33me97ce02[m Fix searchParams type for posts page
+[33m5a2a3b5[m Fix searchParams type for posts page
+[33mcab6c93[m Fix ProfessionIcon import path
+[33md85f86f[m Fix posts page filters for Next 15
+[33mdd57cb1[m Rregullim home page + filtrat post
+[33mbe49a88[m Filtro postimet sipas type dhe work_time te faqja /post
+[33mead3358[m Shto moshen dhe orarin e punes te krijimi i postimit
+[33m45bd1bd[m Final header alignment: logo left, button right
+[33mfef6243[m Homepage header with logo and no top navbar
+[33m1d4adf7[m Refine hero section on homepage
+[33mdb753f2[m Fix slogan size for mobile
+[33m988c431[m Update homepage slogan
+[33md445740[m Update logo size
+[33me90fbe6[m Update layout with new Akord logo in header
+[33mae9dbec[m Use new Akord icon in header
+[33m1161739[m Revalidate home and posts list after deleting a post
+[33m123a395[m Fix delete button by moving to client component
+[33m7d519b6[m Show all posts in admin moderation
+[33m2d0d9ad[m Added delete post functionality in admin panel
+[33m17e04de[m fix admin buttons
+[33m39c7976[m update homepage layout mepage layout
+[33mc710b7f[m updated new post page - responsive
+[33m6ba1f0c[m Add profession icons on homepage
+[33mb2bd7ed[m Ignore TS prop type for ApproveButtons in admin moderation
+[33md8b5de6[m Fix Supabase typing for Vercel build (remove generic types)
+[33m1e56f74[m Fix Supabase typing for Vercel build
+[33mf9a5b90[m Use anon Supabase client in /admin/moderation to fix Vercel build
+[33ma7e676f[m Add copy contact button on post page
+[33m39f8e15[m Remove old admin moderation route causing Vercel build errors
+[33md94dfba[m Fix Supabase from() typing for Vercel build
+[33mb9f42f6[m Add final post detail page
+[33m2d58eca[m Fix Next.js config to enable dynamic routing
+[33mc9f6b24[m Add static /post/test route for debug
+[33m3f5d088[m Disable vercel.json and middleware for routing test
+[33m727c410[m Ultra simple test PostPage
+[33m7be43d9[m Add simple test PostPage component
+[33mdb606aa[m Test static PostPage route
+[33m9060acc[m Test post detail page without notFound
+[33m44a1777[m Fix post detail page JSX
+[33md360b75[m Relax PostPage params typing for Vercel build
+[33mac06ee6[m Fix post page: dynamic SSR + Supabase client fix
+[33mfdeba6f[m Add password gate to /admin
+[33m621619c[m Type fix: PROF_TO_IMG as Record<string,string>
+[33m2e3b4e3[m Fix imageSrc single-line assignment
+[33m1192918[m Fix imageSrc profession mapping
+[33m9d28442[m Updated icons + professions + contact UI
+[33mf8fdb4e[m Handle moderation errors without crashing page
+[33mfa32f8d[m Moderate posts directly in list
+[33m78a20b2[m Use simple test page for moderation detail
+[33m64e360e[m Simplify admin home page
+[33m7d68907[m Fix moderation admin page
+[33m197bb81[m Fix moderation list link to admin detail
+[33m9096d70[m Fix moderation list link to admin detail page
+[33md849c1b[m Loosen types for moderation detail page params
+[33m3c842b5[m Fix moderation detail page types and stub approve-buttons
+[33mb743352[m Fix admin moderation, add universal action + clean supabaseAdmin
+[33meacf556[m Loosen params typing for admin detail page
+[33m2cbc3a3[m Fix page.tsx for admin moderation
+[33me6ee634[m Add missing approve-buttons component
+[33mcfe483a[m Fix ApproveButtons import path
+[33m67d75e0[m Fix params typing for post detail
+[33m3d750b6[m Fix admin moderation detail params typing
+[33m047cb64[m New homepage, post form & admin moderation panel
+[33mbf7d326[m Add admin variables
+[33mc20e41e[m Fix: remove export from server action
+[33me38e47a[m Fix admin moderation: approve/refuse working + cleaned forms
+[33m07691f5[m Relax admin page searchParams typing
+[33mbc0cf53[m Fix admin page searchParams type
+[33m4d2afdd[m Add admin login + full moderation panel
+[33m4c9bafa[m Updated professions icons + success page + post cards
+[33mb163c07[m fix: change site name Dakord.al to Akord.al
+[33m25dcce6[m fix: ensure app root rewrite for vercel
+[33mf68c10f[m fix: next15 cookieStore await
+[33mddce478[m fix: supabase server function clean
+[33mcf48b3a[m fix: export homepage properly
+[33m81d6036[m feat: add homepage and supabase fixes
+[33m9a0ea92[m feat: homepage /
+[33mc5e8523[m fix(api): dynamic Supabase client for /api/posts + envs
+[33m130b3e8[m fix: supabase dynamic init
+[33m66aed6a[m fix: supabase dynamic init
+[33mefb2618[m 
