@@ -242,6 +242,7 @@ export default function NewPostPage() {
           payment_amount: salary || null,
           payment_currency: salaryCurrency || null,
           profession: profession || null,
+          
         }),
       });
 
