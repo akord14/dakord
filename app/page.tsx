@@ -205,9 +205,17 @@ export default async function HomePage() {
                       </span>
 
                       {post.city && (
-                        <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-0.5 text-[11px] text-slate-700">
-                          {post.city}
-                        </span>
+                        <span
+  className="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium"
+  style={{
+    background: "linear-gradient(90deg, #00A3FF 0%, #0063FF 100%)",
+    color: "white",
+    boxShadow: "0px 2px 6px rgba(0,0,0,0.15)",
+  }}
+>
+  {post.city}
+</span>
+
                       )}
                     </div>
 
