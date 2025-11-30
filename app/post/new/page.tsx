@@ -2,8 +2,6 @@
 
 import { FormEvent, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
-const [queryProfession, setQueryProfession] = useState("");
-
 type PostType = "seeking" | "offering";
 type WorkTime = "full_time" | "part_time" | "";
 
@@ -110,6 +108,8 @@ const AGES = Array.from({ length: 53 }, (_, i) => 18 + i);
 // COMPONENT
 // --------------------------------------------------
 export default function NewPostPage() {
+ const [queryProfession, setQueryProfession] = useState("");
+
   const [type, setType] = useState<PostType>("seeking");
   const [visibility, setVisibility] = useState<"public" | "private">("public");
 
