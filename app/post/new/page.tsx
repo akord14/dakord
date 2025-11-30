@@ -528,7 +528,7 @@ export default function NewPostPage() {
     </div>
   )}
 </div>
-</div>   // mbyll seksionin e profesionit
+</div>   {/* mbyll seksionin e profesionit */}
 
               <div>
                 <label style={{ fontWeight: 600, fontSize: 13 }}>
