@@ -26,9 +26,7 @@ function getSupabaseAnon() {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !key) {
-    throw new Error(
-      "Mungon NEXT_PUBLIC_SUPABASE_URL ose NEXT_PUBLIC_SUPABASE_ANON_KEY"
-    );
+    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or ANON_KEY");
   }
 
   return createClient(url, key);
@@ -50,7 +48,7 @@ export default async function AdminModerationPage() {
   };
 
   if (error) {
-    console.error("Supabase error në /admin/moderation:", error.message);
+    console.error("Supabase error:", error.message);
     return (
       <main className="max-w-3xl mx-auto px-4 py-10">
         <h1 className="text-2xl font-semibold mb-4">Moderimi i postimeve</h1>
@@ -68,7 +66,9 @@ export default async function AdminModerationPage() {
       <h1 className="text-2xl font-semibold mb-4">Moderimi i postimeve</h1>
 
       {posts.length === 0 ? (
-        <p className="text-sm text-gray-500">Nuk ka postime në pritje për moderim.</p>
+        <p className="text-sm text-gray-500">
+          Nuk ka postime në pritje për moderim.
+        </p>
       ) : (
         <ul className="space-y-4">
           {posts.map((post) => (
@@ -76,7 +76,7 @@ export default async function AdminModerationPage() {
               key={post.id}
               className="border border-gray-200 rounded-2xl p-4 bg-white shadow-sm"
             >
-              {/* Foto e postimit */}
+              {/* FOTO */}
               {post.image && (
                 <img
                   src={post.image}
@@ -90,29 +90,32 @@ export default async function AdminModerationPage() {
                   <span className="inline-flex items-center rounded-full border px-3 py-0.5 text-[11px] font-medium uppercase tracking-wide mb-1">
                     {post.type === "offering" ? "Ofroj punë" : "Kërkoj punë"}
                   </span>
-                  <h2 className="font-semibold">{post.title}</h2>
-                {/* BADGE për publik / konfidencial */}
-<div className="mt-1 mb-2">
-  {post.visibility === "private" ? (
-    <span className="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-lg">
-      Konfidencial
-    </span>
-  ) : (
-    <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg">
-      Publik
-    </span>
-  )}
-</div>
 
+                  <h2 className="font-semibold">{post.title}</h2>
+
+                  {/* BADGE visibility */}
+                  <div className="mt-1 mb-2">
+                    {post.visibility === "private" ? (
+                      <span className="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-lg">
+                        Konfidencial
+                      </span>
+                    ) : (
+                      <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg">
+                        Publik
+                      </span>
+                    )}
+                  </div>
                 </div>
 
+                {/* BUTTONS */}
                 <div className="flex gap-2">
-                  {/* APPROVE / REFUSE */}
-                  {/* @ts-ignore */}
-                  <ApproveButtons postId={post.id} />
+                  {post.status === "pending" && (
+                    <ApproveButtons postId={post.id} />
+                  )}
 
-                  {/* DELETE BUTTON */}
-                  <DeleteButton id={post.id} />
+                  {post.status !== "pending" && (
+                    <DeleteButton id={post.id} />
+                  )}
                 </div>
               </div>
 
