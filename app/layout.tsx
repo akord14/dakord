@@ -1,6 +1,8 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
+import { Analytics } from '@vercel/analytics/react'
+
 
 const PROF_TO_IMG: Record<string, string> = {
   "Shofer": "driver.svg",
@@ -58,7 +60,8 @@ export default function RootLayout({
     <p className="text-sm text-gray-500 -mt-1">Na shkruani në WhatsApp</p>
   </div>
 </a>
-
+{/* ➜ SHTOJE KËTU  */}
+<Analytics />
       </body>
     </html>
   );
