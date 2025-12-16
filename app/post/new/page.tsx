@@ -247,13 +247,13 @@ export default function NewPostPage() {
         }),
       });
 
-      const result = await response.json();
+     const result = await response.json().catch(() => ({} as any));
 
-      if (!response.ok) {
-        console.error("API error:", response);
-        setErrorMsg("Gabim gjatë ruajtjes së postimit.");
-        return;
-      }
+if (!response.ok) {
+  console.error("API error:", result);
+  setErrorMsg(result?.error || "Gabim gjatë ruajtjes së postimit.");
+  return;
+}
 
       setSuccessMsg("Postimi u dërgua për aprovim!");
 
