@@ -3,6 +3,31 @@ import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
 import ProfessionIcon from "../components/ProfessionIcon";
 import PostListClient from "../components/PostListClient";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Akord.al – Punë & Punëtorë në Shqipëri | Kërkoj & Ofroj Punë",
+  description:
+    "Akord.al është platformë shqiptare për lidhjen e punëkërkuesve me punëdhënës. Posto falas: Kërkoj Punë ose Ofroj Punë.",
+  keywords: [
+    "punë",
+    "kërkoj punë",
+    "ofroj punë",
+    "punëtorë",
+    "vende pune",
+    "shqipëri",
+    "akord.al",
+  ],
+  openGraph: {
+    title: "Akord.al – Punë & Punëtorë në Shqipëri",
+    description:
+      "Platformë moderne për punëkërkues dhe punëdhënës në Shqipëri. Postime të verifikuara.",
+    url: "https://akord.al",
+    siteName: "Akord.al",
+    locale: "sq_AL",
+    type: "website",
+  },
+};
 
 type Post = {
   id: string;
