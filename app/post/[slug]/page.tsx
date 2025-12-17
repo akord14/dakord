@@ -6,8 +6,10 @@ import type { Metadata } from "next";
 
 
 export async function generateMetadata(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
+  const { slug } = await params;
+
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -16,7 +18,7 @@ export async function generateMetadata(
   const { data: post } = await supabase
     .from("posts")
     .select("title, description, type")
-    .eq("slug", params.slug)
+    .eq("slug", slug)
     .single();
 
   if (!post) {
@@ -39,7 +41,7 @@ export async function generateMetadata(
     openGraph: {
       title: post.title,
       description: shortDescription,
-      url: `https://akord.al/post/${params.slug}`,
+      url: `https://akord.al/post/${slug}`,
       siteName: "Akord.al",
       locale: "sq_AL",
       type: "article",
@@ -47,14 +49,18 @@ export async function generateMetadata(
   };
 }
 
-export default async function PostPage(props: any) {
-  const params = await props.params;
-  const slug = params.slug;
+export default async function PostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
+
 
 
   // 🔥 Marrim postimin sipas SLUG
