@@ -2,8 +2,50 @@
 import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
 import ContactActions from "./ContactActions";
+import type { Metadata } from "next";
 
 
+export async function generateMetadata(
+  { params }: { params: { slug: string } }
+): Promise<Metadata> {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  const { data: post } = await supabase
+    .from("posts")
+    .select("title, description, type")
+    .eq("slug", params.slug)
+    .single();
+
+  if (!post) {
+    return {
+      title: "Postimi nuk u gjet | Akord.al",
+      description: "Postimi që kërkoni nuk ekziston.",
+    };
+  }
+
+  const shortDescription =
+    post.description.length > 160
+      ? post.description.slice(0, 160) + "..."
+      : post.description;
+
+  return {
+    title: `${post.title} – ${
+      post.type === "offering" ? "Ofroj Punë" : "Kërkoj Punë"
+    } | Akord.al`,
+    description: shortDescription,
+    openGraph: {
+      title: post.title,
+      description: shortDescription,
+      url: `https://akord.al/post/${params.slug}`,
+      siteName: "Akord.al",
+      locale: "sq_AL",
+      type: "article",
+    },
+  };
+}
 
 export default async function PostPage(props: any) {
   const params = await props.params;
