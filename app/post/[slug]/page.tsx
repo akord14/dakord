@@ -3,6 +3,8 @@ import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
 import ContactActions from "./ContactActions";
 import type { Metadata } from "next";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 
 export async function generateMetadata(
@@ -23,7 +25,7 @@ export async function generateMetadata(
 
   if (!post) {
     return {
-      title: "Postimi nuk u gjet | Akord.al",
+      title: "Postimi nuk u gjet ",
       description: "Postimi që kërkoni nuk ekziston.",
     };
   }
@@ -36,7 +38,7 @@ export async function generateMetadata(
   return {
     title: `${post.title} – ${
       post.type === "offering" ? "Ofroj Punë" : "Kërkoj Punë"
-    } | Akord.al`,
+    } `,
     description: shortDescription,
     openGraph: {
       title: post.title,
