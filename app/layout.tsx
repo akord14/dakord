@@ -19,7 +19,10 @@ const PROF_TO_IMG: Record<string, string> = {
 };
 
 export const metadata = {
-  title: "Akord.al",
+  title: {
+  default: "Akord.al",
+  template: "%s | Akord.al",
+},
   description:
     "Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë.",
   icons: {
