@@ -66,7 +66,9 @@ export default function ServicesStories({ whatsappNumber }: Props) {
     `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
 
   return (
-    <section className="w-full">
+    <section className="w-full mx-auto max-w-5xl px-4 pt-4">
+  <div className="rounded-2xl bg-white/70 backdrop-blur border border-gray-200 p-4 shadow-sm"></div>
+
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Shërbimet tona</h2>
         <span className="text-sm text-gray-500">Rrëshqit →</span>
@@ -79,7 +81,7 @@ export default function ServicesStories({ whatsappNumber }: Props) {
             onClick={() => openService(s)}
             className="flex flex-col items-center shrink-0"
           >
-            <div className="w-16 h-16 rounded-full overflow-hidden border border-gray-200 shadow-sm">
+            <div className="w-20 h-20 rounded-full overflow-hidden border border-gray-200 shadow-sm">
               {/* cover */}
               <img
                 src={s.cover}
@@ -88,7 +90,7 @@ export default function ServicesStories({ whatsappNumber }: Props) {
                 loading="lazy"
               />
             </div>
-            <div className="mt-2 text-xs font-medium text-gray-700 max-w-[72px] text-center line-clamp-2">
+            <div className="mt-2 text-sm font-medium text-gray-700 max-w-[72px] text-center line-clamp-2">
               {s.title}
             </div>
           </button>
@@ -142,6 +144,7 @@ export default function ServicesStories({ whatsappNumber }: Props) {
             </div>
           </div>
         </div>
+    
       )}
     </section>
   );
