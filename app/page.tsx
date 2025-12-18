@@ -91,6 +91,10 @@ export default async function HomePage() {
     <main className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
       <div className="mx-auto max-w-5xl px-4 py-6 md:py-10">
 
+        {/* SHËRBIMET TONA – STORIES (FIX SIPËR) */}
+<ServicesStories whatsappNumber="355695111179" />
+
+
         {/* HEADER */}
         <header className="mb-8 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
@@ -181,9 +185,7 @@ export default async function HomePage() {
             KËRKO
           </Link>
         </section>
-        {/* SHËRBIMET TONA (Stories) */}
-<ServicesStories whatsappNumber="355695111179" />
-
+        
 {/* LISTA E POSTIMEVE */}
 <PostListClient initialPosts={latestPosts} />
         
