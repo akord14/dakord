@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://www.akord.al/sitemap.xml",
+    sitemap: "https://akord.al/sitemap.xml",
   };
 }
