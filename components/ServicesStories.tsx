@@ -18,12 +18,13 @@ export default function ServicesStories({ whatsappNumber }: Props) {
   const services = useMemo<Service[]>(
     () => [
       {
-        id: "web-design",
-        title: "Web Design",
-        cover: "/images/services/web-design.jpg",
-        poster: "/images/services/web-design.jpg",
-        waText: "Përshëndetje, dua shërbimin Web Design.",
-      },
+  id: "menaxhim-digjital",
+  title: "Menaxhim Digjital",
+  cover: "/images/services/menaxhim-digjital.jpg",
+  poster: "/images/services/menaxhim-digjital.jpg",
+  waText: "Përshëndetje, jam i interesuar për shërbimin “Menaxhim Digjital” dhe do të doja një ofertë.",
+},
+
       {
         id: "logo",
         title: "Logo",
