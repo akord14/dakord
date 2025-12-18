@@ -1,3 +1,4 @@
+import ServicesStories from "@/components/ServicesStories";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
@@ -180,6 +181,9 @@ export default async function HomePage() {
             KËRKO
           </Link>
         </section>
+        {/* SHËRBIMET TONA (Stories) */}
+<ServicesStories whatsappNumber="355695111179" />
+
 {/* LISTA E POSTIMEVE */}
 <PostListClient initialPosts={latestPosts} />
         
