@@ -26,12 +26,13 @@ export default function ServicesStories({ whatsappNumber }: Props) {
 },
 
       {
-        id: "logo",
-        title: "Logo",
-        cover: "/images/services/logo.jpg",
-        poster: "/images/services/logo.jpg",
-        waText: "Përshëndetje, dua shërbimin Logo.",
-      },
+  id: "sisteme-sigurie",
+  title: "Sisteme Sigurie",
+  cover: "/images/services/sisteme-sigurie.jpg",
+  poster: "/images/services/sisteme-sigurie.jpg",
+  waText: "Përshëndetje, jam i interesuar për shërbimin Sisteme Sigurie. A mund të më jepni një ofertë?",
+}
+,
       {
         id: "photoshop",
         title: "Modifikim me Photoshop",
