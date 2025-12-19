@@ -160,10 +160,18 @@ export default async function HomePage() {
           <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
         </div>
 
-        {/* SERVICES (poshtë, premium) */}
-        <div className="mb-12">
-          <ServicesStories whatsappNumber="355695111179" />
-        </div>
+        {/* DIVIDER PREMIUM */}
+<div className="my-16">
+  <div className="h-px w-full bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
+</div>
+
+{/* SERVICES – PREMIUM */}
+<ServicesStories whatsappNumber="355695111179" />
+
+<div className="my-16">
+  <div className="h-px w-full bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
+</div>
+
 
         {/* POSTIMET E FUNDIT */}
         <section className="mb-4 flex flex-wrap items-center justify-between gap-3">

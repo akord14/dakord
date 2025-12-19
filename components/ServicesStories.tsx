@@ -1,182 +1,84 @@
-"use client";
-
-import { useMemo, useState } from "react";
-
-type Service = {
-  id: string;
-  title: string;
-  cover: string;
-  poster: string;
-  waText: string;
-};
+import Image from "next/image";
 
 type Props = {
-  whatsappNumber: string;
+  whatsappNumber?: string;
 };
 
+const services = [
+  {
+    title: "Software Development",
+    description: "Custom web and mobile applications built for performance and scalability.",
+    image: "/services/software-development.jpg",
+    message: "Hi! I'm interested in your Software Development service.",
+  },
+  {
+    title: "Security Systems",
+    description: "Advanced security solutions including alarms, access control and fire systems.",
+    image: "/services/security-systems.jpg",
+    message: "Hi! I'm interested in your Security Systems service.",
+  },
+  {
+    title: "Monitoring Systems",
+    description: "CCTV, IP cameras and smart monitoring for homes and businesses.",
+    image: "/services/monitoring-systems.jpg",
+    message: "Hi! I'm interested in your Monitoring Systems service.",
+  },
+];
+
 export default function ServicesStories({ whatsappNumber }: Props) {
-  const services = useMemo<Service[]>(
-    () => [
-      {
-        id: "menaxhim-digjital",
-        title: "Menaxhim Digjital",
-        cover: "/images/services/menaxhim-digjital.jpg",
-        poster: "/images/services/menaxhim-digjital.jpg",
-        waText:
-          "Përshëndetje, jam i interesuar për shërbimin “Menaxhim Digjital” dhe do të doja një ofertë.",
-      },
-      {
-        id: "sisteme-sigurie",
-        title: "Sisteme Sigurie",
-        cover: "/images/services/sisteme-sigurie.jpg",
-        poster: "/images/services/sisteme-sigurie.jpg",
-        waText:
-          "Përshëndetje, jam i interesuar për shërbimin Sisteme Sigurie. A mund të më jepni një ofertë?",
-      },
-      {
-        id: "sisteme-monitorimi",
-        title: "Sisteme Monitorimi",
-        cover: "/images/services/sisteme-monitorimi.jpg",
-        poster: "/images/services/sisteme-monitorimi.jpg",
-        waText:
-          "Përshëndetje, jam i interesuar për shërbimin Sisteme Monitorimi. A mund të më dërgoni më shumë informacion dhe një ofertë?",
-      },
-      {
-        id: "graphic-design",
-        title: "Graphic Design",
-        cover: "/images/services/graphic-design.jpg",
-        poster: "/images/services/graphic-design.jpg",
-        waText:
-          "Hello, I’m interested in your Graphic Design services. Could you please share more details and examples of your work?",
-      },
-      {
-        id: "software-development",
-        title: "Software Development",
-        cover: "/images/services/software-development.jpg",
-        poster: "/images/services/software-development.jpg",
-        waText:
-          "Hello, I’m interested in your Software Development services. Could you please share more details about solutions and pricing?",
-      },
-    ],
-    []
-  );
-
-  const [open, setOpen] = useState(false);
-  const [active, setActive] = useState<Service | null>(null);
-
-  const openService = (s: Service) => {
-    setActive(s);
-    setOpen(true);
-  };
-
-  const close = () => {
-    setOpen(false);
-    setActive(null);
-  };
-
-  const waLink = (text: string) =>
-    `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+  const waBase =
+    whatsappNumber && whatsappNumber.trim().length > 0
+      ? `https://wa.me/${whatsappNumber.replace(/\D/g, "")}`
+      : null;
 
   return (
-    <section className="w-full mx-auto max-w-5xl px-4">
-      {/* HEADER + DIVIDER (premium) */}
-      <div className="flex items-end justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
-            Shërbimet tona profesionale
-          </h2>
-          <p className="mt-1 text-sm text-slate-600">
-            Zgjidh një shërbim dhe na shkruaj direkt në WhatsApp.
-          </p>
-        </div>
-
-        <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500">
-          <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
-          Online support
-        </div>
+    <section className="max-w-7xl mx-auto px-4 py-20">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold">Professional Services</h2>
+        <p className="text-gray-500 max-w-2xl mx-auto mt-3">
+          High-quality professional services delivered by experienced specialists.
+        </p>
       </div>
 
-      <div className="mt-5 h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {services.map((service) => {
+          const waLink = waBase
+            ? `${waBase}?text=${encodeURIComponent(service.message)}`
+            : null;
 
-      {/* GRID CARDS */}
-      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-        {services.map((s) => (
-          <button
-            key={s.id}
-            onClick={() => openService(s)}
-            className="group text-left"
-          >
-            <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition group-hover:shadow-lg">
-              <div className="aspect-[4/3] w-full overflow-hidden">
-                <img
-                  src={s.cover}
-                  alt={s.title}
-                  className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-                  loading="lazy"
+          return (
+            <div
+              key={service.title}
+              className="rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl transition"
+            >
+              <div className="relative h-56">
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  className="object-cover"
                 />
               </div>
 
-              <div className="p-3">
-                <div className="text-sm font-semibold text-slate-900 leading-snug">
-                  {s.title}
-                </div>
-                <div className="mt-1 text-xs text-slate-500">
-                  Kliko për detaje
-                </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+                <p className="text-gray-600 text-sm mb-5">{service.description}</p>
+
+                {waLink && (
+                  <a
+                    href={waLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center w-full rounded-full px-5 py-3 text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition"
+                  >
+                    Request on WhatsApp
+                  </a>
+                )}
               </div>
             </div>
-          </button>
-        ))}
+          );
+        })}
       </div>
-
-      {/* MODAL */}
-      {open && active && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-          onClick={close}
-        >
-          <div
-            className="w-full max-w-md rounded-2xl bg-white shadow-xl overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="p-4 flex items-start justify-between gap-4">
-              <div>
-                <div className="text-lg font-semibold">{active.title}</div>
-                <div className="text-sm text-gray-500">
-                  Na shkruaj në WhatsApp dhe ta sjellim ofertën më të mirë.
-                </div>
-              </div>
-              <button
-                onClick={close}
-                className="px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 text-sm"
-              >
-                Mbyll
-              </button>
-            </div>
-
-            <div className="px-4">
-              <div className="rounded-2xl overflow-hidden border border-gray-200">
-                <img
-                  src={active.poster}
-                  alt={active.title}
-                  className="w-full object-cover"
-                />
-              </div>
-            </div>
-
-            <div className="p-4">
-              <a
-                href={waLink(active.waText)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center rounded-full px-5 py-3 bg-green-600 text-white font-semibold hover:bg-green-700"
-              >
-                Shkruaj në WhatsApp
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 }
