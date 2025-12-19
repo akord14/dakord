@@ -4,58 +4,59 @@ import { useMemo, useState } from "react";
 
 type Service = {
   id: string;
-  title: string;          // del sipër në modal
-  cover: string;          // rrethi (mund të jetë e njëjta foto)
-  poster: string;         // foto e madhe (template)
-  waText: string;         // mesazhi i parapërgatitur
+  title: string;
+  cover: string;
+  poster: string;
+  waText: string;
 };
 
 type Props = {
-  whatsappNumber: string; // p.sh. "35569xxxxxxx" (pa +, pa hapsira)
+  whatsappNumber: string;
 };
 
 export default function ServicesStories({ whatsappNumber }: Props) {
   const services = useMemo<Service[]>(
     () => [
       {
-  id: "menaxhim-digjital",
-  title: "Menaxhim Digjital",
-  cover: "/images/services/menaxhim-digjital.jpg",
-  poster: "/images/services/menaxhim-digjital.jpg",
-  waText: "Përshëndetje, jam i interesuar për shërbimin “Menaxhim Digjital” dhe do të doja një ofertë.",
-},
-
+        id: "menaxhim-digjital",
+        title: "Menaxhim Digjital",
+        cover: "/images/services/menaxhim-digjital.jpg",
+        poster: "/images/services/menaxhim-digjital.jpg",
+        waText:
+          "Përshëndetje, jam i interesuar për shërbimin “Menaxhim Digjital” dhe do të doja një ofertë.",
+      },
       {
-  id: "sisteme-sigurie",
-  title: "Sisteme Sigurie",
-  cover: "/images/services/sisteme-sigurie.jpg",
-  poster: "/images/services/sisteme-sigurie.jpg",
-  waText: "Përshëndetje, jam i interesuar për shërbimin Sisteme Sigurie. A mund të më jepni një ofertë?",
-}
-,
+        id: "sisteme-sigurie",
+        title: "Sisteme Sigurie",
+        cover: "/images/services/sisteme-sigurie.jpg",
+        poster: "/images/services/sisteme-sigurie.jpg",
+        waText:
+          "Përshëndetje, jam i interesuar për shërbimin Sisteme Sigurie. A mund të më jepni një ofertë?",
+      },
       {
         id: "sisteme-monitorimi",
-  title: "Sisteme Monitorimi",
-  cover: "/images/services/sisteme-monitorimi.jpg",
-  poster: "/images/services/sisteme-monitorimi.jpg",
-  waText: "Përshëndetje, jam i interesuar për shërbimin Sisteme Monitorimi. A mund të më dërgoni më shumë informacion dhe një ofertë?",
+        title: "Sisteme Monitorimi",
+        cover: "/images/services/sisteme-monitorimi.jpg",
+        poster: "/images/services/sisteme-monitorimi.jpg",
+        waText:
+          "Përshëndetje, jam i interesuar për shërbimin Sisteme Monitorimi. A mund të më dërgoni më shumë informacion dhe një ofertë?",
       },
       {
         id: "graphic-design",
-  title: "Graphic Design",
-  cover: "/images/services/graphic-design.jpg",
-  poster: "/images/services/graphic-design.jpg",
-  waText: "Hello, I’m interested in your Graphic Design services. Could you please share more details and examples of your work?",
+        title: "Graphic Design",
+        cover: "/images/services/graphic-design.jpg",
+        poster: "/images/services/graphic-design.jpg",
+        waText:
+          "Hello, I’m interested in your Graphic Design services. Could you please share more details and examples of your work?",
       },
-{
-  id: "software-development",
-  title: "Software Development",
-  cover: "/images/services/software-development.jpg",
-  poster: "/images/services/software-development.jpg",
-  waText: "Hello, I’m interested in your Software Development services. Could you please share more details about solutions and pricing?"
-}
-
-
+      {
+        id: "software-development",
+        title: "Software Development",
+        cover: "/images/services/software-development.jpg",
+        poster: "/images/services/software-development.jpg",
+        waText:
+          "Hello, I’m interested in your Software Development services. Could you please share more details about solutions and pricing?",
+      },
     ],
     []
   );
@@ -77,32 +78,52 @@ export default function ServicesStories({ whatsappNumber }: Props) {
     `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
 
   return (
-    <section className="w-full mx-auto max-w-5xl px-4 pt-4">
-  <div className="rounded-2xl bg-white/70 backdrop-blur border border-gray-200 p-4 shadow-sm"></div>
+    <section className="w-full mx-auto max-w-5xl px-4">
+      {/* HEADER + DIVIDER (premium) */}
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+            Shërbimet tona profesionale
+          </h2>
+          <p className="mt-1 text-sm text-slate-600">
+            Zgjidh një shërbim dhe na shkruaj direkt në WhatsApp.
+          </p>
+        </div>
 
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Shërbimet tona</h2>
-        <span className="text-sm text-gray-500">Rrëshqit →</span>
+        <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500">
+          <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
+          Online support
+        </div>
       </div>
 
-      <div className="mt-3 flex gap-4 overflow-x-auto pb-2">
+      <div className="mt-5 h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+
+      {/* GRID CARDS */}
+      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
         {services.map((s) => (
           <button
             key={s.id}
             onClick={() => openService(s)}
-            className="flex flex-col items-center shrink-0"
+            className="group text-left"
           >
-            <div className="w-20 h-20 rounded-full overflow-hidden border border-gray-200 shadow-sm">
-              {/* cover */}
-              <img
-                src={s.cover}
-                alt={s.title}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div className="mt-2 text-sm font-medium text-gray-700 max-w-[72px] text-center line-clamp-2">
-              {s.title}
+            <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition group-hover:shadow-lg">
+              <div className="aspect-[4/3] w-full overflow-hidden">
+                <img
+                  src={s.cover}
+                  alt={s.title}
+                  className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                  loading="lazy"
+                />
+              </div>
+
+              <div className="p-3">
+                <div className="text-sm font-semibold text-slate-900 leading-snug">
+                  {s.title}
+                </div>
+                <div className="mt-1 text-xs text-slate-500">
+                  Kliko për detaje
+                </div>
+              </div>
             </div>
           </button>
         ))}
@@ -155,7 +176,6 @@ export default function ServicesStories({ whatsappNumber }: Props) {
             </div>
           </div>
         </div>
-    
       )}
     </section>
   );

@@ -2,7 +2,6 @@ import ServicesStories from "@/components/ServicesStories";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
-import ProfessionIcon from "../components/ProfessionIcon";
 import PostListClient from "../components/PostListClient";
 import type { Metadata } from "next";
 
@@ -40,7 +39,7 @@ type Post = {
   created_at: string;
   city?: string | null;
   profession?: string | null;
-  image?: string | null;   // ➜ SHTUAM KËTË
+  image?: string | null;
   slug: string | null;
 };
 
@@ -62,11 +61,10 @@ async function getLatestPosts(): Promise<Post[]> {
 
   const { data, error } = await supabase
     .from("posts")
-  .select(
-  "id, title, slug, image, type, city, age, work_time, created_at, contact, description, status, profession"
-)
-.eq("status", "approved")
-
+    .select(
+      "id, title, slug, image, type, city, age, work_time, created_at, contact, description, status, profession"
+    )
+    .eq("status", "approved")
     .order("created_at", { ascending: false })
     .limit(6);
 
@@ -78,28 +76,16 @@ async function getLatestPosts(): Promise<Post[]> {
   return data as Post[];
 }
 
-function formatType(type: Post["type"]) {
-  if (type === "seeking") return "Kërkoj punë";
-  if (type === "offering") return "Ofroj punë";
-  return "";
-}
-
 export default async function HomePage() {
   const latestPosts = await getLatestPosts();
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
       <div className="mx-auto max-w-5xl px-4 py-6 md:py-10">
-
-        {/* SHËRBIMET TONA – STORIES (FIX SIPËR) */}
-<ServicesStories whatsappNumber="355695111179" />
-
-
         {/* HEADER */}
-        <header className="mb-8 flex items-center justify-between">
+        <header className="mb-10 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Image src="/logo.png" width={40} height={40} alt="" />
-
             <span className="text-xl font-bold tracking-tight">Akord.al</span>
           </Link>
 
@@ -111,66 +97,73 @@ export default async function HomePage() {
           </Link>
         </header>
 
-        {/* HERO */}
-        <section className="mb-8 grid gap-6 md:grid-cols-2 md:items-center">
-          <div>
-            <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 leading-snug">
-              Puna e duhur, në kohën e duhur
-            </h1>
+        {/* HERO (Punë) */}
+        <section className="mb-10 rounded-3xl bg-white border border-slate-200 shadow-sm p-6 md:p-10">
+          <div className="grid gap-8 md:grid-cols-2 md:items-center">
+            <div>
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+                Puna e duhur, në kohën e duhur
+              </h1>
 
-            <p className="mt-3 text-base text-slate-600 leading-relaxed">
-              Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë, me
-              fokus te thjeshtësia, qartësia dhe respekti për kohën tënde.
-            </p>
+              <p className="mt-4 text-base text-slate-600 leading-relaxed">
+                Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë, me
+                fokus te thjeshtësia, qartësia dhe respekti për kohën tënde.
+              </p>
 
-            <div className="flex flex-col gap-3 mt-5">
+              <div className="flex flex-col gap-3 mt-6">
+                <Link
+                  href="/post/new"
+                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90"
+                >
+                  KRIJO POSTIMIN TËND
+                </Link>
 
-              <Link
-                href="/post/new"
-                className="inline-flex items-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90"
-              >
-                KRIJO POSTIMIN TËND
-              </Link>
+                <div className="flex flex-wrap gap-3">
+                  {[
+                    { href: "/post?type=seeking", label: "KËRKOJ PUNË" },
+                    { href: "/post?type=offering", label: "OFROJ PUNË" },
+                    { href: "/post?work_time=full_time", label: "FULL TIME" },
+                    { href: "/post?work_time=part_time", label: "PART TIME" },
+                  ].map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="inline-flex items-center rounded-full px-4 py-2 text-xs font-medium 
+                      bg-gradient-to-b from-sky-50 to-white 
+                      border border-sky-100 
+                      text-slate-900 shadow-sm hover:shadow transition"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
 
-              {/* KATEGORITË */}
-              <div className="flex flex-wrap gap-3">
-
-                {/* BUTTON STYLE – SUPER I BUTË */}
-                {[
-                  { href: "/post?type=seeking", label: "KËRKOJ PUNË" },
-                  { href: "/post?type=offering", label: "OFROJ PUNË" },
-                  { href: "/post?work_time=full_time", label: "FULL TIME" },
-                  { href: "/post?work_time=part_time", label: "PART TIME" },
-                ].map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="inline-flex items-center rounded-full px-4 py-2 text-xs font-medium 
-                    bg-gradient-to-b from-sky-50 to-white 
-                    border border-sky-100 
-                    text-slate-900 shadow-sm hover:shadow transition"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-
+            {/* BOX ANËSOR */}
+            <div className="bg-[#0A1A2F] text-white p-6 rounded-2xl shadow-lg">
+              <p className="mb-3 text-sm/5 opacity-90">Përdor Akord.al për:</p>
+              <ul className="mb-3 grid list-none gap-2 text-sm">
+                <li>• Punë të dyta dhe punë me kohë të pjesshme</li>
+                <li>• Punë të shpejta në lagjen tënde</li>
+                <li>• Punëtorë për biznesin tënd lokal</li>
+              </ul>
+              <div className="border-t border-slate-600/50 pt-3 text-xs text-slate-300">
+                Çdo postim miratohet nga admini përpara se të shfaqet publikisht.
               </div>
             </div>
           </div>
-
-          {/* BOX ANËSOR */}
-          <div className="bg-[#0A1A2F] text-white p-5 rounded-2xl shadow-lg">
-            <p className="mb-3 text-sm/5 opacity-90">Përdor Akord.al për:</p>
-            <ul className="mb-3 grid list-none gap-2 text-sm">
-              <li>• Punë të dyta dhe punë me kohë të pjesshme</li>
-              <li>• Punë të shpejta në lagjen tënde</li>
-              <li>• Punëtorë për biznesin tënd lokal</li>
-            </ul>
-            <div className="border-t border-slate-600/50 pt-3 text-xs text-slate-300">
-              Çdo postim miratohet nga admini përpara se të shfaqet publikisht.
-            </div>
-          </div>
         </section>
+
+        {/* DIVIDER PREMIUM */}
+        <div className="my-10">
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+        </div>
+
+        {/* SERVICES (poshtë, premium) */}
+        <div className="mb-12">
+          <ServicesStories whatsappNumber="355695111179" />
+        </div>
 
         {/* POSTIMET E FUNDIT */}
         <section className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -185,22 +178,9 @@ export default async function HomePage() {
             KËRKO
           </Link>
         </section>
-        
-{/* LISTA E POSTIMEVE */}
-<PostListClient initialPosts={latestPosts} />
-        
 
+        <PostListClient initialPosts={latestPosts} />
       </div>
-
-      {/* WhatsApp */}
-      <a
-        href="https://wa.me/355695111179"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-5 right-5 flex h-13 w-13 items-center justify-center rounded-full bg-emerald-500 text-2xl shadow-2xl shadow-emerald-500/60"
-      >
-        <span className="text-white">🟢</span>
-      </a>
     </main>
   );
 }
