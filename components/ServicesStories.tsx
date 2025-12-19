@@ -34,11 +34,11 @@ export default function ServicesStories({ whatsappNumber }: Props) {
 }
 ,
       {
-        id: "photoshop",
-        title: "Modifikim me Photoshop",
-        cover: "/images/services/photoshop.jpg",
-        poster: "/images/services/photoshop.jpg",
-        waText: "Përshëndetje, dua shërbimin Modifikim me Photoshop.",
+        id: "sisteme-monitorimi",
+  title: "Sisteme Monitorimi",
+  cover: "/images/services/sisteme-monitorimi.jpg",
+  poster: "/images/services/sisteme-monitorimi.jpg",
+  waText: "Përshëndetje, jam i interesuar për shërbimin Sisteme Monitorimi. A mund të më dërgoni më shumë informacion dhe një ofertë?",
       },
       {
         id: "graphic-design",
