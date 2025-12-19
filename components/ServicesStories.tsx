@@ -47,6 +47,15 @@ export default function ServicesStories({ whatsappNumber }: Props) {
   poster: "/images/services/graphic-design.jpg",
   waText: "Hello, I’m interested in your Graphic Design services. Could you please share more details and examples of your work?",
       },
+{
+  id: "software-development",
+  title: "Software Development",
+  cover: "/images/services/software-development.jpg",
+  poster: "/images/services/software-development.jpg",
+  waText: "Hello, I’m interested in your Software Development services. Could you please share more details about solutions and pricing?"
+}
+
+
     ],
     []
   );
