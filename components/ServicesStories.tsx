@@ -159,7 +159,10 @@ export default function ServicesStories({ whatsappNumber }: Props) {
                   "border border-slate-200/70",
                   "shadow-sm hover:shadow-xl transition",
                   "transform-gpu",
-                  isActive ? "scale-[1.02] opacity-100" : "scale-95 opacity-70",
+                  isActive
+  ? "scale-[1.06] opacity-100 z-10"
+  : "scale-[0.92] opacity-40 blur-[1px]",
+
                 ].join(" ")}
                 style={{ scrollSnapAlign: "center" as any }}
               >
