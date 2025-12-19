@@ -42,10 +42,10 @@ export default function ServicesStories({ whatsappNumber }: Props) {
       },
       {
         id: "graphic-design",
-        title: "Graphic Design",
-        cover: "/images/services/graphic-design.jpg",
-        poster: "/images/services/graphic-design.jpg",
-        waText: "Përshëndetje, dua shërbimin Graphic Design.",
+  title: "Graphic Design",
+  cover: "/images/services/graphic-design.jpg",
+  poster: "/images/services/graphic-design.jpg",
+  waText: "Hello, I’m interested in your Graphic Design services. Could you please share more details and examples of your work?",
       },
     ],
     []
