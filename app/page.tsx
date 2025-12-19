@@ -97,63 +97,66 @@ export default async function HomePage() {
           </Link>
         </header>
 
-        {/* HERO (Punë) */}
-        <section className="mb-10 rounded-3xl bg-white border border-slate-200 shadow-sm p-6 md:p-10">
-          <div className="grid gap-8 md:grid-cols-2 md:items-center">
-            <div>
-              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
-                Puna e duhur, në kohën e duhur
-              </h1>
+        {/* HERO (premium, i thjeshtuar) */}
+<section className="max-w-7xl mx-auto px-4 pt-10 pb-8">
+  <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-slate-100 p-8 md:p-10">
+    <div className="max-w-2xl">
+      <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+        Puna e duhur,
+        <span className="block text-slate-900">në kohën e duhur</span>
+      </h1>
 
-              <p className="mt-4 text-base text-slate-600 leading-relaxed">
-                Akord.al lidh persona dhe biznese që kërkojnë ose ofrojnë punë, me
-                fokus te thjeshtësia, qartësia dhe respekti për kohën tënde.
-              </p>
+      <p className="mt-4 text-slate-600 text-sm md:text-base">
+        Krijo një postim ose shiko postimet ekzistuese — shpejt dhe thjeshtë.
+      </p>
 
-              <div className="flex flex-col gap-3 mt-6">
-                <Link
-                  href="/post/new"
-                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-400 via-sky-500 to-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90"
-                >
-                  KRIJO POSTIMIN TËND
-                </Link>
+      <div className="mt-6 flex flex-wrap items-center gap-3">
+        <Link
+          href="/post/new"
+          className="inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition"
+        >
+          Krijo postimin tënd
+        </Link>
 
-                <div className="flex flex-wrap gap-3">
-                  {[
-                    { href: "/post?type=seeking", label: "KËRKOJ PUNË" },
-                    { href: "/post?type=offering", label: "OFROJ PUNË" },
-                    { href: "/post?work_time=full_time", label: "FULL TIME" },
-                    { href: "/post?work_time=part_time", label: "PART TIME" },
-                  ].map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="inline-flex items-center rounded-full px-4 py-2 text-xs font-medium 
-                      bg-gradient-to-b from-sky-50 to-white 
-                      border border-sky-100 
-                      text-slate-900 shadow-sm hover:shadow transition"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
+        <Link
+          href="/post"
+          className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 transition"
+        >
+          Shiko postimet
+        </Link>
+      </div>
 
-            {/* BOX ANËSOR */}
-            <div className="bg-[#0A1A2F] text-white p-6 rounded-2xl shadow-lg">
-              <p className="mb-3 text-sm/5 opacity-90">Përdor Akord.al për:</p>
-              <ul className="mb-3 grid list-none gap-2 text-sm">
-                <li>• Punë të dyta dhe punë me kohë të pjesshme</li>
-                <li>• Punë të shpejta në lagjen tënde</li>
-                <li>• Punëtorë për biznesin tënd lokal</li>
-              </ul>
-              <div className="border-t border-slate-600/50 pt-3 text-xs text-slate-300">
-                Çdo postim miratohet nga admini përpara se të shfaqet publikisht.
-              </div>
-            </div>
-          </div>
-        </section>
+      {/* Filtra të vegjël (opsionale, premium) */}
+      <div className="mt-6 flex flex-wrap gap-2">
+        <Link
+          href="/post?type=seeking"
+          className="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 transition"
+        >
+          Kërkoj punë
+        </Link>
+        <Link
+          href="/post?type=offering"
+          className="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 transition"
+        >
+          Ofroj punë
+        </Link>
+        <Link
+          href="/post?work_time=full_time"
+          className="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 transition"
+        >
+          Full-time
+        </Link>
+        <Link
+          href="/post?work_time=part_time"
+          className="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 transition"
+        >
+          Part-time
+        </Link>
+      </div>
+    </div>
+  </div>
+</section>
+
 
         {/* DIVIDER PREMIUM */}
         <div className="my-10">
@@ -167,6 +170,57 @@ export default async function HomePage() {
 
 {/* SERVICES – PREMIUM */}
 <ServicesStories whatsappNumber="355695111179" />
+{/* SUPPORT (poshtë shërbimeve) */}
+<section className="max-w-7xl mx-auto px-4 pb-10">
+  <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-900 to-slate-800 p-6 md:p-8 text-white">
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <h3 className="text-lg md:text-xl font-semibold">Support</h3>
+        <p className="text-white/80 text-sm mt-1">Na shkruani në WhatsApp për çdo pyetje.</p>
+      </div>
+
+      <a
+        href="https://wa.me/355695111179"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-100 transition"
+      >
+        Na shkruani në WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+{/* RRETH NESH */}
+<section className="max-w-7xl mx-auto px-4 pb-14">
+  <div className="rounded-3xl border border-slate-200 bg-white p-6 md:p-8">
+    <h3 className="text-lg md:text-xl font-semibold text-slate-900">Rreth nesh</h3>
+
+    <p className="text-slate-600 text-sm md:text-base mt-3 max-w-3xl">
+      Akord.al lidh persona dhe biznese në Shqipëri për të gjetur punën ose kandidatin e duhur.
+      Postimet kalojnë moderim për cilësi dhe siguri, ndërsa shërbimet tona ofrojnë zgjidhje profesionale
+      për bizneset dhe individët.
+    </p>
+
+    <div className="mt-5 flex flex-wrap gap-2">
+      <span className="rounded-full bg-slate-100 px-4 py-2 text-xs font-medium text-slate-700">Moderim i postimeve</span>
+      <span className="rounded-full bg-slate-100 px-4 py-2 text-xs font-medium text-slate-700">Shpejt & thjeshtë</span>
+      <span className="rounded-full bg-slate-100 px-4 py-2 text-xs font-medium text-slate-700">Shërbime profesionale</span>
+      <span className="rounded-full bg-slate-100 px-4 py-2 text-xs font-medium text-slate-700">Support në WhatsApp</span>
+    </div>
+
+    <div className="mt-6">
+      <a
+        href="https://wa.me/355695111179"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition"
+      >
+        Kontakto tani
+      </a>
+    </div>
+  </div>
+</section>
 
 <div className="my-16">
   <div className="h-px w-full bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
