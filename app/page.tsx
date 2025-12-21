@@ -94,20 +94,11 @@ export default async function HomePage() {
 
       {/* ================= SERVICES ================= */}
       <section id="services" className="mx-auto max-w-6xl px-4 pt-10 sm:pt-14">
-        <div className="text-center">
-          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">
-            Shërbimet tona
-          </h2>
-          <p className="mt-2 text-sm sm:text-base text-slate-600">
-            Zgjidhje të sigurta dhe moderne — të menduara për shtëpi dhe biznese.
-          </p>
-        </div>
+  <div className="rounded-3xl border border-slate-200 bg-white shadow-[0_12px_34px_-22px_rgba(15,23,42,0.25)] overflow-hidden">
+    <ServicesStories />
+  </div>
+</section>
 
-        <div className="mt-6 rounded-3xl border border-slate-200 bg-white shadow-[0_12px_34px_-22px_rgba(15,23,42,0.25)] overflow-hidden">
-          {/* përdor komponentin tënd aktual */}
-          <ServicesStories />
-        </div>
-      </section>
 
       {/* ================= JOBS ================= */}
       <section id="jobs" className="mx-auto max-w-6xl px-4 pt-10 sm:pt-14">
