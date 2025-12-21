@@ -38,9 +38,11 @@ export default async function HomePage() {
   }
 
   const primaryBtn =
-  "w-full inline-flex items-center justify-center text-center px-4 py-3 rounded-2xl bg-blue-600 text-white text-sm font-semibold shadow-md shadow-blue-200/60 hover:bg-blue-700 active:scale-[0.99] transition leading-none whitespace-nowrap";
+  "w-full inline-flex items-center justify-center text-center px-4 py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold shadow-lg shadow-blue-500/25 hover:from-blue-700 hover:to-blue-800 active:scale-[0.99] transition leading-none";
+
 const secondaryBtn =
-  "w-full inline-flex items-center justify-center text-center px-4 py-3 rounded-2xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold shadow-sm hover:bg-slate-50 hover:border-slate-300 active:scale-[0.99] transition leading-none whitespace-nowrap";
+  "w-full inline-flex items-center justify-center text-center px-4 py-3 rounded-2xl border border-blue-200 bg-white text-blue-700 text-sm font-semibold shadow-sm hover:bg-blue-50 hover:border-blue-300 active:scale-[0.99] transition leading-none";
+
 
 
   return (
@@ -88,12 +90,12 @@ const secondaryBtn =
 
               {/* Kjo e bën të mos të shkojë në rresht të tretë */}
               <Link
-                href="/post"
-                className={`${secondaryBtn} text-[13px]`}
+  href="/post"
+  className={`${secondaryBtn} col-span-2`}
+>
+  Shiko të gjitha postimet
+</Link>
 
-              >
-                Shiko të gjitha postimet
-              </Link>
             </div>
           </div>
 
