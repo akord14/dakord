@@ -76,27 +76,26 @@ const secondaryBtn =
 
             {/* BUTONAT (2 kolona = 2 rreshta, premium) */}
             <div className="mt-4 grid grid-cols-2 gap-3">
-              <Link href="/post/new" className={primaryBtn}>
-                Krijo postimin tënd
-              </Link>
+  <Link href="/post/new" className={primaryBtn}>
+    Krijo postimin
+  </Link>
 
-              <Link href="/post/seeking" className={secondaryBtn}>
-                Kërkoj punë
-              </Link>
+  <Link href="/post/seeking" className={secondaryBtn}>
+    Kërkoj punë
+  </Link>
 
-              <Link href="/post/offering" className={secondaryBtn}>
-                Ofroj punë
-              </Link>
+  <Link href="/post/offering" className={secondaryBtn}>
+    Ofroj punë
+  </Link>
 
-              {/* Kjo e bën të mos të shkojë në rresht të tretë */}
-              <Link
-  href="/post"
-  className={`${secondaryBtn} col-span-2`}
->
- Të gjitha postimet
-</Link>
+  <Link
+    href="/post"
+    className={`${secondaryBtn} text-blue-700 border-blue-200 bg-blue-50 hover:bg-blue-100`}
+  >
+    Të gjitha postimet
+  </Link>
+</div>
 
-            </div>
           </div>
 
           {/* ===== KARTA 2 (MË PROFESIONALE + PA BOSHE) ===== */}
