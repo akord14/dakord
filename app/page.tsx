@@ -30,25 +30,30 @@ export default async function HomePage() {
       .eq("visibility", "public")
       .not("slug", "is", null)
       .order("created_at", { ascending: false })
-      .limit(3);
+      .limit(2); // 2 postime të fundit (më kompakt)
 
     posts = data ?? [];
   } catch {
     posts = [];
   }
 
+  const primaryBtn =
+    "w-full text-center px-4 py-3 rounded-2xl bg-blue-600 text-white text-sm font-semibold shadow-sm hover:bg-blue-700 active:scale-[0.99] transition";
+  const secondaryBtn =
+    "w-full text-center px-4 py-3 rounded-2xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold hover:bg-slate-50 hover:border-slate-300 active:scale-[0.99] transition";
+
   return (
     <main className="w-full">
-      {/* ===== HERO / ABOVE THE FOLD ===== */}
+      {/* ===== ABOVE THE FOLD ===== */}
       <section className="mx-auto w-full max-w-6xl px-4 pt-6">
         <div className="grid gap-4 md:grid-cols-2">
           {/* ===== KARTA 1 ===== */}
-          <div className="rounded-2xl border bg-white/60 backdrop-blur p-5 shadow-sm">
+          <div className="rounded-2xl border bg-white/70 backdrop-blur p-5 shadow-sm">
             {/* LOGO */}
             <div className="mb-3">
-              <Link href="/">
+              <Link href="/" className="inline-flex items-center">
                 <Image
-                  src="/logo.png"   // ⚠️ ndrysho emrin nëse logo quhet ndryshe
+                  src="/logo.png" // ⚠️ ndrysho nëse logo ka emër tjetër te /public
                   alt="Akord.al"
                   width={130}
                   height={40}
@@ -57,7 +62,7 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            {/* SLOGAN */}
+            {/* SLOGAN (1 rresht) */}
             <p className="text-base md:text-lg font-semibold text-slate-900">
               Puna e duhur në kohën e duhur
             </p>
@@ -66,85 +71,103 @@ export default async function HomePage() {
               Posto kërkesën ose ofertën tënde dhe lidhu shpejt me njerëzit e duhur.
             </p>
 
-            {/* BUTONAT */}
-            <div className="mt-4 flex flex-wrap gap-3">
-              {/* PRIMARY */}
-              <Link
-                href="/post/new"
-                className="px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold shadow-sm hover:bg-blue-700 active:scale-[0.99] transition"
-              >
+            {/* BUTONAT (2 kolona = 2 rreshta, premium) */}
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <Link href="/post/new" className={primaryBtn}>
                 Krijo postimin tënd
               </Link>
 
-              {/* SECONDARY */}
-              <Link
-                href="/post/seeking"
-                className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold hover:bg-slate-50 hover:border-slate-300 transition"
-              >
+              <Link href="/post/seeking" className={secondaryBtn}>
                 Kërkoj punë
               </Link>
 
-              <Link
-                href="/post/offering"
-                className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold hover:bg-slate-50 hover:border-slate-300 transition"
-              >
+              <Link href="/post/offering" className={secondaryBtn}>
                 Ofroj punë
               </Link>
 
+              {/* Kjo e bën të mos të shkojë në rresht të tretë */}
               <Link
                 href="/post"
-                className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold hover:bg-slate-50 hover:border-slate-300 transition"
+                className={`${secondaryBtn} text-[13px] whitespace-nowrap`}
               >
                 Shiko të gjitha postimet
               </Link>
             </div>
           </div>
 
-          {/* ===== KARTA 2 ===== */}
+          {/* ===== KARTA 2 (MË PROFESIONALE + PA BOSHE) ===== */}
           <div className="rounded-2xl border bg-gradient-to-br from-slate-900 to-slate-800 p-5 text-white shadow-sm">
-            <p className="text-sm font-semibold opacity-90">Postime të fundit</p>
+            <p className="text-sm font-semibold opacity-90">Si funksionon</p>
 
-            {posts.length === 0 ? (
-              <p className="mt-4 text-sm opacity-80">
-                Postimet e fundit do shfaqen këtu.
-              </p>
-            ) : (
-              <div className="mt-4 space-y-2 max-h-40 overflow-auto pr-1">
-                {posts.map((p) => (
-                  <Link
-                    key={p.id}
-                    href={`/post/${p.slug}`}
-                    className="block rounded-xl bg-white/10 hover:bg-white/15 p-3"
-                  >
-                    <p className="text-sm font-semibold line-clamp-1">
-                      {p.title}
-                    </p>
-                    <p className="mt-1 text-xs opacity-80">
-                      {p.type === "seeking"
-                        ? "Kërkoj punë"
-                        : p.type === "offering"
-                        ? "Ofroj punë"
-                        : "Postim"}
-                      {p.city ? ` • ${p.city}` : ""}
-                    </p>
-                  </Link>
-                ))}
+            <div className="mt-3 space-y-2">
+              <div className="rounded-xl bg-white/10 p-3">
+                <p className="text-sm font-semibold">1) Zgjidh tipin</p>
+                <p className="text-xs opacity-80">
+                  Kërkoj punë ose Ofroj punë.
+                </p>
               </div>
-            )}
+
+              <div className="rounded-xl bg-white/10 p-3">
+                <p className="text-sm font-semibold">2) Posto në 1 minutë</p>
+                <p className="text-xs opacity-80">
+                  Plotëso detajet dhe kontaktin.
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-white/10 p-3">
+                <p className="text-sm font-semibold">3) Del live pas moderimit</p>
+                <p className="text-xs opacity-80">
+                  Postimet e aprovuara shfaqen publikisht.
+                </p>
+              </div>
+            </div>
+
+            {/* POSTIME TË FUNDIT (kompakt) */}
+            <div className="mt-4">
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold opacity-80">Postime të fundit</p>
+                <Link href="/post" className="text-xs underline opacity-80 hover:opacity-100">
+                  Shiko të gjitha
+                </Link>
+              </div>
+
+              {posts.length === 0 ? (
+                <p className="mt-2 text-xs opacity-70">
+                  Sapo të aprovohen postimet e reja, do shfaqen këtu.
+                </p>
+              ) : (
+                <div className="mt-2 space-y-2">
+                  {posts.map((p) => (
+                    <Link
+                      key={p.id}
+                      href={`/post/${p.slug}`}
+                      className="block rounded-xl bg-white/10 hover:bg-white/15 p-3 transition"
+                    >
+                      <p className="text-sm font-semibold line-clamp-1">
+                        {p.title}
+                      </p>
+                      <p className="mt-1 text-xs opacity-80">
+                        {p.type === "seeking"
+                          ? "Kërkoj punë"
+                          : p.type === "offering"
+                          ? "Ofroj punë"
+                          : "Postim"}
+                        {p.city ? ` • ${p.city}` : ""}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ===== SHËRBIMET ===== */}
+      {/* Heqim titullin këtu sepse e ke brenda ServicesStories (që mos të dalë dy herë) */}
       <section className="mx-auto w-full max-w-6xl px-4 pt-6">
-        <div className="rounded-2xl border bg-white p-5 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">
-            Shërbimet tona profesionale
-          </h2>
-
-          <div className="mt-4">
-            <ServicesStories />
-          </div>
+        <div className="rounded-2xl border bg-white p-0 shadow-sm overflow-hidden">
+          <ServicesStories />
         </div>
       </section>
 
@@ -160,33 +183,38 @@ export default async function HomePage() {
             href="https://wa.me/355695111179" // ⚠️ numri yt
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex px-5 py-2.5 rounded-xl bg-green-600 text-white text-sm font-semibold hover:bg-green-700 transition"
+            className="mt-4 inline-flex w-full sm:w-auto justify-center px-5 py-3 rounded-2xl bg-green-600 text-white text-sm font-semibold hover:bg-green-700 active:scale-[0.99] transition"
           >
             Shkruaj në WhatsApp
           </a>
         </div>
       </section>
 
-      {/* ===== RRETH NESH ===== */}
+      {/* ===== RRETH NESH (PREMIUM) ===== */}
       <section className="mx-auto w-full max-w-6xl px-4 pt-6 pb-8">
-        <div className="rounded-2xl border bg-white p-5 shadow-sm">
-          <details className="group">
-            <summary className="cursor-pointer flex items-center justify-between rounded-xl border border-slate-200 px-4 py-3 hover:bg-slate-50 transition">
-              <span className="text-sm font-semibold text-slate-900">
-                Rreth nesh
-              </span>
-              <span className="text-slate-500 group-open:rotate-180 transition">
-                ⌄
-              </span>
-            </summary>
+        {/* Gradient border trick */}
+        <div className="rounded-2xl bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 p-[1px] shadow-sm">
+          <div className="rounded-2xl bg-white p-5">
+            <details className="group">
+              <summary className="cursor-pointer list-none flex items-center justify-between rounded-2xl border border-slate-200 px-4 py-3 hover:bg-slate-50 transition">
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Rreth nesh</p>
+                  <p className="text-xs text-slate-500">
+                    Kliko për të lexuar përshkrimin
+                  </p>
+                </div>
+                <span className="text-slate-500 group-open:rotate-180 transition">
+                  ⌄
+                </span>
+              </summary>
 
-            <div className="mt-3 text-sm text-slate-700 leading-relaxed">
-              Akord.al është një platformë shqiptare për “Kërkoj punë” dhe
-              “Ofroj punë”, ku çdo postim kalon moderim për cilësi dhe
-              seriozitet. Synimi ynë është të lidhim njerëzit e duhur me
-              mundësitë e duhura.
-            </div>
-          </details>
+              <div className="mt-4 text-sm text-slate-700 leading-relaxed">
+                Akord.al është një platformë shqiptare për “Kërkoj punë” dhe “Ofroj punë”,
+                ku çdo postim kalon moderim për cilësi dhe seriozitet. Synimi ynë është
+                të lidhim njerëzit e duhur me mundësitë e duhura.
+              </div>
+            </details>
+          </div>
         </div>
       </section>
     </main>
