@@ -1,223 +1,95 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
-
-type Props = {
-  whatsappNumber?: string;
-};
+import Link from "next/link";
 
 type Service = {
+  slug: string;
   title: string;
   description: string;
-  image: string; // /services/xxx.jpg
-  message: string; // whatsapp prefill
+  image: string; // path under /public
 };
 
-export default function ServicesStories({ whatsappNumber }: Props) {
-  const services: Service[] = useMemo(
-    () => [
-      {
-        title: "Zhvillim Software",
-        description:
-          "Krijim website & aplikacione, sisteme menaxhimi dhe zgjidhje të personalizuara.",
-        image: "/services/software-development.jpg",
-        message: "Përshëndetje! Jam i interesuar për shërbimin Zhvillim Software.",
-      },
-      {
-        title: "Sisteme Sigurie",
-        description:
-          "Alarm kundër vjedhjes, kundër zjarrit dhe kontroll hyrje-dalje (Access Control).",
-        image: "/services/security-systems.jpg",
-        message: "Përshëndetje! Jam i interesuar për shërbimin Sisteme Sigurie.",
-      },
-      {
-        title: "Sisteme Monitorimi",
-        description:
-          "Kamera sigurie (CCTV), kamera IP, video-citofoni dhe monitorim i avancuar.",
-        image: "/services/monitoring-systems.jpg",
-        message: "Përshëndetje! Jam i interesuar për shërbimin Sisteme Monitorimi.",
-      },
-    ],
-    []
-  );
+const services: Service[] = [
+  {
+    slug: "security-systems",
+    title: "Siguri & Monitorim",
+    description: "Zgjidhje të sigurta për monitorimin dhe sigurinë tuaj.",
+    image: "/services/security-systems.jpg",
+  },
+  {
+    slug: "monitoring-systems",
+    title: "Instalime Elektrike",
+    description: "Asistencë dhe instalime elektrike korrekte për shtëpi dhe biznese.",
+    image: "/services/monitoring-systems.jpg",
+  },
+  {
+    slug: "software-development",
+    title: "Zhvillim Software",
+    description: "Krijim website & aplikacione, sisteme menaxhimi dhe zgjidhje të personalizuara.",
+    image: "/services/software-development.jpg",
+  },
+];
 
-  const waBase =
-    whatsappNumber && whatsappNumber.trim().length > 0
-      ? `https://wa.me/${whatsappNumber.replace(/\D/g, "")}`
-      : null;
-
-  const trackRef = useRef<HTMLDivElement | null>(null);
-  const [active, setActive] = useState(0);
-
-  const goTo = (idx: number) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const cards = Array.from(el.querySelectorAll("[data-card='1']")) as HTMLElement[];
-    const target = cards[idx];
-    if (!target) return;
-    target.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-    setActive(idx);
-  };
-
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-
-    const onScroll = () => {
-      const cards = Array.from(el.querySelectorAll("[data-card='1']")) as HTMLElement[];
-      if (!cards.length) return;
-
-      // gjej kartën më afër qendrës së viewport-it të track-ut
-      const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-
-      let bestIdx = 0;
-      let bestDist = Infinity;
-
-      cards.forEach((c, i) => {
-        const r = c.getBoundingClientRect();
-        const cCenter = r.left + r.width / 2;
-        const d = Math.abs(centerX - cCenter);
-        if (d < bestDist) {
-          bestDist = d;
-          bestIdx = i;
-        }
-      });
-
-      setActive(bestIdx);
-    };
-
-    onScroll();
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll as any);
-  }, []);
-
+export default function ServicesStories() {
   return (
-    <section className="max-w-7xl mx-auto px-4 py-16">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+    <section className="w-full">
+      {/* HEADER (mbaje këtu që të mos dalë dy herë nga page.tsx) */}
+      <div className="px-5 pt-8 pb-5 text-center">
+        <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">
           Shërbimet Profesionale
         </h2>
-        <p className="text-slate-500 max-w-2xl mx-auto mt-3">
+        <p className="mt-2 text-sm sm:text-base text-slate-600">
           Zgjidhje të sigurta dhe moderne — të menduara për shtëpi dhe biznese.
         </p>
       </div>
 
-      {/* Controls */}
-      <div className="flex items-center justify-between mb-6">
-        <button
-          onClick={() => goTo(Math.max(0, active - 1))}
-          className="px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-800 hover:bg-slate-50"
-        >
-          ◀
-        </button>
+      {/* MOBILE: 3 karta në një rresht (si foto) */}
+      <div className="px-5 pb-8">
+        <div className="grid grid-cols-3 gap-3 sm:gap-4">
+          {services.map((s) => (
+            <Link
+              key={s.slug}
+              href={`/services/${s.slug}`}
+              className="group rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition overflow-hidden"
+            >
+              {/* Image */}
+              <div className="relative w-full aspect-[4/3] bg-slate-100">
+                <Image
+                  src={s.image}
+                  alt={s.title}
+                  fill
+                  sizes="(max-width: 640px) 33vw, 300px"
+                  className="object-cover"
+                  priority={false}
+                />
+              </div>
 
-        <div className="flex items-center gap-2">
-          {services.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i)}
-              className={`h-2.5 w-2.5 rounded-full transition ${
-                i === active ? "bg-blue-600" : "bg-slate-300 hover:bg-slate-400"
-              }`}
-              aria-label={`Shërbimi ${i + 1}`}
-            />
-          ))}
-        </div>
+              {/* Content */}
+              <div className="p-3 sm:p-4">
+                <h3 className="text-[13px] sm:text-base font-semibold text-slate-900 leading-snug line-clamp-2">
+                  {s.title}
+                </h3>
 
-        <button
-          onClick={() => goTo(Math.min(services.length - 1, active + 1))}
-          className="px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-800 hover:bg-slate-50"
-        >
-          ▶
-        </button>
-      </div>
+                <p className="mt-1 text-[11px] sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
+                  {s.description}
+                </p>
 
-      {/* Premium slider track */}
-      <div
-        ref={trackRef}
-        className="relative overflow-x-auto no-scrollbar scroll-smooth"
-        style={{ scrollSnapType: "x mandatory" as any }}
-      >
-        <div className="flex gap-6 px-2">
-          {services.map((service, idx) => {
-            const isActive = idx === active;
-            const waLink = waBase
-              ? `${waBase}?text=${encodeURIComponent(service.message)}`
-              : null;
-
-            return (
-              <div
-                key={service.title}
-                data-card="1"
-                className={[
-                  "shrink-0",
-                  "w-[85%] sm:w-[70%] lg:w-[42%]",
-                  "scroll-snap-align-center",
-                  "rounded-2xl overflow-hidden bg-white",
-                  "border border-slate-200/70",
-                  "shadow-sm hover:shadow-xl transition",
-                  "transform-gpu",
-                  isActive
-  ? "scale-[1.06] opacity-100 z-10"
-  : "scale-[0.92] opacity-40 blur-[1px]",
-
-                ].join(" ")}
-                style={{ scrollSnapAlign: "center" as any }}
-              >
-                {/* Image */}
-                <div className="relative h-56 sm:h-64 bg-slate-100">
-                  {/* Nëse foto mungon, prap duket premium sepse ka background */}
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    className="object-cover"
-                    onError={(e) => {
-                      // @ts-ignore
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-black/0" />
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <div className="text-white text-xl font-semibold drop-shadow">
-                      {service.title}
-                    </div>
+                {/* CTA */}
+                <div className="mt-3">
+                  <div
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2 text-[12px] sm:text-sm font-semibold
+                               bg-slate-100 text-slate-900 border border-slate-200
+                               group-hover:bg-blue-50 group-hover:border-blue-200 group-hover:text-blue-700 transition"
+                  >
+                    Më shumë <span aria-hidden>›</span>
                   </div>
                 </div>
-
-                {/* Content */}
-                <div className="p-6">
-                  <p className="text-slate-600 text-sm mb-5">{service.description}</p>
-
-                  {waLink ? (
-                    <a
-                      href={waLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center w-full rounded-full px-5 py-3 text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition"
-                    >
-                      Kërko në WhatsApp
-                    </a>
-                  ) : (
-                    <div className="text-xs text-slate-500">
-                      (WhatsApp number mungon)
-                    </div>
-                  )}
-                </div>
               </div>
-            );
-          })}
+            </Link>
+          ))}
         </div>
       </div>
-
-      {/* little premium hint line */}
-      <div className="mt-10 h-px w-full bg-gradient-to-r from-transparent via-blue-500/25 to-transparent" />
     </section>
   );
 }
-
-/** Utility: hide scrollbar (optional) **/
-/* Tailwind doesn't include no-scrollbar by default; if you don't have it,
-   it's fine—just remove "no-scrollbar" from the track className. */
