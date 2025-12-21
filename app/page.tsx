@@ -93,7 +93,7 @@ const secondaryBtn =
   href="/post"
   className={`${secondaryBtn} col-span-2`}
 >
-  Shiko të gjitha postimet
+ Të gjitha postimet
 </Link>
 
             </div>
