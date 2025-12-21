@@ -38,9 +38,10 @@ export default async function HomePage() {
   }
 
   const primaryBtn =
-    "w-full text-center px-4 py-3 rounded-2xl bg-blue-600 text-white text-sm font-semibold shadow-sm hover:bg-blue-700 active:scale-[0.99] transition";
-  const secondaryBtn =
-    "w-full text-center px-4 py-3 rounded-2xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold hover:bg-slate-50 hover:border-slate-300 active:scale-[0.99] transition";
+  "w-full inline-flex items-center justify-center text-center px-4 py-3 rounded-2xl bg-blue-600 text-white text-sm font-semibold shadow-md shadow-blue-200/60 hover:bg-blue-700 active:scale-[0.99] transition leading-none whitespace-nowrap";
+const secondaryBtn =
+  "w-full inline-flex items-center justify-center text-center px-4 py-3 rounded-2xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold shadow-sm hover:bg-slate-50 hover:border-slate-300 active:scale-[0.99] transition leading-none whitespace-nowrap";
+
 
   return (
     <main className="w-full">
@@ -88,7 +89,8 @@ export default async function HomePage() {
               {/* Kjo e bën të mos të shkojë në rresht të tretë */}
               <Link
                 href="/post"
-                className={`${secondaryBtn} text-[13px] whitespace-nowrap`}
+                className={`${secondaryBtn} text-[13px]`}
+
               >
                 Shiko të gjitha postimet
               </Link>
@@ -196,7 +198,14 @@ export default async function HomePage() {
         <div className="rounded-2xl bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 p-[1px] shadow-sm">
           <div className="rounded-2xl bg-white p-5">
             <details className="group">
-              <summary className="cursor-pointer list-none flex items-center justify-between rounded-2xl border border-slate-200 px-4 py-3 hover:bg-slate-50 transition">
+              <summary className="cursor-pointer list-none flex items-center justify-between rounded-2xl bg-gradient-to-r from-blue-600 to-slate-900 px-4 py-3 text-white shadow-md hover:opacity-95 transition">
+  <div>
+    <p className="text-sm font-semibold">Rreth nesh</p>
+    <p className="text-xs opacity-90">Kliko për të lexuar përshkrimin</p>
+  </div>
+  <span className="opacity-90 group-open:rotate-180 transition">⌄</span>
+
+
                 <div>
                   <p className="text-sm font-semibold text-slate-900">Rreth nesh</p>
                   <p className="text-xs text-slate-500">
