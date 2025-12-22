@@ -69,7 +69,7 @@ export default function ServicesStories() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
-  // detect active card = closest to viewport center
+  // Active = card closest to center of viewport
   useEffect(() => {
     const viewport = viewportRef.current;
     if (!viewport) return;
@@ -100,24 +100,26 @@ export default function ServicesStories() {
     return () => viewport.removeEventListener("scroll", onScroll);
   }, []);
 
-  // stronger tube effect + closer neighbors
+  // Premium “tube”: center big, neighbors faded/blurred and slightly rotated
   const cardStyle = useMemo(() => {
     return (idx: number) => {
       const d = idx - active;
       const abs = Math.abs(d);
 
-      const scale =
-        d === 0 ? 1 : abs === 1.03 ? 0.86 : 0.74; // neighbors clearly smaller
-      const opacity =
-        d === 0 ? 1 : abs === 1 ? 0.82 : 0.68;
+      const isCenter = d === 0;
+      const isNeighbor = abs === 1;
 
-      const rotateX = d === 0 ? 0 : d > 0 ? -20 : 20;
-      const translateY = d === 0 ? 0 : d > 0 ? 10 : -10;
+      const scale = isCenter ? 1.06 : isNeighbor ? 0.90 : 0.80;
+      const opacity = isCenter ? 1 : isNeighbor ? 0.45 : 0.22;
+      const blur = isCenter ? 0 : isNeighbor ? 0.6 : 1.2;
+
+      const rotateX = isCenter ? 0 : d > 0 ? -18 : 18;
+      const translateY = isCenter ? 0 : d > 0 ? 10 : -10;
 
       return {
-        transform: `perspective(1000px) translateY(${translateY}px) rotateX(${rotateX}deg) scale(${scale})`,
+        transform: `perspective(1100px) translateY(${translateY}px) rotateX(${rotateX}deg) scale(${scale})`,
         opacity,
-        filter: d === 0 ? "none" : "saturate(0.92) contrast(0.98)",
+        filter: `blur(${blur}px) saturate(${isCenter ? 1 : 0.9})`,
       } as React.CSSProperties;
     };
   }, [active]);
@@ -130,109 +132,111 @@ export default function ServicesStories() {
 
   return (
     <section className="mt-10 w-full">
-      <div className="w-full px-2 sm:px-6">
-        <div className="flex items-end justify-between gap-3">
-          <div>
+      {/* FULL WIDTH + premium background */}
+      <div className="w-full bg-slate-50/80">
+        {/* minimal padding so it feels full-bleed, but not touching edges */}
+        <div className="w-full px-2 sm:px-6 py-6">
+          <div className="flex items-center justify-between gap-3">
             <h2 className="text-xl font-bold text-slate-900">Shërbimet tona</h2>
-            
-          </div>
 
-          <div className="flex items-center gap-1">
-            <button
-              type="button"
-              onClick={() => scrollToIndex(Math.max(0, active - 1))}
-              className="h-9 w-9 rounded-full border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50"
-              aria-label="Previous"
-            >
-              ↑
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollToIndex(Math.min(services.length - 1, active + 1))}
-              className="h-9 w-9 rounded-full border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50"
-              aria-label="Next"
-            >
-              ↓
-            </button>
-          </div>
-        </div>
-
-        {/* Viewport larger + tighter padding = cards closer */}
-        <div
-          ref={viewportRef}
-          className="mt-6 w-full overflow-y-auto rounded-3xl border border-slate-200 bg-white shadow-sm"
-          style={{
-            height: "560px",
-            scrollSnapType: "y mandatory",
-            WebkitOverflowScrolling: "touch",
-            scrollbarWidth: "none",
-          }}
-        >
-          {/* smaller top/bottom buffer so neighbors are visible */}
-          <div style={{ height: 60 }} />
-
-          <div className="flex flex-col gap-2 px-2 sm:px-4">
-            {services.map((s, idx) => (
-              <div
-                key={s.slug}
-                ref={(el) => {
-                  itemRefs.current[idx] = el;
-                }}
-                style={{ scrollSnapAlign: "center" }}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => scrollToIndex(Math.max(0, active - 1))}
+                className="h-10 w-10 rounded-full border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50"
+                aria-label="Previous"
               >
-                <button
-                  type="button"
-                  onClick={() => openModal(s)}
-                  className="w-full overflow-hidden rounded-3xl border border-slate-200 bg-white text-left shadow-md transition focus:outline-none focus:ring-2 focus:ring-slate-300"
-                  style={cardStyle(idx)}
-                >
-                  <div className="relative">
-                    <img
-                      src={s.image}
-                      alt={s.title}
-                      className="h-[240px] w-full object-cover sm:h-[260px]"
-                      loading="lazy"
-                    />
-                    {/* premium overlay */}
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent" />
-                    <div className="absolute bottom-4 left-4 right-4 text-white">
-                      <div className="text-2xl font-extrabold leading-tight drop-shadow">
-                        {s.title}
-                      </div>
-                      <div className="mt-1 text-sm text-white/90 drop-shadow">
-                        {s.short}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-5">
-                    <div className="flex items-center justify-between gap-3">
-                      
-                      <div className="text-sm font-semibold text-blue-700">
-                        Shiko më shumë {">"}
-                      </div>
-                    </div>
-
-                    <a
-                      href={toWaLink(s.whatsappText)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-green-500 px-5 py-3 text-sm font-semibold text-white hover:bg-green-600"
-
-                    >
-                      WhatsApp
-                    </a>
-                  </div>
-                </button>
-              </div>
-            ))}
+                ↑
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  scrollToIndex(Math.min(services.length - 1, active + 1))
+                }
+                className="h-10 w-10 rounded-full border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50"
+                aria-label="Next"
+              >
+                ↓
+              </button>
+            </div>
           </div>
 
-          <div style={{ height: 60 }} />
-        </div>
+          {/* VIEWPORT - vertical coverflow */}
+          <div
+            ref={viewportRef}
+            className="mt-5 w-full overflow-y-auto rounded-[28px] border border-slate-200 bg-white shadow-sm"
+            style={{
+              height: "620px",
+              scrollSnapType: "y mandatory",
+              WebkitOverflowScrolling: "touch",
+              scrollbarWidth: "none",
+            }}
+          >
+            {/* tight buffers = cards closer, but still show prev/next */}
+            <div style={{ height: 70 }} />
 
-        <div className="mt-10 h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+            {/* gap-0 to reduce spacing between services */}
+            <div className="flex flex-col gap-0 px-2 sm:px-4">
+              {services.map((s, idx) => (
+                <div
+                  key={s.slug}
+                  ref={(el) => {
+                    itemRefs.current[idx] = el;
+                  }}
+                  style={{ scrollSnapAlign: "center" }}
+                  className="py-2"
+                >
+                  <button
+                    type="button"
+                    onClick={() => openModal(s)}
+                    className="w-full overflow-hidden rounded-[28px] border border-slate-200 bg-white text-left shadow-md transition focus:outline-none focus:ring-2 focus:ring-slate-300"
+                    style={cardStyle(idx)}
+                  >
+                    {/* Portrait-friendly “poster” area */}
+                    <div className="relative">
+                      <img
+                        src={s.image}
+                        alt={s.title}
+                        className="w-full object-cover"
+                        // “poster vibe”: taller image area (vertical feel)
+                        style={{ height: 340 }}
+                        loading="lazy"
+                      />
+
+                      {/* premium overlay */}
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+
+                      {/* text overlay - clean and big */}
+                      <div className="absolute bottom-5 left-5 right-5 text-white">
+                        <div className="text-3xl font-extrabold leading-tight drop-shadow">
+                          {s.title}
+                        </div>
+                        <div className="mt-2 text-base text-white/90 drop-shadow">
+                          {s.short}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* bottom actions - keep minimal, no extra texts */}
+                    <div className="p-5">
+                      <a
+                        href={toWaLink(s.whatsappText)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex w-full items-center justify-center rounded-2xl bg-green-500 px-5 py-4 text-base font-semibold text-white hover:bg-green-600"
+                      >
+                        WhatsApp
+                      </a>
+                    </div>
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ height: 70 }} />
+          </div>
+        </div>
       </div>
 
       {/* MODAL */}
@@ -249,7 +253,8 @@ export default function ServicesStories() {
               <img
                 src={selected.image}
                 alt={selected.title}
-                className="h-[360px] w-full object-cover sm:h-[460px]"
+                className="w-full object-cover"
+                style={{ height: 520 }}
               />
               <button
                 type="button"
@@ -260,7 +265,7 @@ export default function ServicesStories() {
                 X
               </button>
 
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-5 text-white">
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/65 to-transparent p-5 text-white">
                 <div className="text-xl font-bold">{selected.title}</div>
                 <div className="text-sm text-white/90">{selected.short}</div>
               </div>
@@ -271,9 +276,9 @@ export default function ServicesStories() {
                 href={toWaLink(selected.whatsappText)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:opacity-95"
+                className="inline-flex w-full items-center justify-center rounded-2xl bg-green-500 px-5 py-3 text-sm font-semibold text-white hover:bg-green-600"
               >
-                Kontakto ne WhatsApp
+                Kontakto në WhatsApp
               </a>
 
               <button
