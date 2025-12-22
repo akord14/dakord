@@ -32,7 +32,6 @@ const services: Service[] = [
     short: "Web, panele, automatizime",
     whatsappText: "Përshëndetje! Jam i interesuar për Zhvillim Software.",
   },
-  // shto te tjera ketu
 ];
 
 function toWaLink(text: string) {
@@ -55,12 +54,12 @@ export default function ServicesStories() {
     setSelected(s);
     setOpen(true);
   };
+
   const closeModal = () => {
     setOpen(false);
     setTimeout(() => setSelected(null), 50);
   };
 
-  // ESC close modal
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeModal();
@@ -70,7 +69,7 @@ export default function ServicesStories() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
-  // Track active item based on which card is closest to the center
+  // detect active card = closest to viewport center
   useEffect(() => {
     const viewport = viewportRef.current;
     if (!viewport) return;
@@ -101,42 +100,42 @@ export default function ServicesStories() {
     return () => viewport.removeEventListener("scroll", onScroll);
   }, []);
 
+  // stronger tube effect + closer neighbors
   const cardStyle = useMemo(() => {
     return (idx: number) => {
-      const d = idx - active; // 0 = center
+      const d = idx - active;
       const abs = Math.abs(d);
 
-      // scale/opacity to simulate "tube"
-      const scale = d === 0 ? 1 : abs === 1 ? 0.88 : 0.78;
-      const opacity = d === 0 ? 1 : abs === 1 ? 0.75 : 0.55;
+      const scale =
+        d === 0 ? 1 : abs === 1 ? 0.86 : 0.74; // neighbors clearly smaller
+      const opacity =
+        d === 0 ? 1 : abs === 1 ? 0.72 : 0.50;
 
-      // rotateX gives a cylinder feel
-      const rotateX = d === 0 ? 0 : d > 0 ? -12 : 12;
+      const rotateX = d === 0 ? 0 : d > 0 ? -20 : 20;
       const translateY = d === 0 ? 0 : d > 0 ? 10 : -10;
 
       return {
-        transform: `perspective(900px) translateY(${translateY}px) rotateX(${rotateX}deg) scale(${scale})`,
+        transform: `perspective(1000px) translateY(${translateY}px) rotateX(${rotateX}deg) scale(${scale})`,
         opacity,
-        filter: d === 0 ? "none" : "saturate(0.9)",
+        filter: d === 0 ? "none" : "saturate(0.92) contrast(0.98)",
       } as React.CSSProperties;
     };
   }, [active]);
 
   const scrollToIndex = (idx: number) => {
-    const viewport = viewportRef.current;
     const el = itemRefs.current[idx];
-    if (!viewport || !el) return;
+    if (!el) return;
     el.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   return (
     <section className="mt-10 w-full">
-      <div className="w-full px-3 sm:px-6">
+      <div className="w-full px-2 sm:px-6">
         <div className="flex items-end justify-between gap-3">
           <div>
             <h2 className="text-xl font-bold text-slate-900">Shërbimet</h2>
             <p className="mt-1 text-sm text-slate-600">
-              Swipe lart/poshtë për të ndryshuar shërbimin
+              Swipe lart/poshtë (tub premium)
             </p>
           </div>
 
@@ -160,28 +159,27 @@ export default function ServicesStories() {
           </div>
         </div>
 
-        {/* VIEWPORT (vertical) */}
+        {/* Viewport larger + tighter padding = cards closer */}
         <div
           ref={viewportRef}
-          className="mt-6 w-full overflow-y-auto rounded-3xl border border-slate-200 bg-white/60 shadow-sm"
+          className="mt-6 w-full overflow-y-auto rounded-3xl border border-slate-200 bg-white shadow-sm"
           style={{
-            height: "420px", // ndrysho ketu nese do me te larte
+            height: "560px",
             scrollSnapType: "y mandatory",
             WebkitOverflowScrolling: "touch",
             scrollbarWidth: "none",
           }}
         >
-          {/* top/bottom padding so center card can align nicely */}
-          <div style={{ height: 140 }} />
+          {/* smaller top/bottom buffer so neighbors are visible */}
+          <div style={{ height: 90 }} />
 
-          <div className="flex flex-col gap-4 px-3 sm:px-5">
+          <div className="flex flex-col gap-2 px-2 sm:px-4">
             {services.map((s, idx) => (
               <div
                 key={s.slug}
                 ref={(el) => {
                   itemRefs.current[idx] = el;
                 }}
-                className="scroll-mt-24"
                 style={{ scrollSnapAlign: "center" }}
               >
                 <button
@@ -194,10 +192,11 @@ export default function ServicesStories() {
                     <img
                       src={s.image}
                       alt={s.title}
-                      className="h-[220px] w-full object-cover sm:h-[240px]"
+                      className="h-[240px] w-full object-cover sm:h-[260px]"
                       loading="lazy"
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                    {/* premium overlay */}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent" />
                     <div className="absolute bottom-4 left-4 right-4 text-white">
                       <div className="text-2xl font-extrabold leading-tight drop-shadow">
                         {s.title}
@@ -211,7 +210,7 @@ export default function ServicesStories() {
                   <div className="p-5">
                     <div className="flex items-center justify-between gap-3">
                       <div className="text-sm font-semibold text-slate-900">
-                        Kliko për foto (popup)
+                        Kliko per popup
                       </div>
                       <div className="text-sm font-semibold text-blue-700">
                         View {">"}
@@ -233,7 +232,7 @@ export default function ServicesStories() {
             ))}
           </div>
 
-          <div style={{ height: 140 }} />
+          <div style={{ height: 90 }} />
         </div>
 
         <div className="mt-10 h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
@@ -253,7 +252,7 @@ export default function ServicesStories() {
               <img
                 src={selected.image}
                 alt={selected.title}
-                className="h-[340px] w-full object-cover sm:h-[420px]"
+                className="h-[360px] w-full object-cover sm:h-[460px]"
               />
               <button
                 type="button"
@@ -263,7 +262,8 @@ export default function ServicesStories() {
               >
                 X
               </button>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/55 to-transparent p-5 text-white">
+
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-5 text-white">
                 <div className="text-xl font-bold">{selected.title}</div>
                 <div className="text-sm text-white/90">{selected.short}</div>
               </div>
@@ -276,7 +276,7 @@ export default function ServicesStories() {
                 rel="noopener noreferrer"
                 className="inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:opacity-95"
               >
-                Kontakto në WhatsApp
+                Kontakto ne WhatsApp
               </a>
 
               <button
