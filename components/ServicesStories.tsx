@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Service = {
   title: string;
@@ -12,32 +12,31 @@ type Service = {
 
 const services: Service[] = [
   {
-    title: "Security",
+    title: "Sisteme Sigurie",
     slug: "security-systems",
     image: "/services/security-systems.jpg",
-    short: "Alarm, fire, access",
-    whatsappText: "Hello! I am interested in Security Systems.",
+    short: "Alarm, zjarri, access control",
+    whatsappText: "Përshëndetje! Jam i interesuar për Sisteme Sigurie.",
   },
   {
-    title: "Monitoring",
+    title: "Sisteme Monitorimi",
     slug: "monitoring-systems",
     image: "/services/monitoring-systems.jpg",
-    short: "CCTV, IP, intercom",
-    whatsappText: "Hello! I am interested in Monitoring Systems.",
+    short: "CCTV, IP, video-interfon",
+    whatsappText: "Përshëndetje! Jam i interesuar për Sisteme Monitorimi.",
   },
   {
-    title: "Software",
+    title: "Zhvillim Software",
     slug: "software-development",
     image: "/services/software-development.jpg",
-    short: "Web, panels, automation",
-    whatsappText: "Hello! I am interested in Software Development.",
+    short: "Web, panele, automatizime",
+    whatsappText: "Përshëndetje! Jam i interesuar për Zhvillim Software.",
   },
-  // Shto sherbime te tjera ketu dhe do dalin me swipe automatikisht
+  // shto te tjera ketu
 ];
 
 function toWaLink(text: string) {
-  // Optional: vendos numrin tend pa "+" (p.sh. "3556XXXXXXXX")
-  const phone = "";
+  const phone = ""; // optional: "3556XXXXXXXX"
   const encoded = encodeURIComponent(text);
   return phone
     ? `https://wa.me/${phone}?text=${encoded}`
@@ -45,6 +44,10 @@ function toWaLink(text: string) {
 }
 
 export default function ServicesStories() {
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [active, setActive] = useState(0);
+
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Service | null>(null);
 
@@ -52,13 +55,12 @@ export default function ServicesStories() {
     setSelected(s);
     setOpen(true);
   };
-
   const closeModal = () => {
     setOpen(false);
-    // delay small for smoother UI; optional
     setTimeout(() => setSelected(null), 50);
   };
 
+  // ESC close modal
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeModal();
@@ -68,86 +70,190 @@ export default function ServicesStories() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
+  // Track active item based on which card is closest to the center
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    const onScroll = () => {
+      const vpRect = viewport.getBoundingClientRect();
+      const vpCenterY = vpRect.top + vpRect.height / 2;
+
+      let bestIdx = 0;
+      let bestDist = Number.POSITIVE_INFINITY;
+
+      itemRefs.current.forEach((el, idx) => {
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const centerY = r.top + r.height / 2;
+        const dist = Math.abs(centerY - vpCenterY);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIdx = idx;
+        }
+      });
+
+      setActive(bestIdx);
+    };
+
+    onScroll();
+    viewport.addEventListener("scroll", onScroll, { passive: true });
+    return () => viewport.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const cardStyle = useMemo(() => {
+    return (idx: number) => {
+      const d = idx - active; // 0 = center
+      const abs = Math.abs(d);
+
+      // scale/opacity to simulate "tube"
+      const scale = d === 0 ? 1 : abs === 1 ? 0.88 : 0.78;
+      const opacity = d === 0 ? 1 : abs === 1 ? 0.75 : 0.55;
+
+      // rotateX gives a cylinder feel
+      const rotateX = d === 0 ? 0 : d > 0 ? -12 : 12;
+      const translateY = d === 0 ? 0 : d > 0 ? 10 : -10;
+
+      return {
+        transform: `perspective(900px) translateY(${translateY}px) rotateX(${rotateX}deg) scale(${scale})`,
+        opacity,
+        filter: d === 0 ? "none" : "saturate(0.9)",
+      } as React.CSSProperties;
+    };
+  }, [active]);
+
+  const scrollToIndex = (idx: number) => {
+    const viewport = viewportRef.current;
+    const el = itemRefs.current[idx];
+    if (!viewport || !el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
   return (
-    <section className="mt-8 w-full">
-      {/* px-2 ne mobile per te hequr hapesirat anash */}
-      <div className="w-full px-2 sm:px-4">
+    <section className="mt-10 w-full">
+      <div className="w-full px-3 sm:px-6">
         <div className="flex items-end justify-between gap-3">
-          <h2 className="text-lg font-semibold text-slate-900">Services</h2>
-          <span className="text-xs text-slate-500">Swipe</span>
+          <div>
+            <h2 className="text-xl font-bold text-slate-900">Shërbimet</h2>
+            <p className="mt-1 text-sm text-slate-600">
+              Swipe lart/poshtë për të ndryshuar shërbimin
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => scrollToIndex(Math.max(0, active - 1))}
+              className="h-9 w-9 rounded-full border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50"
+              aria-label="Previous"
+            >
+              ↑
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToIndex(Math.min(services.length - 1, active + 1))}
+              className="h-9 w-9 rounded-full border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50"
+              aria-label="Next"
+            >
+              ↓
+            </button>
+          </div>
         </div>
 
-        {/* SLIDER horizontal */}
+        {/* VIEWPORT (vertical) */}
         <div
-          className="mt-4 overflow-x-auto"
+          ref={viewportRef}
+          className="mt-6 w-full overflow-y-auto rounded-3xl border border-slate-200 bg-white/60 shadow-sm"
           style={{
+            height: "420px", // ndrysho ketu nese do me te larte
+            scrollSnapType: "y mandatory",
             WebkitOverflowScrolling: "touch",
             scrollbarWidth: "none",
           }}
         >
-          <div className="flex gap-3 snap-x snap-mandatory pr-2">
-            {services.map((s) => (
-              <button
+          {/* top/bottom padding so center card can align nicely */}
+          <div style={{ height: 140 }} />
+
+          <div className="flex flex-col gap-4 px-3 sm:px-5">
+            {services.map((s, idx) => (
+              <div
                 key={s.slug}
-                type="button"
-                onClick={() => openModal(s)}
-                className="snap-start shrink-0 rounded-2xl border border-slate-200 bg-white text-left shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-300"
-                style={{
-                  width: "calc((100vw - 16px - 16px - 12px - 12px) / 3)",
-                  minWidth: "110px",
-                  maxWidth: "160px",
+                ref={(el) => {
+                  itemRefs.current[idx] = el;
                 }}
+                className="scroll-mt-24"
+                style={{ scrollSnapAlign: "center" }}
               >
-                <div className="relative overflow-hidden rounded-2xl">
-                  <img
-                    src={s.image}
-                    alt={s.title}
-                    className="h-[90px] w-full object-cover"
-                    loading="lazy"
-                  />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                  <div className="absolute bottom-2 left-2 right-2 text-white drop-shadow">
-                    <div className="text-sm font-semibold leading-tight">
-                      {s.title}
+                <button
+                  type="button"
+                  onClick={() => openModal(s)}
+                  className="w-full overflow-hidden rounded-3xl border border-slate-200 bg-white text-left shadow-md transition focus:outline-none focus:ring-2 focus:ring-slate-300"
+                  style={cardStyle(idx)}
+                >
+                  <div className="relative">
+                    <img
+                      src={s.image}
+                      alt={s.title}
+                      className="h-[220px] w-full object-cover sm:h-[240px]"
+                      loading="lazy"
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                    <div className="absolute bottom-4 left-4 right-4 text-white">
+                      <div className="text-2xl font-extrabold leading-tight drop-shadow">
+                        {s.title}
+                      </div>
+                      <div className="mt-1 text-sm text-white/90 drop-shadow">
+                        {s.short}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="p-3">
-                  <div className="text-[11px] leading-snug text-slate-600">
-                    {s.short}
-                  </div>
+                  <div className="p-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="text-sm font-semibold text-slate-900">
+                        Kliko për foto (popup)
+                      </div>
+                      <div className="text-sm font-semibold text-blue-700">
+                        View {">"}
+                      </div>
+                    </div>
 
-                  <div className="mt-3 inline-flex items-center gap-2 text-[12px] font-semibold text-slate-900">
-                    <span>View</span>
-                    <span>{">"}</span>
+                    <a
+                      href={toWaLink(s.whatsappText)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:opacity-95"
+                    >
+                      WhatsApp
+                    </a>
                   </div>
-                </div>
-              </button>
+                </button>
+              </div>
             ))}
-
-            <div className="shrink-0 w-2" />
           </div>
+
+          <div style={{ height: 140 }} />
         </div>
 
-        <div className="mt-8 h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+        <div className="mt-10 h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
       </div>
 
       {/* MODAL */}
       {open && selected && (
         <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-4"
           onClick={closeModal}
         >
           <div
-            className="w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-xl"
+            className="w-full max-w-xl overflow-hidden rounded-3xl bg-white shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative">
               <img
                 src={selected.image}
                 alt={selected.title}
-                className="h-[260px] w-full object-cover"
+                className="h-[340px] w-full object-cover sm:h-[420px]"
               />
               <button
                 type="button"
@@ -157,21 +263,20 @@ export default function ServicesStories() {
               >
                 X
               </button>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/55 to-transparent p-5 text-white">
+                <div className="text-xl font-bold">{selected.title}</div>
+                <div className="text-sm text-white/90">{selected.short}</div>
+              </div>
             </div>
 
             <div className="p-5">
-              <div className="text-lg font-semibold text-slate-900">
-                {selected.title}
-              </div>
-              <div className="mt-1 text-sm text-slate-600">{selected.short}</div>
-
               <a
                 href={toWaLink(selected.whatsappText)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:opacity-95"
+                className="inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:opacity-95"
               >
-                WhatsApp
+                Kontakto në WhatsApp
               </a>
 
               <button
@@ -179,7 +284,7 @@ export default function ServicesStories() {
                 onClick={closeModal}
                 className="mt-3 inline-flex w-full items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-50"
               >
-                Close
+                Mbyll
               </button>
             </div>
           </div>
