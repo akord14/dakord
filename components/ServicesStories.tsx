@@ -133,10 +133,8 @@ export default function ServicesStories() {
       <div className="w-full px-2 sm:px-6">
         <div className="flex items-end justify-between gap-3">
           <div>
-            <h2 className="text-xl font-bold text-slate-900">Shërbimet</h2>
-            <p className="mt-1 text-sm text-slate-600">
-              Swipe lart/poshtë (tub premium)
-            </p>
+            <h2 className="text-xl font-bold text-slate-900">Shërbimet tona</h2>
+            
           </div>
 
           <div className="flex items-center gap-1">
@@ -209,11 +207,9 @@ export default function ServicesStories() {
 
                   <div className="p-5">
                     <div className="flex items-center justify-between gap-3">
-                      <div className="text-sm font-semibold text-slate-900">
-                        Kliko per popup
-                      </div>
+                      
                       <div className="text-sm font-semibold text-blue-700">
-                        View {">"}
+                        Shiko më shumë {">"}
                       </div>
                     </div>
 
@@ -222,7 +218,8 @@ export default function ServicesStories() {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:opacity-95"
+                      className="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-green-500 px-5 py-3 text-sm font-semibold text-white hover:bg-green-600"
+
                     >
                       WhatsApp
                     </a>
