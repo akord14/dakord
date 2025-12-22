@@ -107,9 +107,9 @@ export default function ServicesStories() {
       const abs = Math.abs(d);
 
       const scale =
-        d === 0 ? 1 : abs === 1 ? 0.86 : 0.74; // neighbors clearly smaller
+        d === 0 ? 1 : abs === 1.03 ? 0.86 : 0.74; // neighbors clearly smaller
       const opacity =
-        d === 0 ? 1 : abs === 1 ? 0.72 : 0.50;
+        d === 0 ? 1 : abs === 1 ? 0.82 : 0.68;
 
       const rotateX = d === 0 ? 0 : d > 0 ? -20 : 20;
       const translateY = d === 0 ? 0 : d > 0 ? 10 : -10;
@@ -139,7 +139,7 @@ export default function ServicesStories() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <button
               type="button"
               onClick={() => scrollToIndex(Math.max(0, active - 1))}
@@ -171,7 +171,7 @@ export default function ServicesStories() {
           }}
         >
           {/* smaller top/bottom buffer so neighbors are visible */}
-          <div style={{ height: 90 }} />
+          <div style={{ height: 60 }} />
 
           <div className="flex flex-col gap-2 px-2 sm:px-4">
             {services.map((s, idx) => (
@@ -232,7 +232,7 @@ export default function ServicesStories() {
             ))}
           </div>
 
-          <div style={{ height: 90 }} />
+          <div style={{ height: 60 }} />
         </div>
 
         <div className="mt-10 h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
