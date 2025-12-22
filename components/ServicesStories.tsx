@@ -265,10 +265,7 @@ export default function ServicesStories() {
                 X
               </button>
 
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/65 to-transparent p-5 text-white">
-                <div className="text-xl font-bold">{selected.title}</div>
-                <div className="text-sm text-white/90">{selected.short}</div>
-              </div>
+              
             </div>
 
             <div className="p-5">
