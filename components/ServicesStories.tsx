@@ -278,13 +278,7 @@ export default function ServicesStories() {
                 Kontakto në WhatsApp
               </a>
 
-              <button
-                type="button"
-                onClick={closeModal}
-                className="mt-3 inline-flex w-full items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-50"
-              >
-                Mbyll
-              </button>
+        
             </div>
           </div>
         </div>
