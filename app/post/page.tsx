@@ -93,14 +93,15 @@ async function getPosts(filters: SearchFilters): Promise<Post[]> {
 // --------------------
 // PAGE – LISTA E POSTEVE
 // --------------------
-export default async function PostsPage(props: any) {
-  const searchParams = props?.searchParams ?? {};
+export default async function PostsPage({ searchParams }: any) {
+
+  const sp = searchParams ?? {};
 
   const rawType =
-  typeof searchParams.type === "string"
-    ? searchParams.type
-    : Array.isArray(searchParams.type)
-    ? searchParams.type[0]
+  typeof sp.type === "string"
+    ? sp.type
+    : Array.isArray(sp.type)
+    ? sp.type[0]
     : undefined;
 
 const typeParam =
@@ -108,10 +109,10 @@ const typeParam =
 
 
   const workTimeParam =
-    typeof searchParams.work_time === "string"
-      ? searchParams.work_time
-      : Array.isArray(searchParams.work_time)
-      ? searchParams.work_time[0]
+    typeof sp.work_time === "string"
+      ? sp.work_time
+      : Array.isArray(sp.work_time)
+      ? sp.work_time[0]
       : undefined;
 
   const posts = await getPosts({
