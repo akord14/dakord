@@ -95,12 +95,16 @@ async function getPosts(filters: SearchFilters): Promise<Post[]> {
 export default async function PostsPage(props: any) {
   const searchParams = props?.searchParams ?? {};
 
-  const typeParam =
-    typeof searchParams.type === "string"
-      ? searchParams.type
-      : Array.isArray(searchParams.type)
-      ? searchParams.type[0]
-      : undefined;
+  const rawType =
+  typeof searchParams.type === "string"
+    ? searchParams.type
+    : Array.isArray(searchParams.type)
+    ? searchParams.type[0]
+    : undefined;
+
+const typeParam =
+  rawType === "seeking" || rawType === "offering" ? rawType : undefined;
+
 
   const workTimeParam =
     typeof searchParams.work_time === "string"
