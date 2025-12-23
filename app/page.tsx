@@ -20,6 +20,119 @@ function getSupabase() {
 
   return createClient(url, key);
 }
+function HeroCard() {
+  return (
+    <section className="w-full">
+      <div className="w-full bg-gradient-to-b from-slate-50 via-white to-slate-50">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 pt-8 sm:pt-10">
+          <div className="relative overflow-hidden rounded-[34px] border border-slate-200/70 bg-white/70 shadow-[0_18px_60px_-28px_rgba(15,23,42,0.45)] backdrop-blur">
+            <div className="pointer-events-none absolute -top-24 right-[-60px] h-64 w-64 rounded-full bg-blue-500/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-28 left-[-70px] h-72 w-72 rounded-full bg-indigo-500/10 blur-3xl" />
+
+            <div className="px-6 py-8 sm:px-10 sm:py-10">
+              <div className="flex items-center justify-center">
+                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-slate-900/5 to-blue-600/10 ring-1 ring-slate-900/5 shadow-sm flex items-center justify-center">
+                  <span className="text-slate-700 font-bold">A</span>
+                </div>
+              </div>
+
+              <h1 className="mt-6 text-center text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
+                Ekspertë në Shërbime Profesionale dhe Punësim
+              </h1>
+
+              <p className="mt-4 text-center text-base sm:text-lg text-slate-600">
+                Zgjidh shërbimet tona profesionale ose gjej ofertat më të mira të punës!
+              </p>
+
+              <div className="mt-8">
+                <div className="mx-auto max-w-3xl rounded-[26px] border border-slate-200/70 bg-white/60 p-2 shadow-sm backdrop-blur">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {/* Primary */}
+                    <Link
+                      href="#services"
+                      className="group inline-flex items-center justify-between rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 px-5 py-4 text-white shadow-md transition hover:shadow-lg"
+                    >
+                      <div className="flex items-center gap-3">
+                        {/* Arrow DOWN (siç kërkove) */}
+                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/15">
+                          <svg
+                            className="h-5 w-5"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                          >
+                            <path d="M6 10l6 6 6-6" />
+                          </svg>
+                        </span>
+
+                        <span className="text-base sm:text-lg font-semibold">
+                          Shërbimet tona
+                        </span>
+                      </div>
+
+                      <svg
+                        className="h-5 w-5 opacity-90 transition group-hover:translate-x-0.5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                      >
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </Link>
+
+                    {/* Secondary (lighter) */}
+                    <Link
+                      href="/post"
+                      className="group inline-flex items-center justify-between rounded-2xl bg-gradient-to-r from-slate-100 to-slate-200 px-5 py-4 text-slate-900 ring-1 ring-slate-900/5 shadow-sm transition hover:shadow-md"
+                    >
+                      <div className="flex items-center gap-3">
+                        {/* Arrow DOWN edhe këtu */}
+                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white ring-1 ring-slate-900/5">
+                          <svg
+                            className="h-5 w-5 text-slate-700"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                          >
+                            <path d="M6 10l6 6 6-6" />
+                          </svg>
+                        </span>
+
+                        <span className="text-base sm:text-lg font-semibold">
+                          Postime punësimi
+                        </span>
+                      </div>
+
+                      <svg
+                        className="h-5 w-5 text-slate-600 transition group-hover:translate-x-0.5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                      >
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 text-center text-xs sm:text-sm text-slate-500">
+                Platformë e thjeshtë • Kontakt i shpejtë • Zgjidhje profesionale
+              </div>
+            </div>
+          </div>
+
+          <div className="h-6 sm:h-8" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 export default async function HomePage() {
   let posts: Post[] = [];
@@ -42,6 +155,7 @@ export default async function HomePage() {
 
   return (
     <main className="w-full">
+      <HeroCard />
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden">
         {/* premium gradient background (pa foto) */}
