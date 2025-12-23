@@ -105,7 +105,10 @@ export default async function PostsPage({ searchParams }: any) {
     : undefined;
 
 const typeParam =
-  rawType === "seeking" || rawType === "offering" ? rawType : undefined;
+  rawType === "seeking" || rawType === "offering"
+    ? rawType
+    : undefined;
+
 
 
   const workTimeParam =
