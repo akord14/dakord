@@ -355,7 +355,7 @@ export default async function HomePage() {
         </div>
 
         {/* Footer */}
-        <p className="mt-8 text-center text-xs text-slate-500">© 2025 akord.al</p>
+        
       </section>
     </main>
   );
