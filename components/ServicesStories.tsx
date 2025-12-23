@@ -109,7 +109,7 @@ export default function ServicesStories() {
       const isCenter = d === 0;
       const isNeighbor = abs === 1;
 
-      const scale = isCenter ? 1.06 : isNeighbor ? 0.90 : 0.80;
+      const scale = isCenter ? 1.06 : isNeighbor ? 0.9 : 0.8;
       const opacity = isCenter ? 1 : isNeighbor ? 0.45 : 0.22;
       const blur = isCenter ? 0 : isNeighbor ? 0.6 : 1.2;
 
@@ -133,17 +133,26 @@ export default function ServicesStories() {
   return (
     <section className="mt-10 w-full">
       {/* FULL WIDTH + premium background */}
-      <div className="w-full bg-slate-50/80">
-        {/* minimal padding so it feels full-bleed, but not touching edges */}
-        <div className="w-full px-2 sm:px-6 py-6">
+      <div className="w-full bg-gradient-to-b from-slate-50/90 via-white to-slate-50/80">
+        <div className="w-full px-3 sm:px-6 py-8">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-xl font-bold text-slate-900">Shërbimet tona</h2>
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-2xl border border-slate-200 bg-white shadow-sm" />
+              <div>
+                <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
+                  Shërbimet tona
+                </h2>
+                <div className="text-sm text-slate-600">
+                  Zgjidhje profesionale • Instalime • Mirëmbajtje
+                </div>
+              </div>
+            </div>
 
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => scrollToIndex(Math.max(0, active - 1))}
-                className="h-10 w-10 rounded-full border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50"
+                className="h-10 w-10 rounded-full border border-slate-200 bg-white text-slate-900 shadow-sm transition hover:bg-slate-50 hover:shadow"
                 aria-label="Previous"
               >
                 ↑
@@ -153,7 +162,7 @@ export default function ServicesStories() {
                 onClick={() =>
                   scrollToIndex(Math.min(services.length - 1, active + 1))
                 }
-                className="h-10 w-10 rounded-full border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50"
+                className="h-10 w-10 rounded-full border border-slate-200 bg-white text-slate-900 shadow-sm transition hover:bg-slate-50 hover:shadow"
                 aria-label="Next"
               >
                 ↓
@@ -164,7 +173,7 @@ export default function ServicesStories() {
           {/* VIEWPORT - vertical coverflow */}
           <div
             ref={viewportRef}
-            className="mt-5 w-full overflow-y-auto rounded-[28px] border border-slate-200 bg-white shadow-sm"
+            className="mt-6 w-full overflow-y-auto rounded-[32px] border border-slate-200/70 bg-white/70 shadow-[0_12px_40px_-18px_rgba(15,23,42,0.35)] backdrop-blur"
             style={{
               height: "620px",
               scrollSnapType: "y mandatory",
@@ -172,10 +181,8 @@ export default function ServicesStories() {
               scrollbarWidth: "none",
             }}
           >
-            {/* tight buffers = cards closer, but still show prev/next */}
-            <div style={{ height: 70 }} />
+            <div style={{ height: 80 }} />
 
-            {/* gap-0 to reduce spacing between services */}
             <div className="flex flex-col gap-0 px-2 sm:px-4">
               {services.map((s, idx) => (
                 <div
@@ -189,52 +196,51 @@ export default function ServicesStories() {
                   <button
                     type="button"
                     onClick={() => openModal(s)}
-                    className="w-full overflow-hidden rounded-[28px] border border-slate-200 bg-white text-left shadow-md transition focus:outline-none focus:ring-2 focus:ring-slate-300"
+                    className="group w-full overflow-hidden rounded-[28px] border border-slate-200/70 bg-white text-left shadow-[0_10px_30px_-18px_rgba(15,23,42,0.45)] transition focus:outline-none focus:ring-2 focus:ring-slate-300"
                     style={cardStyle(idx)}
                   >
-                    {/* Portrait-friendly “poster” area */}
                     <div className="relative">
                       <img
                         src={s.image}
                         alt={s.title}
-                        className="w-full object-cover"
-                        // “poster vibe”: taller image area (vertical feel)
-                        style={{ height: 340 }}
+                        className="w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+                        style={{ height: 352 }}
                         loading="lazy"
                       />
 
-                      {/* premium overlay */}
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+                      {/* premium overlay (softened) */}
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
 
-                      {/* text overlay - clean and big */}
-                      <div className="absolute bottom-5 left-5 right-5 text-white">
-                        <div className="text-3xl font-extrabold leading-tight drop-shadow">
-                          {s.title}
-                        </div>
-                        <div className="mt-2 text-base text-white/90 drop-shadow">
-                          {s.short}
-                        </div>
+                      {/* soft border highlight */}
+                      <div className="pointer-events-none absolute inset-0 ring-1 ring-white/10" />
+
+                      {/* top-right badge */}
+                      <div className="absolute right-4 top-4 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+                        Konsultë falas
                       </div>
                     </div>
 
-                    {/* bottom actions - keep minimal, no extra texts */}
                     <div className="p-5">
                       <a
                         href={toWaLink(s.whatsappText)}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="inline-flex w-full items-center justify-center rounded-2xl bg-green-500 px-5 py-4 text-base font-semibold text-white hover:bg-green-600"
+                        className="inline-flex w-full items-center justify-center rounded-2xl bg-green-500 px-5 py-4 text-base font-semibold text-white transition hover:bg-green-600 hover:shadow-lg"
                       >
                         WhatsApp
                       </a>
+
+                      <div className="mt-3 text-center text-xs text-slate-500">
+                        Përgjigje e shpejtë • Ofertë sipas nevojës
+                      </div>
                     </div>
                   </button>
                 </div>
               ))}
             </div>
 
-            <div style={{ height: 70 }} />
+            <div style={{ height: 80 }} />
           </div>
         </div>
       </div>
@@ -264,8 +270,6 @@ export default function ServicesStories() {
               >
                 X
               </button>
-
-              
             </div>
 
             <div className="p-5">
@@ -273,12 +277,10 @@ export default function ServicesStories() {
                 href={toWaLink(selected.whatsappText)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-full items-center justify-center rounded-2xl bg-green-500 px-5 py-3 text-sm font-semibold text-white hover:bg-green-600"
+                className="inline-flex w-full items-center justify-center rounded-2xl bg-green-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-600 hover:shadow-lg"
               >
                 Kontakto në WhatsApp
               </a>
-
-        
             </div>
           </div>
         </div>
