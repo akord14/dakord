@@ -31,9 +31,12 @@ function HeroCard() {
 
             <div className="px-6 py-8 sm:px-10 sm:py-10">
               <div className="flex items-center justify-center">
-                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-slate-900/5 to-blue-600/10 ring-1 ring-slate-900/5 shadow-sm flex items-center justify-center">
-                  <span className="text-slate-700 font-bold">A</span>
-                </div>
+                <img
+  src="/logo.png"
+  alt="Akord.al"
+  className="h-16 w-16 rounded-2xl shadow-sm"
+/>
+
               </div>
 
               <h1 className="mt-6 text-center text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
@@ -157,54 +160,7 @@ export default async function HomePage() {
     <main className="w-full">
       <HeroCard />
       {/* ================= HERO ================= */}
-      <section className="relative overflow-hidden">
-        {/* premium gradient background (pa foto) */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-700 via-indigo-700 to-slate-900" />
-        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_20%_20%,white,transparent_45%),radial-gradient(circle_at_80%_30%,white,transparent_40%)]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50" />
-
-        <div className="relative mx-auto max-w-6xl px-4 pt-10 pb-12 sm:pt-14 sm:pb-16 text-center text-white">
-          {/* LOGO */}
-          <div className="flex justify-center">
-            <Image
-              src="/logo.png"
-              alt="Akord.al"
-              width={180}
-              height={56}
-              priority
-              className="h-auto w-[160px] sm:w-[190px]"
-            />
-          </div>
-
-          <h1 className="mt-6 text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight">
-            Shërbime Profesionale dhe Punësim
-          </h1>
-
-          <p className="mt-4 mx-auto max-w-xl text-sm sm:text-base text-white/85 leading-relaxed">
-            Zgjidh shërbimet tona profesionale ose gjej ofertat më të mira të punës!
-          </p>
-
-          <div className="mt-7 flex flex-col sm:flex-row gap-3 justify-center">
-            <a
-              href="#services"
-              className="inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-semibold
-                         bg-white/15 border border-white/25 backdrop-blur
-                         hover:bg-white/20 active:scale-[0.99] transition"
-            >
-              Shërbimet tona
-            </a>
-
-            <a
-              href="#jobs"
-              className="inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-semibold
-                         bg-blue-500/80 border border-blue-200/20
-                         hover:bg-blue-500 active:scale-[0.99] transition"
-            >
-              Postime pune
-            </a>
-          </div>
-        </div>
-      </section>
+      
 
       {/* ================= SERVICES ================= */}
       <section id="services" className="mx-auto max-w-6xl px-4 pt-10 sm:pt-14">
