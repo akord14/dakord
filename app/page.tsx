@@ -213,7 +213,7 @@ export default async function HomePage() {
       {/* Butonat: Kerkoj pune / Ofroj pune */}
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <Link
-          href="/seeking"
+          href="/post"
           className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm hover:shadow-md transition"
         >
           <div className="flex items-center gap-3">
@@ -230,7 +230,7 @@ export default async function HomePage() {
         </Link>
 
         <Link
-          href="/offering"
+          href="/post"
           className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm hover:shadow-md transition"
         >
           <div className="flex items-center gap-3">
