@@ -46,9 +46,13 @@ export default function RootLayout({
         <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
 
         {/* FOOTER */}
-        <footer className="max-w-6xl mx-auto px-4 py-8">
-          © {YEAR} akord.al · Kërkoj punë · Ofroj punë
-        </footer>
+        <footer className="w-full border-t border-slate-200 bg-white">
+  <div className="mx-auto max-w-6xl px-4 py-6 text-center">
+    <p className="text-sm text-slate-500">
+      Të gjitha të drejtat të rezervuara Akord.al © 2025
+    </p>
+  </div>
+</footer>
         {/* VIP WhatsApp Support Button */}
 <a
   href="https://wa.me/355695111179"
