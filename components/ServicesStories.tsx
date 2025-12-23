@@ -60,6 +60,7 @@ export default function ServicesStories() {
     setTimeout(() => setSelected(null), 50);
   };
 
+  // ESC to close modal
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeModal();
@@ -148,24 +149,42 @@ export default function ServicesStories() {
               </div>
             </div>
 
+            {/* PREMIUM ARROWS */}
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => scrollToIndex(Math.max(0, active - 1))}
-                className="h-10 w-10 rounded-full border border-slate-200 bg-white text-slate-900 shadow-sm transition hover:bg-slate-50 hover:shadow"
+                className="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-white/70 text-slate-900 shadow-md backdrop-blur transition hover:bg-white hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-300"
                 aria-label="Previous"
               >
-                ↑
+                <svg
+                  className="h-5 w-5 transition group-hover:-translate-y-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M6 14l6-6 6 6" />
+                </svg>
               </button>
+
               <button
                 type="button"
                 onClick={() =>
                   scrollToIndex(Math.min(services.length - 1, active + 1))
                 }
-                className="h-10 w-10 rounded-full border border-slate-200 bg-white text-slate-900 shadow-sm transition hover:bg-slate-50 hover:shadow"
+                className="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-white/70 text-slate-900 shadow-md backdrop-blur transition hover:bg-white hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-300"
                 aria-label="Next"
               >
-                ↓
+                <svg
+                  className="h-5 w-5 transition group-hover:translate-y-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M18 10l-6 6-6-6" />
+                </svg>
               </button>
             </div>
           </div>
@@ -217,6 +236,13 @@ export default function ServicesStories() {
                       {/* top-right badge */}
                       <div className="absolute right-4 top-4 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
                         Konsultë falas
+                      </div>
+
+                      {/* TITLE ONLY (no short) */}
+                      <div className="absolute bottom-6 left-6 right-6 text-white">
+                        <div className="text-3xl font-extrabold leading-tight drop-shadow">
+                          {s.title}
+                        </div>
                       </div>
                     </div>
 
