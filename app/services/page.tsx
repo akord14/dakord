@@ -33,20 +33,39 @@ export default function ServicesIndex() {
       </div>
 
       {/* Services grid */}
-      <div className="grid grid-cols-2 gap-3">
-        {services.map((service) => (
-          <Link
-            key={service.slug}
-            href={`/services/${service.slug}`}
-            className="relative flex h-24 items-end justify-between rounded-xl bg-slate-200 p-3 shadow-sm hover:bg-slate-300"
-          >
-            <span className="text-sm font-bold text-slate-900">
-              {service.title}
-            </span>
-            <span className="text-slate-600">→</span>
-          </Link>
-        ))}
+      <div className="grid grid-cols-2 gap-4">
+  {services.map((service) => (
+    <Link
+      key={service.slug}
+      href={`/services/${service.slug}`}
+      className="
+        group relative h-28 rounded-2xl bg-white
+        p-4 shadow-sm ring-1 ring-slate-200
+        transition-all duration-200
+        hover:shadow-md hover:-translate-y-[1px]
+        active:scale-[0.98]
+      "
+    >
+      {/* Title */}
+      <div className="flex h-full flex-col justify-between">
+        <span className="text-sm font-extrabold text-slate-900 leading-tight">
+          {service.title}
+        </span>
+
+        {/* Arrow */}
+        <span className="
+          mt-2 inline-flex h-8 w-8 items-center justify-center
+          rounded-full bg-slate-100 text-slate-700
+          transition-colors
+          group-hover:bg-slate-900 group-hover:text-white
+        ">
+          →
+        </span>
       </div>
+    </Link>
+  ))}
+</div>
+
 
       {/* Back to home */}
       <Link
