@@ -159,21 +159,11 @@ export default function HomePage() {
           <div className="mt-3 grid grid-cols-3 gap-3">
             <HowCard icon={<SearchIcon />} text="Gjej Shërbimet" />
             <HowCard icon={<ShieldIcon />} text="Profesionistë të Verifikuar" />
-            <HowCard icon={<TargetIcon />} text="Merre Projektin Pa Humbur Kohë" />
+            <HowCard icon={<WhatsAppIcon />} text="Kontakto në WhatsApp" />
+
           </div>
 
-          {/* WhatsApp CTA (si ne foto) */}
-          <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-              "Pershendetje Akord.al, dua me shume informacion."
-            )}`}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-green-600 px-4 py-3 text-base font-extrabold text-white shadow-sm hover:bg-green-700"
-          >
-            <WhatsAppIcon />
-            Merre Projektin
-          </a>
+         
         </section>
 
         {/* FOOTER */}
