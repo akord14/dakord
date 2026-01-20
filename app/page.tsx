@@ -33,44 +33,72 @@ export default function HomePage() {
       <div className="mx-auto w-full max-w-[420px] md:max-w-3xl lg:max-w-5xl px-4">
         
 
-        {/* HERO */}
-        <section className="relative overflow-hidden rounded-2xl shadow-sm">
-          {/* Background image (blur city) */}
-          <div className="relative h-40 w-full">
-            <Image
-              src="/mock/hero-city.jpg"
-              alt="Background"
-              fill
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-black/35" />
-          </div>
+        {/* HERO – FINAL PREMIUM */}
+<section className="relative">
+  <div className="mx-auto max-w-6xl px-4">
+    <div
+      className="
+        relative
+        overflow-hidden
+        rounded-3xl
+        bg-white
+        px-8 py-14
+        border border-slate-200
+        shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+      "
+    >
+      {/* Content */}
+      <div className="text-center">
+        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900">
+          Gjej shërbimin e duhur.
+        </h1>
 
-          {/* Hero content */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-            <h1 className="text-2xl font-extrabold tracking-tight text-white drop-shadow">
-              Shërbime të verifikuara
-            </h1>
+        <p className="mt-3 text-sm md:text-base text-slate-500">
+          Zgjidh një kategori ose krijo një postim pune.
+        </p>
 
-            <div className="mt-4 grid w-full grid-cols-2 gap-3">
-              <Link
-                href="/services"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/90 px-4 py-3 text-sm font-semibold text-slate-900 shadow-sm backdrop-blur hover:bg-white"
-              >
-                Shiko Shërbimet
-                <ChevronRight />
-              </Link>
+        {/* CTA */}
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          {/* Secondary CTA */}
+          <a
+            href="/services"
+            className="
+              w-full sm:w-auto
+              rounded-xl
+              border border-slate-300
+              bg-white
+              px-8 py-3
+              text-slate-800 font-medium
+              shadow-sm
+              transition
+              hover:bg-slate-50
+            "
+          >
+            Shiko Shërbimet
+          </a>
 
-              <Link
-                href="/post"
-                className="inline-flex items-center justify-center rounded-xl bg-orange-500 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-orange-600"
-              >
-                Postime Punësimi
-              </Link>
-            </div>
-          </div>
-        </section>
+          {/* Primary CTA */}
+          <a
+            href="/post/new"
+            className="
+              w-full sm:w-auto
+              rounded-xl
+              bg-orange-500
+              px-8 py-3
+              text-white font-semibold
+              shadow-md
+              transition
+              hover:bg-orange-600
+            "
+          >
+            Postime Punësimi
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
         {/* SERVICES MAIN */}
         <section className="mt-4 rounded-2xl bg-white p-4 shadow-sm">
