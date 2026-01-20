@@ -32,64 +32,35 @@ export default function HomePage() {
     <main className="min-h-screen bg-[#f3f4f6]">
       <div className="w-full">
         
-
-  {/* HERO – FINAL PREMIUM */}
+{/* HERO – FINAL PREMIUM (FULL WIDTH) */}
 <section className="relative w-full">
-  {/* Ultra-light background glow */}
+  {/* ultra-light full-width background */}
   <div className="pointer-events-none absolute inset-0 -z-10">
     <div className="absolute -top-24 left-1/2 h-72 w-[520px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl" />
     <div className="absolute -top-10 left-1/2 h-56 w-[420px] -translate-x-1/2 rounded-full bg-orange-500/10 blur-3xl" />
   </div>
 
-  <div className="mx-auto max-w-6xl px-4">
-    <div
-      className="
-        relative
-        overflow-hidden
-        rounded-3xl
-        bg-white
-        px-5 py-7
-        sm:px-8 sm:py-10
-        border border-slate-200
-        shadow-[0_20px_60px_rgba(0,0,0,0.08)]
-      "
-    >
+  {/* content container */}
+  <div className="mx-auto w-full max-w-6xl px-4">
+    {/* card */}
+    <div className="rounded-3xl border border-slate-200 bg-white px-5 py-7 sm:px-8 sm:py-10 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
       <div className="text-center">
         <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900">
           Gjej shërbimin.
         </h1>
 
-        {/* CTA BUTTONS – SAME STYLE AS “Punësim & Bashkëpunime” */}
-        <div className="mt-6 flex flex-row flex-wrap items-center justify-center gap-3">
+        {/* CTA – ALWAYS ONE ROW */}
+        <div className="mt-6 grid w-full grid-cols-2 gap-3">
           <a
             href="/services"
-            className="
-              inline-flex items-center justify-center gap-2
-              rounded-full
-              border border-slate-200
-              bg-white
-              px-5 py-2.5
-              text-sm font-semibold text-slate-800
-              shadow-sm
-              transition
-              hover:bg-slate-50
-            "
+            className="inline-flex w-full items-center justify-center rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:bg-slate-50 whitespace-nowrap"
           >
             Shiko Shërbimet
           </a>
 
           <a
             href="/post/new"
-            className="
-              inline-flex items-center justify-center gap-2
-              rounded-full
-              bg-orange-500
-              px-5 py-2.5
-              text-sm font-semibold text-white
-              shadow-md
-              transition
-              hover:bg-orange-600
-            "
+            className="inline-flex w-full items-center justify-center rounded-full bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-orange-600 whitespace-nowrap"
           >
             Postime Punësimi
           </a>
@@ -99,6 +70,7 @@ export default function HomePage() {
   </div>
 </section>
 
+  
 
 
 
