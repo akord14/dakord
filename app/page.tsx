@@ -30,7 +30,7 @@ const services = [
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#f3f4f6]">
-      <div className="mx-auto w-full max-w-[420px] md:max-w-3xl lg:max-w-5xl px-4">
+      <div className="w-full">
         
 
    {/* HERO – FINAL PREMIUM */}
@@ -54,14 +54,15 @@ export default function HomePage() {
   >
     <div className="text-center">
       <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900">
-        Gjej shërbimin e duhur.
+        Gjej shërbimin.
       </h1>
 
-      <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+     <div className="mt-8 flex flex-row items-center justify-center gap-3">
+
         <a
           href="/services"
           className="
-            w-full sm:w-auto
+            w-1/2
             rounded-xl
             border border-slate-200
             bg-white
@@ -77,7 +78,7 @@ export default function HomePage() {
         <a
           href="/post/new"
           className="
-            w-full sm:w-auto
+            w-1/2
             rounded-xl
             bg-orange-500
             px-8 py-3
