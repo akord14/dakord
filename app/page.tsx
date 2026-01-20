@@ -56,47 +56,48 @@ export default function HomePage() {
 
         {/* CTA – style si në foton tënde, 1 rresht ALWAYS */}
         <div className="mt-6 grid w-full grid-cols-2 gap-3">
-          <a
-            href="/services"
-            className="
-              inline-flex w-full items-center justify-center gap-2
-              rounded-full
-              border border-slate-200
-              bg-white
-              px-4 py-2.5
-              text-sm font-semibold text-slate-800
-              shadow-sm
-              transition
-              hover:bg-slate-50
-              whitespace-nowrap
-            "
-          >
-            <span>Shiko Shërbimet</span>
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 text-slate-700">
-              →
-            </span>
-          </a>
+  <a
+    href="/services"
+    className="
+      inline-flex w-full items-center justify-center gap-2
+      rounded-full
+      border border-slate-200
+      bg-slate-50
+      px-4 py-2
+      text-sm font-semibold text-slate-900
+      shadow-sm
+      transition
+      hover:bg-slate-100
+      whitespace-nowrap
+    "
+  >
+    <span>Shiko Shërbimet</span>
+    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm">
+      →
+    </span>
+  </a>
 
-          <a
-            href="/post/new"
-            className="
-              inline-flex w-full items-center justify-center gap-2
-              rounded-full
-              bg-orange-500
-              px-4 py-2.5
-              text-sm font-semibold text-white
-              shadow-md
-              transition
-              hover:bg-orange-600
-              whitespace-nowrap
-            "
-          >
-            <span>Postime Punësimi</span>
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white">
-              →
-            </span>
-          </a>
-        </div>
+  <a
+    href="/post/new"
+    className="
+      inline-flex w-full items-center justify-center gap-2
+      rounded-full
+      bg-orange-500
+      px-4 py-2
+      text-sm font-semibold text-white
+      shadow-md
+      transition
+      hover:bg-orange-600
+      whitespace-nowrap
+    "
+  >
+    <span>Postime Punësimi</span>
+    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white">
+      →
+    </span>
+  </a>
+</div>
+
       </div>
     </div>
   </div>
