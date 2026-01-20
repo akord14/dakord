@@ -31,19 +31,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#f3f4f6]">
       <div className="mx-auto w-full max-w-[420px] md:max-w-3xl lg:max-w-5xl px-4">
-        {/* LOGO TOP */}
-        <div className="flex items-center justify-center py-2">
-          <div className="relative h-10 w-44">
-            {/* Ndrysho path-in sipas logos tende */}
-            <Image
-              src="/logo.png"
-              alt="AKORD.al"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
-        </div>
+        
 
         {/* HERO */}
         <section className="relative overflow-hidden rounded-2xl shadow-sm">
