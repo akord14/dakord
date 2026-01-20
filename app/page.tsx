@@ -32,76 +32,37 @@ export default function HomePage() {
     <main className="min-h-screen bg-[#f3f4f6]">
       <div className="w-full">
         
-{/* HERO – FINAL PREMIUM (FULL BLEED) */}
-<section
-  className="
-    relative
-    left-1/2 right-1/2
-    -ml-[50vw] -mr-[50vw]
-    w-screen
-  "
->
-  {/* ultra-light full-width background */}
-  <div className="pointer-events-none absolute inset-0 -z-10">
-    <div className="absolute -top-24 left-1/2 h-72 w-[520px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl" />
-    <div className="absolute -top-10 left-1/2 h-56 w-[420px] -translate-x-1/2 rounded-full bg-orange-500/10 blur-3xl" />
-  </div>
+{/* HERO – FINAL PREMIUM */}
+<section className="relative w-full px-4">
+  <div className="mx-auto w-full max-w-6xl">
+    <div className="relative rounded-3xl bg-white px-6 py-10 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
 
-  <div className="mx-auto w-full max-w-6xl px-4">
-    <div className="rounded-3xl border border-slate-200 bg-white px-5 py-7 sm:px-8 sm:py-10 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
-      <div className="text-center">
-        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900">
-          Gjej shërbimin.
-        </h1>
+      {/* Title */}
+      <h1 className="text-center text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+        Gjej shërbimin.
+      </h1>
 
-        {/* CTA – style si në foton tënde, 1 rresht ALWAYS */}
-        <div className="mt-6 grid w-full grid-cols-2 gap-3">
-  <a
-    href="/services"
-    className="
-      inline-flex w-full items-center justify-center gap-2
-      rounded-full
-      border border-slate-200
-      bg-slate-50
-      px-4 py-2
-      text-sm font-semibold text-slate-900
-      shadow-sm
-      transition
-      hover:bg-slate-100
-      whitespace-nowrap
-    "
-  >
-    <span>Shiko Shërbimet</span>
-    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm">
-      →
-    </span>
-  </a>
+      {/* CTA buttons – SAME STYLE AS BELOW */}
+      <div className="mt-6 grid grid-cols-2 gap-3">
+        <Link
+          href="/services"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#1f5b8f] px-3 py-3 text-sm font-extrabold text-white shadow-sm hover:opacity-95"
+        >
+          Shiko Shërbimet
+        </Link>
 
-  <a
-    href="/post/new"
-    className="
-      inline-flex w-full items-center justify-center gap-2
-      rounded-full
-      bg-orange-500
-      px-4 py-2
-      text-sm font-semibold text-white
-      shadow-md
-      transition
-      hover:bg-orange-600
-      whitespace-nowrap
-    "
-  >
-    <span>Postime Punësimi</span>
-    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white">
-      →
-    </span>
-  </a>
-</div>
-
+        <Link
+          href="/post/new"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-3 py-3 text-sm font-extrabold text-white shadow-sm hover:bg-orange-600"
+        >
+          Postime Punësimi
+        </Link>
       </div>
+
     </div>
   </div>
 </section>
+
 
         {/* SERVICES MAIN */}
         <section className="mt-4 rounded-2xl bg-white p-4 shadow-sm">
