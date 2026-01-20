@@ -32,36 +32,37 @@ export default function HomePage() {
     <main className="min-h-screen bg-[#f3f4f6]">
       <div className="w-full">
         
-{/* HERO – FINAL PREMIUM */}
-<section className="relative w-full px-4">
-  <div className="mx-auto w-full max-w-6xl">
-    <div className="relative rounded-3xl bg-white px-6 py-10 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
-
-      {/* Title */}
-      <h1 className="text-center text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+{/* HERO – FINAL CLOSED */}
+<section className="w-full px-4">
+  <div className="mx-auto max-w-5xl">
+    <div className="rounded-3xl bg-white border border-slate-200 shadow-[0_16px_40px_rgba(0,0,0,0.08)] px-6 py-8 sm:px-10 sm:py-10">
+      
+      {/* TITLE */}
+      <h1 className="text-center text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
         Gjej shërbimin.
       </h1>
 
-      {/* CTA buttons – SAME STYLE AS BELOW */}
+      {/* CTA */}
       <div className="mt-6 grid grid-cols-2 gap-3">
-        <Link
+        <a
           href="/services"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#1f5b8f] px-3 py-3 text-sm font-extrabold text-white shadow-sm hover:opacity-95"
+          className="inline-flex items-center justify-center rounded-xl bg-[#1f5b8f] px-4 py-3 text-sm font-extrabold text-white shadow-sm hover:opacity-95"
         >
           Shiko Shërbimet
-        </Link>
+        </a>
 
-        <Link
+        <a
           href="/post/new"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-3 py-3 text-sm font-extrabold text-white shadow-sm hover:bg-orange-600"
+          className="inline-flex items-center justify-center rounded-xl bg-orange-500 px-4 py-3 text-sm font-extrabold text-white shadow-sm hover:bg-orange-600"
         >
           Postime Punësimi
-        </Link>
+        </a>
       </div>
 
     </div>
   </div>
 </section>
+
 
 
         {/* SERVICES MAIN */}
