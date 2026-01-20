@@ -30,7 +30,7 @@ const services = [
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#f3f4f6]">
-      <div className="mx-auto w-full max-w-md px-4 pb-10 pt-4">
+      <div className="mx-auto w-full max-w-[420px] md:max-w-3xl lg:max-w-5xl px-4">
         {/* LOGO TOP */}
         <div className="flex items-center justify-center py-2">
           <div className="relative h-10 w-44">
