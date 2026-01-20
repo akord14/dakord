@@ -33,71 +33,67 @@ export default function HomePage() {
       <div className="mx-auto w-full max-w-[420px] md:max-w-3xl lg:max-w-5xl px-4">
         
 
-        {/* HERO – FINAL PREMIUM */}
-<section className="relative">
-  <div className="mx-auto max-w-6xl px-4">
-    <div
-      className="
-        relative
-        overflow-hidden
-        rounded-3xl
-        bg-white
-        px-8 py-14
-        border border-slate-200
-        shadow-[0_20px_60px_rgba(0,0,0,0.08)]
-      "
-    >
-      {/* Content */}
-      <div className="text-center">
-        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900">
-          Gjej shërbimin e duhur.
-        </h1>
+   {/* HERO – FINAL PREMIUM */}
+<section className="relative mx-auto max-w-6xl px-4">
+  {/* Ultra-light background glow */}
+  <div className="pointer-events-none absolute inset-0 -z-10">
+    <div className="absolute -top-24 left-1/2 h-72 w-[520px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl" />
+    <div className="absolute -top-10 left-1/2 h-56 w-[420px] -translate-x-1/2 rounded-full bg-orange-500/10 blur-3xl" />
+  </div>
 
-        <p className="mt-3 text-sm md:text-base text-slate-500">
-          Zgjidh një kategori ose krijo një postim pune.
-        </p>
+  <div
+    className="
+      relative
+      overflow-hidden
+      rounded-3xl
+      bg-white
+      px-8 py-14
+      border border-slate-200
+      shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+    "
+  >
+    <div className="text-center">
+      <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900">
+        Gjej shërbimin e duhur.
+      </h1>
 
-        {/* CTA */}
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          {/* Secondary CTA */}
-          <a
-            href="/services"
-            className="
-              w-full sm:w-auto
-              rounded-xl
-              border border-slate-300
-              bg-white
-              px-8 py-3
-              text-slate-800 font-medium
-              shadow-sm
-              transition
-              hover:bg-slate-50
-            "
-          >
-            Shiko Shërbimet
-          </a>
+      <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href="/services"
+          className="
+            w-full sm:w-auto
+            rounded-xl
+            border border-slate-200
+            bg-white
+            px-8 py-3
+            text-slate-700 font-medium
+            transition
+            hover:bg-slate-50
+          "
+        >
+          Shiko Shërbimet
+        </a>
 
-          {/* Primary CTA */}
-          <a
-            href="/post/new"
-            className="
-              w-full sm:w-auto
-              rounded-xl
-              bg-orange-500
-              px-8 py-3
-              text-white font-semibold
-              shadow-md
-              transition
-              hover:bg-orange-600
-            "
-          >
-            Postime Punësimi
-          </a>
-        </div>
+        <a
+          href="/post/new"
+          className="
+            w-full sm:w-auto
+            rounded-xl
+            bg-orange-500
+            px-8 py-3
+            text-white font-semibold
+            shadow-md
+            transition
+            hover:bg-orange-600
+          "
+        >
+          Postime Punësimi
+        </a>
       </div>
     </div>
   </div>
 </section>
+
 
 
         {/* SERVICES MAIN */}
