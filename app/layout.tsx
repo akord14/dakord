@@ -46,14 +46,15 @@ export default function RootLayout({
             {/* Logo majtas */}
             <div className="flex items-center">
               {/* Ndrysho path-in nese logo jote eshte diku tjeter */}
-              <img src="/logo.svg" alt="Akord.al" className="h-8 w-auto" />
+              <img src="/logo.png" alt="Akord.al" className="h-8 w-auto" />
             </div>
 
             {/* Brand ne qender */}
             <div className="absolute left-1/2 -translate-x-1/2">
-              <span className="text-lg font-semibold tracking-tight text-slate-900">
-                Akord.al
-              </span>
+              <span className="text-base font-semibold tracking-[0.15em] text-slate-800 uppercase">
+  AKORD
+</span>
+
             </div>
           </div>
         </header>
