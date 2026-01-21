@@ -116,30 +116,41 @@ export default function OfertaPage() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="text-sm font-semibold text-slate-900">
-                Buxheti min (opsionale)
-              </label>
-              <input
-                name="budget_min"
-                inputMode="numeric"
-                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-slate-300"
-                placeholder="Min"
-              />
-            </div>
-            <div>
-              <label className="text-sm font-semibold text-slate-900">
-                Buxheti max (opsionale)
-              </label>
-              <input
-                name="budget_max"
-                inputMode="numeric"
-                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-slate-300"
-                placeholder="Max"
-              />
-            </div>
-          </div>
+        <div className="grid grid-cols-2 gap-3">
+  <div>
+    <label className="text-sm font-semibold text-slate-900">
+      Buxheti min (EUR)
+    </label>
+    <div className="relative mt-2">
+      <input
+        name="budget_min"
+        inputMode="numeric"
+        className="w-full rounded-xl border border-slate-200 px-4 py-3 pr-10 text-sm outline-none focus:border-slate-300"
+        placeholder="Min"
+      />
+      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-500">
+        €
+      </span>
+    </div>
+  </div>
+
+  <div>
+    <label className="text-sm font-semibold text-slate-900">
+      Buxheti max (EUR)
+    </label>
+    <div className="relative mt-2">
+      <input
+        name="budget_max"
+        inputMode="numeric"
+        className="w-full rounded-xl border border-slate-200 px-4 py-3 pr-10 text-sm outline-none focus:border-slate-300"
+        placeholder="Max"
+      />
+      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-500">
+        €
+      </span>
+    </div>
+  </div>
+</div>
 
           <div>
             <label className="text-sm font-semibold text-slate-900">
