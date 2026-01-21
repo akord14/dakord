@@ -33,15 +33,15 @@ export default function HomePage() {
       <div className="w-full">
         
 {/* HERO – FINAL PREMIUM */}
-<section className="relative flex min-h-[100svh] w-full items-center px-4">
+<section className="relative w-full px-4">
   <div className="mx-auto w-full max-w-6xl">
-    <div className="relative w-full rounded-3xl bg-white px-6 py-8 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+    <div className="relative rounded-3xl bg-white px-6 py-10 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
       {/* Title */}
       <h1 className="text-center text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
-        Gjej shërbimin.
+        Gjej shërbimin
       </h1>
 
-      {/* CTA buttons – SAME STYLE AS BELOW */}
+      {/* CTA buttons */}
       <div className="mt-6 grid grid-cols-2 gap-3">
         <Link
           href="/services"
