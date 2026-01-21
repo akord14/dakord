@@ -37,7 +37,7 @@ export default function HomePage() {
   <div className="mx-auto w-full max-w-none">
     <div className="relative rounded-3xl bg-white px-4 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
       <h1 className="text-center text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
-        Gjej shërbimin.
+        Gjej shërbimin
       </h1>
 
       <div className="mt-4 grid grid-cols-2 gap-3">
@@ -45,6 +45,7 @@ export default function HomePage() {
           href="/services"
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#1f5b8f] px-3 py-3 text-sm font-extrabold text-white shadow-sm hover:opacity-95"
         >
+          <SearchWhiteIcon />
           Shiko Shërbimet
         </Link>
 
@@ -52,6 +53,7 @@ export default function HomePage() {
           href="/oferta"
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-3 py-3 text-sm font-extrabold text-white shadow-sm hover:bg-orange-600"
         >
+          <FileTextWhiteIcon />
           Merr Ofertën
         </Link>
       </div>
@@ -162,6 +164,52 @@ function HowCard({ icon, text }: { icon: React.ReactNode; text: string }) {
 }
 
 /* --- Icons (inline SVG) --- */
+
+function SearchWhiteIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <circle cx="11" cy="11" r="6" stroke="white" strokeWidth="2" />
+      <path
+        d="M20 20l-3.5-3.5"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function FileTextWhiteIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M14 2H7a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V8l-5-6z"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14 2v6h6"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9 13h6"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M9 17h6"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 
 function ChevronRight() {
   return (
