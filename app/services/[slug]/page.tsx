@@ -10,54 +10,69 @@ const SERVICES = [
   { title: "Digital Marketing / Ads", slug: "digital-marketing-ads", image: "/services/digital-marketing-ads.jpg" },
 ];
 
-export default function ServicesPage() {
-  return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10">
-      <div className="mb-6">
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Shërbimet</h1>
-        <p className="mt-2 text-slate-600">
-          Zgjidh shërbimin që të duhet — përgjigjemi shpejt në WhatsApp.
-        </p>
-        <Link className="mt-4 inline-block text-blue-700 underline" href="/">
-          ← Kthehu në Home
+export default async function ServicePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const service = SERVICES.find((s) => s.slug === slug);
+
+  if (!service) {
+    return (
+      <main className="mx-auto max-w-3xl px-4 py-10">
+        <h1 className="text-2xl font-extrabold">Shërbimi nuk u gjet</h1>
+        <p className="mt-2 text-slate-600">Kthehu te lista e shërbimeve.</p>
+        <Link className="mt-6 inline-block text-blue-700 underline" href="/services">
+          ← Shërbimet
         </Link>
+      </main>
+    );
+  }
+
+  return (
+    <main className="mx-auto w-full max-w-5xl px-4 py-8">
+      <div className="mb-6">
+        <Link href="/services" className="text-sm font-bold text-slate-700 hover:underline">
+          ← Shërbimet
+        </Link>
+
+        <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">
+          {service.title}
+        </h1>
+
+        <p className="mt-2 text-slate-600">
+          Na shkruaj në WhatsApp dhe të dërgojmë ofertë brenda pak minutash.
+        </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-        {SERVICES.map((s) => (
-          <Link
-            key={s.slug}
-            href={`/services/${s.slug}`}
-            className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div className="relative aspect-[16/10] w-full bg-gradient-to-b from-slate-50 to-white p-3">
-              <div className="relative h-full w-full overflow-hidden rounded-xl border border-slate-100 bg-white">
-                <Image
-                  src={s.image}
-                  alt={s.title}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                />
-              </div>
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="relative aspect-[16/9] w-full bg-slate-50">
+          <Image
+            src={service.image}
+            alt={service.title}
+            fill
+            className="object-contain p-4"
+            priority
+          />
+        </div>
+
+        <div className="p-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="text-sm text-slate-600">
+              Kliko butonin dhe na trego çfarë të duhet — të përgjigjemi shpejt.
             </div>
 
-            <div className="flex items-center justify-between gap-3 px-4 py-4">
-              <div className="min-w-0">
-                <div className="text-base font-extrabold text-slate-900 leading-tight">
-                  {s.title}
-                </div>
-                <div className="mt-1 text-xs font-semibold text-slate-500">
-                  Kliko për detaje
-                </div>
-              </div>
-
-              <div className="shrink-0 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-extrabold text-slate-900 shadow-sm group-hover:bg-slate-50">
-                Shiko →
-              </div>
-            </div>
-          </Link>
-        ))}
+            <a
+              href={`https://wa.me/355695111179?text=${encodeURIComponent(
+                `Përshëndetje! Dua ofertë për: ${service.title}`
+              )}`}
+              className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-3 text-sm font-extrabold text-white hover:opacity-95"
+            >
+              Kontakto në WhatsApp
+            </a>
+          </div>
+        </div>
       </div>
     </main>
   );

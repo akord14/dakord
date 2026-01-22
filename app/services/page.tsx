@@ -1,79 +1,65 @@
+import Image from "next/image";
 import Link from "next/link";
 
-const services = [
-  {
-    title: "Sisteme Monitorimi",
-    slug: "monitoring-systems",
-  },
-  {
-    title: "Rikonstruksione",
-    slug: "renovation",
-  },
-  {
-    title: "Sisteme Elektrike",
-    slug: "electrical-systems",
-  },
-  {
-    title: "Sisteme Sigurie",
-    slug: "security-systems",
-  },
+const SERVICES = [
+  { title: "Sisteme Monitorimi", slug: "monitoring-systems", image: "/services/monitoring-systems.jpg" },
+  { title: "Sisteme Alarmi", slug: "alarm-systems", image: "/services/alarm-systems.jpg" },
+  { title: "Graphic Design & Branding", slug: "graphic-design-branding", image: "/services/graphic-design-branding.jpg" },
+  { title: "Web & App Development", slug: "web-app-development", image: "/services/web-app-development.jpg" },
+  { title: "Social Media Management", slug: "social-media-management", image: "/services/social-media-management.jpg" },
+  { title: "Digital Marketing / Ads", slug: "digital-marketing-ads", image: "/services/digital-marketing-ads.jpg" },
 ];
 
-export default function ServicesIndex() {
+export default function ServicesPage() {
   return (
-    <main className="mx-auto max-w-md px-4 py-6">
-      {/* Header */}
-      <div className="mb-4">
-        <h1 className="text-2xl font-extrabold text-slate-900">
-          Shërbimet
-        </h1>
-        <p className="mt-1 text-sm text-slate-600">
-          Zgjidh shërbimin që të nevojitet
+    <main className="mx-auto w-full max-w-6xl px-4 py-10">
+      <div className="mb-6">
+        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Shërbimet</h1>
+        <p className="mt-2 text-slate-600">
+          Zgjidh shërbimin që të duhet — përgjigjemi shpejt në WhatsApp.
         </p>
+        <Link className="mt-4 inline-block text-blue-700 underline" href="/">
+          ← Kthehu në Home
+        </Link>
       </div>
 
-      {/* Services grid */}
-      <div className="grid grid-cols-2 gap-4">
-  {services.map((service) => (
-    <Link
-      key={service.slug}
-      href={`/services/${service.slug}`}
-      className="
-        group relative h-28 rounded-2xl bg-white
-        p-4 shadow-sm ring-1 ring-slate-200
-        transition-all duration-200
-        hover:shadow-md hover:-translate-y-[1px]
-        active:scale-[0.98]
-      "
-    >
-      {/* Title */}
-      <div className="flex h-full flex-col justify-between">
-        <span className="text-sm font-extrabold text-slate-900 leading-tight">
-          {service.title}
-        </span>
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        {SERVICES.map((s) => (
+          <Link
+            key={s.slug}
+            href={`/services/${s.slug}`}
+            className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          >
+            <div className="relative aspect-[16/10] w-full bg-gradient-to-b from-slate-50 to-white p-3">
+              <div className="relative h-full w-full overflow-hidden rounded-xl border border-slate-100 bg-white">
+                <Image
+                  src={s.image}
+                  alt={s.title}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                />
+              </div>
+            </div>
 
-        {/* Arrow */}
-        <span className="
-          mt-2 inline-flex h-8 w-8 items-center justify-center
-          rounded-full bg-slate-100 text-slate-700
-          transition-colors
-          group-hover:bg-slate-900 group-hover:text-white
-        ">
-          →
-        </span>
+            <div className="flex items-center justify-between gap-3 px-4 py-4">
+              <div className="min-w-0">
+                <div className="text-base font-extrabold text-slate-900 leading-tight">
+                  {s.title}
+                </div>
+                <div className="mt-1 text-xs font-semibold text-slate-500">
+                  Kliko për detaje
+                </div>
+              </div>
+
+              <div className="shrink-0 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-extrabold text-slate-900 shadow-sm group-hover:bg-slate-50">
+                Shiko →
+              </div>
+            </div>
+          </Link>
+        ))}
       </div>
-    </Link>
-  ))}
-</div>
-
-
-      {/* Back to home */}
-      <Link
-        href="/"
-        className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-blue-700"
-      >
-        ← Kthehu në Home
-      </Link>
     </main>
   );
 }
+
