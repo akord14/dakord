@@ -71,19 +71,7 @@ export default function RootLayout({
           </div>
         </footer>
 
-        {/* VIP WhatsApp Support Button */}
-        <a
-          href="https://wa.me/355695111179"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl border border-slate-200 bg-white/95 px-4 py-3 shadow-xl backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
-        >
-          <img src="/whatsapp.svg" className="h-7 w-7" alt="WhatsApp" />
-          <div className="leading-tight">
-            <p className="font-semibold text-slate-800">Support</p>
-            <p className="-mt-1 text-sm text-slate-500">Na shkruani në WhatsApp</p>
-          </div>
-        </a>
+      
 
         <Analytics />
       </body>
