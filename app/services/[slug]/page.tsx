@@ -1,117 +1,63 @@
+import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 
-type Service = {
-  title: string;
-  slug: string;
-  image: string;
-  description: string;
-  bullets: string[];
-  whatsappText: string;
-};
-
-const SERVICES: Service[] = [
-  {
-    title: "Security Systems",
-    slug: "security-systems",
-    image: "/services/security-systems.jpg",
-    description:
-      "Design and installation of professional security systems for homes and businesses.",
-    bullets: [
-      "Anti-theft alarm systems",
-      "Fire detection systems",
-      "Access control",
-      "Professional installation and support",
-    ],
-    whatsappText: "Hello! I am interested in Security Systems.",
-  },
-  {
-    title: "Monitoring Systems",
-    slug: "monitoring-systems",
-    image: "/services/monitoring-systems.jpg",
-    description:
-      "CCTV and monitoring solutions with remote viewing and reliable recording.",
-    bullets: [
-      "CCTV cameras",
-      "IP cameras",
-      "Video intercom",
-      "Remote viewing setup",
-    ],
-    whatsappText: "Hello! I am interested in Monitoring Systems.",
-  },
-  {
-    title: "Software Development",
-    slug: "software-development",
-    image: "/services/software-development.jpg",
-    description:
-      "Web solutions for businesses: landing pages, admin panels, and integrations.",
-    bullets: [
-      "Web development",
-      "Landing pages",
-      "Admin panels",
-      "Integrations and automation",
-    ],
-    whatsappText: "Hello! I am interested in Software Development.",
-  },
+const SERVICES = [
+  { title: "Sisteme Monitorimi", slug: "monitoring-systems", image: "/services/monitoring-systems.jpg" },
+  { title: "Sisteme Alarmi", slug: "alarm-systems", image: "/services/alarm-systems.jpg" },
+  { title: "Graphic Design & Branding", slug: "graphic-design-branding", image: "/services/graphic-design-branding.jpg" },
+  { title: "Web & App Development", slug: "web-app-development", image: "/services/web-app-development.jpg" },
+  { title: "Social Media Management", slug: "social-media-management", image: "/services/social-media-management.jpg" },
+  { title: "Digital Marketing / Ads", slug: "digital-marketing-ads", image: "/services/digital-marketing-ads.jpg" },
 ];
 
-function getService(slug: string) {
-  return SERVICES.find((s) => s.slug === slug);
-}
+export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const service = SERVICES.find((s) => s.slug === slug);
 
-function toWaLink(text: string) {
-  // Optional: put your phone here without "+" (example "3556XXXXXXXX")
-  const phone = "";
-  const encoded = encodeURIComponent(text);
-  return phone
-    ? `https://wa.me/${phone}?text=${encoded}`
-    : `https://wa.me/?text=${encoded}`;
-}
-
-export default function ServicePage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const service = getService(params.slug);
-
-  if (!service) return notFound();
+  if (!service) {
+    return (
+      <main className="mx-auto max-w-3xl px-4 py-10">
+        <h1 className="text-2xl font-extrabold">Shërbimi nuk u gjet</h1>
+        <p className="mt-2 text-slate-600">Kthehu te lista e shërbimeve.</p>
+        <Link className="mt-6 inline-block text-blue-700 underline" href="/services">
+          ← Shërbimet
+        </Link>
+      </main>
+    );
+  }
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-10">
+    <main className="mx-auto w-full max-w-5xl px-4 py-8">
       <div className="mb-6">
-        <Link href="/" className="text-sm text-slate-600 hover:underline">
-          {"<"} Back to home
+        <Link href="/services" className="text-sm font-bold text-slate-700 hover:underline">
+          ← Shërbimet
         </Link>
+        <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">{service.title}</h1>
+        <p className="mt-2 text-slate-600">
+          Na shkruaj në WhatsApp dhe të dërgojmë ofertë brenda pak minutash.
+        </p>
       </div>
 
-      <div className="grid gap-8 md:grid-cols-2">
-        <div className="rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-          <img
-            src={service.image}
-            alt={service.title}
-            className="h-[260px] w-full object-cover"
-          />
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="relative aspect-[16/9] w-full bg-slate-50">
+          <Image src={service.image} alt={service.title} fill className="object-contain p-4" priority />
         </div>
 
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">{service.title}</h1>
-          <p className="mt-3 text-slate-600">{service.description}</p>
+        <div className="p-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="text-sm text-slate-600">
+              Kliko butonin dhe na trego çfarë të duhet — të përgjigjemi shpejt.
+            </div>
 
-          <ul className="mt-5 space-y-2 text-slate-700">
-            {service.bullets.map((b) => (
-              <li key={b}>- {b}</li>
-            ))}
-          </ul>
-
-          <a
-            href={toWaLink(service.whatsappText)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:opacity-95 md:w-auto"
-          >
-            Contact on WhatsApp
-          </a>
+            <a
+              href={`https://wa.me/355695111179?text=${encodeURIComponent(
+                `Përshëndetje! Dua ofertë për: ${service.title}`
+              )}`}
+              className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-3 text-sm font-extrabold text-white hover:opacity-95"
+            >
+              Kontakto në WhatsApp
+            </a>
+          </div>
         </div>
       </div>
     </main>
