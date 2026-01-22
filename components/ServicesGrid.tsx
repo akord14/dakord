@@ -55,20 +55,23 @@ export default function ServicesGrid() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
 
-        {SERVICES.slice(0, 4).map((s) => (
+        {SERVICES.slice(0, 6).map((s, idx) => (
           <Link
             key={s.slug}
             href={`/services/${s.slug}`}
-            className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            className={`group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
+  idx >= 4 ? "hidden md:block" : ""
+}`}
+
           >
             <div className="relative aspect-[16/9] w-full bg-slate-100">
               <Image
                 src={s.image}
                 alt={s.title}
                 fill
-                className="object-cover transition group-hover:scale-[1.02]"
+                className="object-contain transition group-hover:scale-[1.02]"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 priority={false}
               />
@@ -76,7 +79,7 @@ export default function ServicesGrid() {
 
             <div className="flex items-center justify-between gap-3 px-4 py-4">
               <div className="min-w-0">
-                <div className="truncate text-base font-extrabold text-slate-900">
+                <div className="text-base font-extrabold text-slate-900 leading-tight">
                   {s.title}
                 </div>
                 <div className="mt-1 text-xs font-semibold text-slate-500">
