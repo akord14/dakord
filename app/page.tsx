@@ -1,6 +1,7 @@
 // app/page.tsx
 import Image from "next/image";
 import Link from "next/link";
+import ServicesGrid from "@/components/ServicesGrid";
 
 const WHATSAPP_NUMBER = "355XXXXXXXXX"; // <-- vendos numrin tend me kod vendi, p.sh. 3556...
 
@@ -63,47 +64,8 @@ export default function HomePage() {
 
 
 
-        {/* SERVICES MAIN */}
-        <section className="mt-4 rounded-2xl bg-white p-4 shadow-sm">
-          <h2 className="text-lg font-extrabold text-slate-900">
-            Shërbimet Kryesore
-          </h2>
-
-          <div className="mt-3 grid grid-cols-2 gap-3">
-            {services.map((s) => (
-              <Link
-                key={s.title}
-                href={s.href}
-                className="group relative h-24 overflow-hidden rounded-xl shadow-sm"
-              >
-                <Image
-                  src={s.img}
-                  alt={s.title}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                />
-                <div className="absolute inset-0 bg-black/25" />
-                <div className="absolute inset-x-0 bottom-0 flex items-center justify-between px-3 py-2">
-                  <span className="text-sm font-extrabold text-white drop-shadow">
-                    {s.title}
-                  </span>
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/25">
-                    <ChevronRightWhite />
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <Link
-            href="/services"
-            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-900 shadow-sm hover:bg-slate-200"
-          >
-            Shiko të gjitha shërbimet
-            <ChevronRight />
-          </Link>
-        </section>
-
+        
+<ServicesGrid />
         {/* JOBS */}
         <section className="mt-4 rounded-2xl bg-white p-4 shadow-sm">
           <h2 className="text-lg font-extrabold text-slate-900">
