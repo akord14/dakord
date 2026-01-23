@@ -31,7 +31,8 @@ function Item({
   {icon}
 </div>
 
-        <div className="leading-none">{label}</div>
+        <div className="leading-none whitespace-nowrap">{label}</div>
+
       </a>
     );
   }
@@ -41,7 +42,8 @@ function Item({
       <div className="flex h-6 w-6 items-center justify-center">
   {icon}
 </div>
-      <div className="leading-none">{label}</div>
+      <div className="leading-none whitespace-nowrap">{label}</div>
+
     </Link>
   );
 }
