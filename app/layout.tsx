@@ -2,21 +2,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
-import BottomBar from "@/components/BottomBar";
-
-const PROF_TO_IMG: Record<string, string> = {
-  Shofer: "driver.svg",
-  Elektricist: "electrician.svg",
-  Hidraulik: "plumber.svg",
-  "Teknik CCTV/Alarm": "technician.svg",
-  "IT / Developer": "developer.svg",
-  "Shitës / Market": "shop.svg",
-  Kuzhinier: "chef.svg",
-  Pastrim: "cleaner.svg",
-  Kamerier: "waiter.svg",
-  "Punëtor ndërtimi": "builder.svg",
-  "Tjetër…": "other.svg",
-};
 
 export const metadata: Metadata = {
   title: {
@@ -40,40 +25,43 @@ export default function RootLayout({
 
   return (
     <html lang="sq">
-      <body className="bg-slate-50">
-        {/* PREMIUM HEADER */}
-        <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
-          <div className="relative mx-auto flex h-16 w-full max-w-6xl items-center px-4">
-            {/* Logo majtas */}
-            <div className="flex items-center">
-              {/* Ndrysho path-in nese logo jote eshte diku tjeter */}
-              <img src="/logo.png" alt="Akord.al" className="h-8 w-auto" />
-            </div>
+      <body className="min-h-screen bg-[#f7f8fb] text-slate-900">
+        {/* HEADER (tint background + strong text) */}
+        <header className="sticky top-0 z-50">
+          <div className="border-b border-white/50 bg-gradient-to-r from-[#0b2a43]/10 via-white/70 to-[#1f5b8f]/10 backdrop-blur">
+            <div className="mx-auto flex h-16 w-full max-w-6xl items-center px-4">
+              {/* Logo majtas */}
+              <div className="flex items-center gap-3">
+                <img src="/logo.png" alt="Akord.al" className="h-8 w-auto" />
+              </div>
 
-            {/* Brand ne qender */}
-            <div className="absolute left-1/2 -translate-x-1/2">
-              <span className="text-base font-semibold tracking-[0.15em] text-slate-800 uppercase">
-  AKORD
-</span>
+              {/* AKORD qender */}
+              <div className="flex-1 text-center">
+                <span className="select-none text-[13px] font-extrabold tracking-[0.32em] text-[#0b2a43] uppercase">
+                  AKORD
+                </span>
+              </div>
 
+              {/* right spacer */}
+              <div className="w-[32px]" />
             </div>
           </div>
+
+          {/* very subtle divider (premium, not heavy) */}
+          <div className="h-px w-full bg-black/5" />
         </header>
 
         {/* MAIN */}
-        <main className="mx-auto w-full max-w-6xl px-4 py-8">{children}</main>
-{/* BOTTOM BAR */}
+        {children}
 
-        {/* FOOTER */}
-        <footer className="w-full border-t border-slate-200 bg-white">
+        {/* FOOTER (tint background + strong text) */}
+        <footer className="border-t border-white/50 bg-gradient-to-r from-[#0b2a43]/10 via-white/70 to-[#1f5b8f]/10">
           <div className="mx-auto w-full max-w-6xl px-4 py-6 text-center">
-            <p className="text-sm text-slate-500">
+            <p className="text-sm font-semibold text-[#0b2a43]/80">
               Të gjitha të drejtat të rezervuara © Akord.al {YEAR}
             </p>
           </div>
         </footer>
-
-      
 
         <Analytics />
       </body>

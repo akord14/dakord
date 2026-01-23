@@ -1,126 +1,96 @@
 // app/page.tsx
-import Image from "next/image";
 import Link from "next/link";
 import ServicesGrid from "@/components/ServicesGrid";
 import BottomBar from "../components/BottomBar";
 
-const WHATSAPP_NUMBER = "355XXXXXXXXX"; // <-- vendos numrin tend me kod vendi, p.sh. 3556...
-
-const services = [
-  {
-    title: "Sisteme Monitorimi",
-    href: "/services/monitoring-systems",
-    img: "/mock/services/monitorimi.jpg",
-  },
-  {
-    title: "Rikonstruksione",
-    href: "/services/renovation",
-    img: "/mock/services/rikonstruksione.jpg",
-  },
-  {
-    title: "Sisteme Elektrike",
-    href: "/services/electrical-systems",
-    img: "/mock/services/elektrike.jpg",
-  },
-  {
-    title: "Sisteme Sigurie",
-    href: "/services/security-systems",
-    img: "/mock/services/sigurie.jpg",
-  },
-];
-
 export default function HomePage() {
   return (
-     <>
-    <main className="min-h-screen bg-[#f3f4f6]">
-      <div className="w-full">
-        
-{/* HERO – FINAL PREMIUM */}
-<section className="relative w-full px-0">
-  <div className="mx-auto w-full max-w-none">
-    <div className="relative rounded-3xl bg-white px-4 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
-      <h1 className="text-center text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
-        Gjej shërbimin
-      </h1>
+    <>
+      <main className="min-h-screen bg-[#f7f8fb]">
+        <div className="mx-auto w-full max-w-6xl px-4 pb-10 pt-4 sm:pt-6">
+          {/* HERO – Premium polish (NO subtitle) */}
+          <section className="relative">
+            {/* subtle top brand wash (Mixed palette C) */}
+            <div className="pointer-events-none absolute inset-x-0 -top-6 h-40 rounded-3xl bg-gradient-to-b from-[#0b2a43]/10 to-transparent" />
 
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        <Link
-          href="/services"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#1f5b8f] px-3 py-3 text-sm font-extrabold text-white shadow-sm hover:opacity-95"
-        >
-          <SearchWhiteIcon />
-          Shiko Shërbimet
-        </Link>
+            <div className="relative overflow-hidden rounded-3xl bg-white ring-1 ring-black/5 shadow-[0_24px_70px_rgba(15,23,42,0.10)]">
+              <div className="px-5 py-6 sm:px-6 sm:py-7">
+                <h1 className="text-center text-[26px] font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+                  Gjej shërbimin
+                </h1>
 
-        <Link
-          href="/oferta"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-3 py-3 text-sm font-extrabold text-white shadow-sm hover:bg-orange-600"
-        >
-          <FileTextWhiteIcon />
-          Merr Ofertën
-        </Link>
-      </div>
-    </div>
-  </div>
-</section>
+                <div className="mt-5 grid grid-cols-2 gap-3">
+                  <Link
+                    href="/services"
+                    className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#1f5b8f] to-[#174a74] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(31,91,143,0.25)] ring-1 ring-white/20 hover:brightness-[1.03] active:translate-y-[1px]"
+                  >
+                    <SearchWhiteIcon />
+                    Shiko Shërbimet
+                  </Link>
 
+                  <Link
+                    href="/oferta"
+                    className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#f59e0b] to-[#ea580c] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(234,88,12,0.20)] ring-1 ring-white/25 hover:brightness-[1.03] active:translate-y-[1px]"
+                  >
+                    <FileTextWhiteIcon />
+                    Merr Ofertën
+                  </Link>
+                </div>
+              </div>
 
+              {/* premium bottom border glow */}
+              <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-slate-200/70 to-transparent" />
+            </div>
+          </section>
 
-        
-<ServicesGrid />
-        {/* JOBS */}
-        <section className="mt-4 rounded-2xl bg-white p-4 shadow-sm">
-          <div className="flex items-center justify-between gap-3">
-  <h2 className="text-lg font-extrabold text-slate-900">
-    Punësim & Bashkëpunime
-  </h2>
-
-  <Link
-    href="/post/new"
-    className="shrink-0 rounded-xl bg-slate-900 px-3 py-2 text-xs font-extrabold text-white shadow-sm hover:opacity-95"
-  >
-    Krijo postim
-  </Link>
-</div>
-
-
-          <div className="mt-3 grid grid-cols-2 gap-3">
-            <Link
-              href="/seeking"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#1f5b8f] px-3 py-3 text-sm font-extrabold text-white shadow-sm hover:opacity-95"
-            >
-              <BriefcaseIcon />
-              Kërkoj Punë
-            </Link>
-
-            <Link
-              href="/offering"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-3 py-3 text-sm font-extrabold text-white shadow-sm hover:bg-orange-600"
-            >
-              <HandshakeIcon />
-              Ofroj Punë
-            </Link>
+          {/* SERVICES GRID */}
+          <div className="mt-5">
+            <ServicesGrid />
           </div>
-        </section>
 
-        {/* HOW IT WORKS */}
-        
+          {/* JOBS */}
+          <section className="mt-5 overflow-hidden rounded-3xl bg-white ring-1 ring-black/5 shadow-[0_18px_55px_rgba(15,23,42,0.08)]">
+            <div className="px-5 py-5 sm:px-6 sm:py-6">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                  Punësim & Bashkëpunime
+                </h2>
 
-        
-      </div>
-    
-    </main>
-    <BottomBar />
+                <Link
+                  href="/post/new"
+                  className="shrink-0 rounded-2xl bg-slate-900 px-4 py-2 text-xs font-extrabold text-white shadow-[0_10px_24px_rgba(15,23,42,0.22)] ring-1 ring-white/10 hover:opacity-95 active:translate-y-[1px]"
+                >
+                  Krijo postim
+                </Link>
+              </div>
+
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <Link
+                  href="/seeking"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#1f5b8f] to-[#174a74] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(31,91,143,0.22)] ring-1 ring-white/20 hover:brightness-[1.03] active:translate-y-[1px]"
+                >
+                  <BriefcaseIcon />
+                  Kërkoj Punë
+                </Link>
+
+                <Link
+                  href="/offering"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#f59e0b] to-[#ea580c] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(234,88,12,0.18)] ring-1 ring-white/25 hover:brightness-[1.03] active:translate-y-[1px]"
+                >
+                  <HandshakeIcon />
+                  Ofroj Punë
+                </Link>
+              </div>
+            </div>
+
+            {/* subtle separator */}
+            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-slate-200/70 to-transparent" />
+          </section>
+        </div>
+      </main>
+
+      <BottomBar />
     </>
-  );
-}
-
-function HowCard({ icon, text }: { icon: React.ReactNode; text: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center rounded-xl bg-slate-50 px-2 py-3 text-center shadow-sm">
-      <div className="mb-2">{icon}</div>
-      <div className="text-xs font-semibold text-slate-800">{text}</div>
-    </div>
   );
 }
 
@@ -166,35 +136,6 @@ function FileTextWhiteIcon() {
         stroke="white"
         strokeWidth="2"
         strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-
-function ChevronRight() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M9 18l6-6-6-6"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function ChevronRightWhite() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M9 18l6-6-6-6"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </svg>
   );
@@ -260,72 +201,6 @@ function HandshakeIcon() {
         stroke="white"
         strokeWidth="2"
         strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-      <circle cx="11" cy="11" r="6" stroke="#111827" strokeWidth="2" />
-      <path
-        d="M20 20l-3.5-3.5"
-        stroke="#111827"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function ShieldIcon() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M12 2l8 4v6c0 5-3.4 9.4-8 10-4.6-.6-8-5-8-10V6l8-4z"
-        stroke="#111827"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M9 12l2 2 4-5"
-        stroke="#111827"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function TargetIcon() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="9" stroke="#111827" strokeWidth="2" />
-      <circle cx="12" cy="12" r="5" stroke="#111827" strokeWidth="2" />
-      <path
-        d="M12 7v2"
-        stroke="#111827"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function WhatsAppIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M20 11.6a8 8 0 10-14.9 4.1L4 21l5.5-1.1A8 8 0 0020 11.6z"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M8.8 9.7c.1-.3.3-.5.6-.5h.7c.2 0 .4.1.5.3l.6 1.4c.1.2 0 .5-.2.6l-.5.4c.7 1.3 1.8 2.4 3.1 3.1l.4-.5c.1-.2.4-.3.6-.2l1.4.6c.2.1.3.3.3.5v.7c0 .3-.2.6-.5.6-1 .2-2.8 0-5-2.2-2.2-2.2-2.4-4-2.2-5z"
-        fill="white"
       />
     </svg>
   );
