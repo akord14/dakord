@@ -68,9 +68,19 @@ export default function HomePage() {
 <ServicesGrid />
         {/* JOBS */}
         <section className="mt-4 rounded-2xl bg-white p-4 shadow-sm">
-          <h2 className="text-lg font-extrabold text-slate-900">
-            Punësim &amp; Bashkëpunime
-          </h2>
+          <div className="flex items-center justify-between gap-3">
+  <h2 className="text-lg font-extrabold text-slate-900">
+    Punësim & Bashkëpunime
+  </h2>
+
+  <Link
+    href="/post/new"
+    className="shrink-0 rounded-xl bg-slate-900 px-3 py-2 text-xs font-extrabold text-white shadow-sm hover:opacity-95"
+  >
+    Krijo postim
+  </Link>
+</div>
+
 
           <div className="mt-3 grid grid-cols-2 gap-3">
             <Link
