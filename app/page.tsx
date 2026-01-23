@@ -107,10 +107,7 @@ export default function HomePage() {
          
         </section>
 
-        {/* FOOTER */}
-        <footer className="mt-6 text-center text-xs text-slate-600">
-          Të gjitha të drejtat të rezervuar © Akord.al
-        </footer>
+        
       </div>
     </main>
   );
