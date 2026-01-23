@@ -102,20 +102,7 @@ export default function HomePage() {
         </section>
 
         {/* HOW IT WORKS */}
-        <section className="mt-4 rounded-2xl bg-white p-4 shadow-sm">
-          <h2 className="text-center text-lg font-extrabold text-slate-900">
-            Të funksionon Akord.al:
-          </h2>
-
-          <div className="mt-3 grid grid-cols-3 gap-3">
-            <HowCard icon={<SearchIcon />} text="Gjej Shërbimet" />
-            <HowCard icon={<ShieldIcon />} text="Profesionistë të Verifikuar" />
-            <HowCard icon={<WhatsAppIcon />} text="Kontakto në WhatsApp" />
-
-          </div>
-
-         
-        </section>
+        
 
         
       </div>

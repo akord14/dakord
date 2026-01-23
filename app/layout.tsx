@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import BottomBar from "@/components/BottomBar";
 
 const PROF_TO_IMG: Record<string, string> = {
   Shofer: "driver.svg",
@@ -61,7 +62,8 @@ export default function RootLayout({
 
         {/* MAIN */}
         <main className="mx-auto w-full max-w-6xl px-4 py-8">{children}</main>
-
+{/* BOTTOM BAR */}
+<BottomBar />
         {/* FOOTER */}
         <footer className="w-full border-t border-slate-200 bg-white">
           <div className="mx-auto w-full max-w-6xl px-4 py-6 text-center">
