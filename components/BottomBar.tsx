@@ -43,8 +43,8 @@ function Item({
 
 export default function BottomBar() {
   return (
-    <div className="fixed bottom-4 left-0 right-0 z-50">
-      <div className="mx-auto w-[calc(100%-24px)] max-w-xl rounded-2xl bg-white/90 shadow-lg ring-1 ring-black/10 backdrop-blur">
+    <div className="mt-8 w-full">
+      <div className="mx-auto w-full max-w-6xl rounded-2xl bg-white shadow-sm ring-1 ring-black/10">
         <div className="grid grid-cols-5">
           <Item
             href="/"

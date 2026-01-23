@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import ServicesGrid from "@/components/ServicesGrid";
+import BottomBar from "../components/BottomBar";
 
 const WHATSAPP_NUMBER = "355XXXXXXXXX"; // <-- vendos numrin tend me kod vendi, p.sh. 3556...
 
@@ -30,6 +31,7 @@ const services = [
 
 export default function HomePage() {
   return (
+     <>
     <main className="min-h-screen bg-[#f3f4f6]">
       <div className="w-full">
         
@@ -106,7 +108,10 @@ export default function HomePage() {
 
         
       </div>
+    
     </main>
+    <BottomBar />
+    </>
   );
 }
 
