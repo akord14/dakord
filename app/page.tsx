@@ -51,16 +51,14 @@ export default function HomePage() {
           <section className="mt-5 overflow-hidden rounded-3xl bg-white ring-1 ring-black/5 shadow-[0_18px_55px_rgba(15,23,42,0.08)]">
             <div className="px-5 py-5 sm:px-6 sm:py-6">
               {/* title */}
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                 <h2 className="text-center text-lg font-extrabold tracking-tight text-slate-900">
-  Punësim & Bashkëpunime
-</h2>
-                  <p className="mt-1 text-center text-sm text-slate-600">
-  Posto ose gjej mundësi pune dhe bashkëpunime.
-</p>
-                </div>
-              </div>
+              <div className="text-center">
+  <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+    Punësim &amp; Bashkëpunime
+  </h2>
+  <p className="mt-1 text-sm text-slate-600">
+    Posto ose gjej mundësi pune dhe bashkëpunime.
+  </p>
+</div>
 
               {/* 3 uniform CTAs */}
               <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
