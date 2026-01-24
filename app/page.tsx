@@ -6,7 +6,8 @@ export default function HomePage() {
   return (
     <>
       <main className="min-h-screen bg-[#f7f8fb]">
-        <div className="w-full px-4 pb-6 pt-4 sm:px-6 sm:pt-6 lg:px-10 2xl:px-16">
+        <div className="w-full px-4 pb-3 pt-3 sm:px-6 sm:pt-6 sm:pb-8 lg:px-10 2xl:px-16">
+
           {/* HERO – Premium polish (NO subtitle) */}
           <section className="relative">
             {/* subtle top brand wash (Mixed palette C) */}
@@ -56,11 +57,15 @@ export default function HomePage() {
                 </h2>
 
                 <Link
-                  href="/post/new"
-                  className="shrink-0 inline-flex items-center justify-center rounded-full bg-slate-900/90 px-3 py-1.5 text-xs font-extrabold text-white shadow-sm ring-1 ring-black/10 hover:bg-slate-900 active:translate-y-[1px]"
-                >
-                  Krijo postim
-                </Link>
+  href="/post/new"
+  className="shrink-0 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-extrabold text-slate-900 ring-1 ring-black/10 shadow-sm hover:bg-slate-50 active:translate-y-[1px]"
+>
+  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-white text-[12px] leading-none">
+    +
+  </span>
+  Krijo postim
+</Link>
+
               </div>
 
               <div className="mt-3 grid grid-cols-2 gap-2.5">
