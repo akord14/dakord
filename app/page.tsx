@@ -8,7 +8,7 @@ export default function HomePage() {
       <main className="min-h-screen bg-[#f7f8fb]">
         <div className="w-full px-4 pb-6 pt-4 sm:px-6 sm:pt-6 lg:px-10 2xl:px-16">
           {/* HERO – Premium polish (NO subtitle) */}
-          <section className="relative rounded-3xl bg-[#F1F7FC] p-3 sm:p-4">
+          <section className="relative">
             {/* ✅ REMOVED: top wash that looked  like gray shadow */}
 
             <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200">
@@ -48,55 +48,53 @@ export default function HomePage() {
           </div>
 
           {/* JOBS (SUPER PREMIUM) */}
-          <section className="mt-5 rounded-3xl bg-[#F1F7FC] p-3 sm:p-4">
-            <div className="overflow-hidden rounded-3xl bg-white ring-1 ring-black/5 shadow-[0_18px_55px_rgba(15,23,42,0.08)]">
-              <div className="px-5 py-5 sm:px-6 sm:py-6">
-                {/* title */}
-                <div className="text-center">
-                  <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
-                    Punësim &amp; Bashkëpunime
-                  </h2>
-                  <p className="mt-1 text-sm text-slate-600">
-                    Posto ose gjej mundësi pune dhe bashkëpunime.
-                  </p>
-                </div>
-
-                {/* 3 uniform CTAs */}
-                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  {/* KRIJO POSTIM */}
-                  <Link
-                    href="/post/new"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#0f172a] to-[#0b1220] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(15,23,42,0.22)] ring-1 ring-white/15 hover:brightness-[1.03] active:translate-y-[1px]"
-                  >
-                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/12 ring-1 ring-white/20">
-                      <span className="text-[14px] leading-none">+</span>
-                    </span>
-                    Krijo postim
-                  </Link>
-
-                  {/* KERKOJ PUNE */}
-                  <Link
-                    href="/seeking"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#1f5b8f] to-[#174a74] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(31,91,143,0.22)] ring-1 ring-white/20 hover:brightness-[1.03] active:translate-y-[1px]"
-                  >
-                    <BriefcaseIcon />
-                    Kërkoj Punë
-                  </Link>
-
-                  {/* OFROJ PUNE */}
-                  <Link
-                    href="/offering"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#f59e0b] to-[#ea580c] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(234,88,12,0.18)] ring-1 ring-white/25 hover:brightness-[1.03] active:translate-y-[1px]"
-                  >
-                    <HandshakeIcon />
-                    Ofroj Punë
-                  </Link>
-                </div>
+          <section className="mt-5 overflow-hidden rounded-3xl bg-white ring-1 ring-black/5 shadow-[0_18px_55px_rgba(15,23,42,0.08)]">
+            <div className="px-5 py-5 sm:px-6 sm:py-6">
+              {/* title */}
+              <div className="text-center">
+                <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                  Punësim &amp; Bashkëpunime
+                </h2>
+                <p className="mt-1 text-sm text-slate-600">
+                  Posto ose gjej mundësi pune dhe bashkëpunime.
+                </p>
               </div>
 
-              {/* subtle separator */}
-              <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-slate-200/70 to-transparent" />
+              {/* 3 uniform CTAs */}
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                {/* KRIJO POSTIM */}
+                <Link
+                  href="/post/new"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#0f172a] to-[#0b1220] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(15,23,42,0.22)] ring-1 ring-white/15 hover:brightness-[1.03] active:translate-y-[1px]"
+                >
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/12 ring-1 ring-white/20">
+                    <span className="text-[14px] leading-none">+</span>
+                  </span>
+                  Krijo postim
+                </Link>
+
+                {/* KERKOJ PUNE */}
+                <Link
+                  href="/seeking"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#1f5b8f] to-[#174a74] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(31,91,143,0.22)] ring-1 ring-white/20 hover:brightness-[1.03] active:translate-y-[1px]"
+                >
+                  <BriefcaseIcon />
+                  Kërkoj Punë
+                </Link>
+
+                {/* OFROJ PUNE */}
+                <Link
+                  href="/offering"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#f59e0b] to-[#ea580c] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(234,88,12,0.18)] ring-1 ring-white/25 hover:brightness-[1.03] active:translate-y-[1px]"
+                >
+                  <HandshakeIcon />
+                  Ofroj Punë
+                </Link>
+              </div>
             </div>
+
+            {/* subtle separator */}
+            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-slate-200/70 to-transparent" />
           </section>
         </div>
       </main>
