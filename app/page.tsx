@@ -2,13 +2,11 @@
 import Link from "next/link";
 import ServicesGrid from "@/components/ServicesGrid";
 
-
 export default function HomePage() {
   return (
     <>
       <main className="min-h-screen bg-[#f7f8fb]">
-        <div className="w-full px-4 pb-10 pt-4 sm:px-6 sm:pt-6 lg:px-10 2xl:px-16">
-
+        <div className="w-full px-4 pb-6 pt-4 sm:px-6 sm:pt-6 lg:px-10 2xl:px-16">
           {/* HERO – Premium polish (NO subtitle) */}
           <section className="relative">
             {/* subtle top brand wash (Mixed palette C) */}
@@ -50,25 +48,25 @@ export default function HomePage() {
           </div>
 
           {/* JOBS */}
-          <section className="mt-5 overflow-hidden rounded-3xl bg-white ring-1 ring-black/5 shadow-[0_18px_55px_rgba(15,23,42,0.08)]">
-            <div className="px-5 py-5 sm:px-6 sm:py-6">
+          <section className="mt-4 overflow-hidden rounded-3xl bg-white ring-1 ring-black/5 shadow-[0_18px_55px_rgba(15,23,42,0.08)]">
+            <div className="px-5 py-4 sm:px-6 sm:py-5">
               <div className="flex items-center justify-between gap-3">
                 <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
-                  Punësim & Bashkëpunime
+                  Punësim &amp; Bashkëpunime
                 </h2>
 
                 <Link
                   href="/post/new"
-                  className="shrink-0 rounded-2xl bg-slate-900 px-4 py-2 text-xs font-extrabold text-white shadow-[0_10px_24px_rgba(15,23,42,0.22)] ring-1 ring-white/10 hover:opacity-95 active:translate-y-[1px]"
+                  className="shrink-0 inline-flex items-center justify-center rounded-full bg-slate-900/90 px-3 py-1.5 text-xs font-extrabold text-white shadow-sm ring-1 ring-black/10 hover:bg-slate-900 active:translate-y-[1px]"
                 >
                   Krijo postim
                 </Link>
               </div>
 
-              <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="mt-3 grid grid-cols-2 gap-2.5">
                 <Link
                   href="/seeking"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#1f5b8f] to-[#174a74] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(31,91,143,0.22)] ring-1 ring-white/20 hover:brightness-[1.03] active:translate-y-[1px]"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#1f5b8f] to-[#174a74] px-3 py-2.5 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(31,91,143,0.22)] ring-1 ring-white/20 hover:brightness-[1.03] active:translate-y-[1px]"
                 >
                   <BriefcaseIcon />
                   Kërkoj Punë
@@ -76,7 +74,7 @@ export default function HomePage() {
 
                 <Link
                   href="/offering"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#f59e0b] to-[#ea580c] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(234,88,12,0.18)] ring-1 ring-white/25 hover:brightness-[1.03] active:translate-y-[1px]"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#f59e0b] to-[#ea580c] px-3 py-2.5 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(234,88,12,0.18)] ring-1 ring-white/25 hover:brightness-[1.03] active:translate-y-[1px]"
                 >
                   <HandshakeIcon />
                   Ofroj Punë
@@ -89,8 +87,6 @@ export default function HomePage() {
           </section>
         </div>
       </main>
-
-      
     </>
   );
 }
