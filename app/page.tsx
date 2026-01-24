@@ -37,7 +37,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* premium bottom border glow */}
+              {/* premium bottom border glow  */}
               <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-slate-200/70 to-transparent" />
             </div>
           </section>
