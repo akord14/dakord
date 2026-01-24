@@ -8,8 +8,7 @@ export default function HomePage() {
       <main className="min-h-screen bg-[#f7f8fb]">
         <div className="w-full px-4 pb-6 pt-4 sm:px-6 sm:pt-6 lg:px-10 2xl:px-16">
           {/* HERO – Premium polish (NO subtitle) */}
-          <section className="relative rounded-3xl bg-[#F1F7FC] p-3 sm:p-4">
-
+          <section className="relative">
             {/* ✅ REMOVED: top wash that looked like gray shadow */}
 
             <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200">
