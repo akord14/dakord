@@ -53,12 +53,12 @@ export default function HomePage() {
               {/* title */}
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
-                    Punësim &amp; Bashkëpunime
-                  </h2>
-                  <p className="mt-1 text-sm leading-6 text-slate-600">
-                    Posto ose gjej mundësi pune dhe bashkëpunime.
-                  </p>
+                 <h2 className="text-center text-lg font-extrabold tracking-tight text-slate-900">
+  Punësim & Bashkëpunime
+</h2>
+                  <p className="mt-1 text-center text-sm text-slate-600">
+  Posto ose gjej mundësi pune dhe bashkëpunime.
+</p>
                 </div>
               </div>
 
