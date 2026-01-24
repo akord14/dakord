@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
-
+import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: {
     default: "Akord.al",
@@ -26,43 +26,41 @@ export default function RootLayout({
   return (
     <html lang="sq">
       <body className="min-h-screen bg-[#f7f8fb] text-slate-900">
-        {/* HEADER (tint background + strong text) */}
-        <header className="sticky top-0 z-50">
-          <div className="border-b border-white/50 bg-gradient-to-r from-[#0b2a43]/10 via-white/70 to-[#1f5b8f]/10 backdrop-blur">
-            <div className="mx-auto flex h-16 w-full max-w-6xl items-center px-4">
-              {/* Logo majtas */}
-              <div className="flex items-center gap-3">
-                <img src="/logo.png" alt="Akord.al" className="h-8 w-auto" />
-              </div>
+        
+        {/* HEADER (short bar, big centered brand) */}
+<header className="sticky top-0 z-50 bg-white/90 backdrop-blur">
+  <div className="border-b border-black/5">
+    <div className="mx-auto flex h-14 w-full max-w-7xl items-center px-4 sm:px-6 lg:px-10">
+      
+      {/* Logo majtas (full height feel) */}
+      <div className="flex items-center">
+        <img
+          src="/logo.png"
+          alt="Akord.al"
+          className="h-10 w-auto"
+        />
+      </div>
 
-              {/* AKORD qender */}
-              <div className="flex-1 text-center">
-                <span className="select-none text-[13px] font-extrabold tracking-[0.32em] text-[#0b2a43] uppercase">
-                  AKORD
-                </span>
-              </div>
+      {/* Center brand (fills the bar visually) */}
+      <div className="flex-1 text-center">
+        <span className="inline-block align-middle text-[26px] font-black leading-none tracking-tight text-[#0b2a43]">
+          Akord.al
+        </span>
+      </div>
 
-              {/* right spacer */}
-              <div className="w-[32px]" />
-            </div>
-          </div>
+      {/* right spacer (same visual weight as logo) */}
+      <div className="w-10" />
+    </div>
+  </div>
+</header>
 
-          {/* very subtle divider (premium, not heavy) */}
-          <div className="h-px w-full bg-black/5" />
-        </header>
 
         {/* MAIN */}
         {children}
 
         {/* FOOTER (tint background + strong text) */}
-        <footer className="border-t border-white/50 bg-gradient-to-r from-[#0b2a43]/10 via-white/70 to-[#1f5b8f]/10">
-          <div className="mx-auto w-full max-w-6xl px-4 py-6 text-center">
-            <p className="text-sm font-semibold text-[#0b2a43]/80">
-              Të gjitha të drejtat të rezervuara © Akord.al {YEAR}
-            </p>
-          </div>
-        </footer>
-
+        
+<Footer />
         <Analytics />
       </body>
     </html>
