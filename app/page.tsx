@@ -1,13 +1,14 @@
 // app/page.tsx
 import Link from "next/link";
 import ServicesGrid from "@/components/ServicesGrid";
-import BottomBar from "../components/BottomBar";
+
 
 export default function HomePage() {
   return (
     <>
       <main className="min-h-screen bg-[#f7f8fb]">
-        <div className="mx-auto w-full max-w-6xl px-4 pb-10 pt-4 sm:pt-6">
+        <div className="w-full px-4 pb-10 pt-4 sm:px-6 sm:pt-6 lg:px-10 2xl:px-16">
+
           {/* HERO – Premium polish (NO subtitle) */}
           <section className="relative">
             {/* subtle top brand wash (Mixed palette C) */}
@@ -89,7 +90,7 @@ export default function HomePage() {
         </div>
       </main>
 
-      <BottomBar />
+      
     </>
   );
 }
