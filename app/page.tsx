@@ -50,25 +50,25 @@ export default function HomePage() {
 
           {/* JOBS */}
           <section className="mt-4 overflow-hidden rounded-3xl bg-white ring-1 ring-black/5 shadow-[0_18px_55px_rgba(15,23,42,0.08)]">
-            <div className="px-5 py-4 sm:px-6 sm:py-5">
+            <div className="px-5 py-3 sm:px-6 sm:py-4">
+
               <div className="flex items-center justify-between gap-3">
                 <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
                   Punësim &amp; Bashkëpunime
                 </h2>
 
-                <Link
+  <Link
   href="/post/new"
-  className="shrink-0 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-extrabold text-slate-900 ring-1 ring-black/10 shadow-sm hover:bg-slate-50 active:translate-y-[1px]"
+  className="shrink-0 inline-flex items-center justify-center rounded-2xl bg-gradient-to-b from-[#1f5b8f] to-[#174a74] px-4 py-2 text-xs font-extrabold text-white shadow-[0_10px_24px_rgba(31,91,143,0.20)] ring-1 ring-white/20 hover:brightness-[1.03] active:translate-y-[1px]"
 >
-  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-white text-[12px] leading-none">
-    +
-  </span>
   Krijo postim
 </Link>
 
+
               </div>
 
-              <div className="mt-3 grid grid-cols-2 gap-2.5">
+              <div className="mt-3 grid grid-cols-2 gap-3">
+
                 <Link
                   href="/seeking"
                   className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#1f5b8f] to-[#174a74] px-3 py-2.5 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(31,91,143,0.22)] ring-1 ring-white/20 hover:brightness-[1.03] active:translate-y-[1px]"
