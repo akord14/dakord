@@ -9,10 +9,8 @@ export default function HomePage() {
         <div className="w-full px-4 pb-6 pt-4 sm:px-6 sm:pt-6 lg:px-10 2xl:px-16">
           {/* HERO – Premium polish (NO subtitle) */}
           <section className="relative">
-            {/* subtle top brand wash (keep subtle) */}
-            <div className="pointer-events-none absolute inset-x-0 -top-6 h-40 rounded-3xl bg-gradient-to-b from-[#0b2a43]/10 to-transparent" />
+            {/* ✅ REMOVED: top wash that looked like gray shadow */}
 
-            {/* ✅ no shadow, clean border */}
             <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200">
               <div className="px-5 py-6 sm:px-6 sm:py-7">
                 <h1 className="text-center text-[26px] font-extrabold tracking-tight text-slate-900 sm:text-3xl">
@@ -20,7 +18,6 @@ export default function HomePage() {
                 </h1>
 
                 <div className="mt-5 grid grid-cols-2 gap-3">
-                  {/* LEFT CTA (keep as-is) */}
                   <Link
                     href="/services"
                     className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#1f5b8f] to-[#174a74] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(31,91,143,0.25)] ring-1 ring-white/20 hover:brightness-[1.03] active:translate-y-[1px]"
@@ -29,7 +26,7 @@ export default function HomePage() {
                     Shiko Shërbimet
                   </Link>
 
-                  {/* ✅ RIGHT CTA: white button, black text, black icon */}
+                  {/* ✅ white/outline button so black text + black icon make sense */}
                   <Link
                     href="/oferta"
                     className="group inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-300 bg-white px-3 py-3 text-sm font-extrabold text-slate-900 shadow-sm hover:bg-slate-50 active:translate-y-[1px]"
@@ -41,7 +38,7 @@ export default function HomePage() {
               </div>
 
               {/* ✅ clean separator (no glow) */}
-              <div className="h-[1px] w-full bg-slate-200/70" />
+              <div className="h-[1px] w-full bg-slate-200" />
             </div>
           </section>
 
@@ -121,7 +118,38 @@ function SearchWhiteIcon() {
   );
 }
 
-/* ✅ black version for the oferta button */
+function FileTextWhiteIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M14 2H7a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V8l-5-6z"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14 2v6h6"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9 13h6"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M9 17h6"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+/* ✅ new black icon for the oferta button (keeps your old icon untouched) */
 function FileTextBlackIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
