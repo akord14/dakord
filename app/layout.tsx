@@ -46,45 +46,43 @@ export default function RootLayout({
     <html lang="sq">
       <body className="min-h-screen bg-[#f7f8fb] text-slate-900">
         
-       {/* HEADER – dark bg, centered brand, search right */}
+       {/* HEADER – perfectly symmetric */}
 <header className="sticky top-0 z-50 bg-[#0f172a]">
   <div className="border-b border-white/10">
-    <div className="mx-auto grid h-14 w-full max-w-7xl grid-cols-3 items-center px-4 sm:px-6 lg:px-10">
+    <div className="mx-auto grid h-14 max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6 lg:px-10">
 
-      {/* LEFT: logo in white circle */}
-      <div className="flex items-center justify-start">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm">
-
-
+      {/* LEFT – logo */}
+      <div className="flex justify-start">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm">
           <img
-  src="/logo.png"
-  alt="Akord.al"
-  className="h-10 w-10 object-contain"
-/>
+            src="/logo.png"
+            alt="Akord.al"
+            className="h-8 w-8 object-contain"
+          />
         </div>
       </div>
 
-      {/* CENTER: brand */}
+      {/* CENTER – brand */}
       <div className="text-center">
         <span className="text-[22px] font-black tracking-tight text-white">
           Akord.al
         </span>
       </div>
 
-      {/* RIGHT: search */}
-      <div className="flex items-center justify-end">
+      {/* RIGHT – search (same size as logo container) */}
+      <div className="flex justify-end">
         <button
-  aria-label="Search"
-  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition"
->
-  <SearchIcon className="h-5 w-5 text-white" />
-</button>
-
+          aria-label="Search"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition"
+        >
+          <SearchIcon className="h-5 w-5" />
+        </button>
       </div>
 
     </div>
   </div>
 </header>
+
 
 
 
