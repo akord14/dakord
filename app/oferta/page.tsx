@@ -84,7 +84,7 @@ export default function OfertaPage() {
 
           <div>
             <label className="text-sm font-semibold text-slate-900">
-              Çfarë shërbime dëshironi? (opsionale)
+              Çfarë shërbimi dëshironi? (opsionale)
             </label>
             <input
               name="service_text"
