@@ -53,11 +53,12 @@ export default function RootLayout({
 
       {/* LEFT – logo */}
       <div className="flex justify-start">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-sm">
+
           <img
             src="/logo.png"
             alt="Akord.al"
-            className="h-8 w-8 object-contain"
+            className="h-9 w-9 object-contain"
           />
         </div>
       </div>
@@ -73,8 +74,9 @@ export default function RootLayout({
       <div className="flex justify-end">
         <button
   aria-label="Search"
-  className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-900 shadow-sm hover:bg-slate-100 transition"
+  className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-900 shadow-sm"
 >
+
   <SearchIcon className="h-5 w-5 text-slate-900" />
 </button>
 
