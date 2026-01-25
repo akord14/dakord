@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <>
       <main className="min-h-screen bg-[#f7f8fb]">
-        <div className="w-full px-4 pb-6 pt-4 sm:px-6 sm:pt-6 lg:px-10 2xl:px-16">
+        <div className="w-full px-4 pb-0 pt-4 sm:px-6 sm:pt-6 lg:px-10 2xl:px-16">
           {/* HERO – Premium polish (NO subtitle) */}
           <section className="relative">
             {/* ✅ REMOVED: top wash that looked  like gray shadow */}
