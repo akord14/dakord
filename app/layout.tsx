@@ -53,7 +53,8 @@ export default function RootLayout({
 
       {/* LEFT: logo in white circle */}
       <div className="flex items-center justify-start">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm">
+
           <img
   src="/logo.png"
   alt="Akord.al"
