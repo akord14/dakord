@@ -21,9 +21,14 @@ export default function Footer() {
           {/* Brand + CTA */}
 <div className="max-w-xl">
   <div className="flex items-center gap-3">
-    <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/15">
-      🤝
-    </span>
+    <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-sm">
+  <img
+    src="/logo.png"
+    alt="Akord.al"
+    className="h-8 w-8 object-contain"
+  />
+</span>
+
     <span className="text-[22px] font-extrabold tracking-tight text-white">
       Akord.al
     </span>
@@ -34,16 +39,16 @@ export default function Footer() {
   </p>
 
   <a
-    href={whatsappHref}
-    target="_blank"
-    rel="noreferrer"
-    className="mt-5 inline-flex items-center gap-3 rounded-2xl bg-white/10 px-5 py-3 text-sm font-extrabold text-white ring-1 ring-white/15 backdrop-blur transition hover:bg-white/15"
-  >
-    <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/90 ring-1 ring-emerald-200/30">
-      <span className="text-[11px] leading-none">W</span>
-    </span>
-    Na kontakto në WhatsApp
-  </a>
+  href="https://wa.me/355695111179"
+  target="_blank"
+  rel="noreferrer"
+  className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-extrabold text-white shadow-sm backdrop-blur hover:bg-white/15 active:translate-y-[1px]"
+>
+  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
+    <img src="/brand/whatsapp.svg" alt="WhatsApp" className="h-5 w-5" />
+  </span>
+  Na kontakto në WhatsApp
+</a>
 </div>
 
 
