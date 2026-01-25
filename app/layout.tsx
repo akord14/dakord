@@ -55,10 +55,10 @@ export default function RootLayout({
       <div className="flex items-center justify-start">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm">
           <img
-            src="/logo.png"
-            alt="Akord.al"
-            className="h-6 w-6 object-contain"
-          />
+  src="/logo.png"
+  alt="Akord.al"
+  className="h-9 w-9 object-contain"
+/>
         </div>
       </div>
 
