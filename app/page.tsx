@@ -14,7 +14,7 @@ export default function HomePage() {
             <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200">
               <div className="px-5 py-6 sm:px-6 sm:py-7">
                 <h1 className="text-center text-[26px] font-extrabold tracking-tight text-slate-900 sm:text-3xl">
-  Sherbime &amp; Punesim
+  Shërbime &amp; Punësim
 </h1>
 
 
