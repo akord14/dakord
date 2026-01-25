@@ -7,40 +7,45 @@ export default function HomePage() {
     <>
       <main className="min-h-screen bg-[#f7f8fb]">
         <div className="w-full px-4 pb-6 pt-4 sm:px-6 sm:pt-6 lg:px-10 2xl:px-16">
-          {/* HERO – Premium polish (NO subtitle) */}
-          <section className="relative">
-            {/* ✅ REMOVED: top wash that looked  like gray shadow */}
+          {/* HERO – FINAL */}
+<section className="w-full bg-[#0f172a]">
+  <div className="mx-auto flex max-w-6xl flex-col items-center px-4 py-10 text-center">
 
-            <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200">
-              <div className="px-5 py-6 sm:px-6 sm:py-7">
-                <h1 className="text-center text-[26px] font-extrabold tracking-tight text-slate-900 sm:text-3xl">
-                  Gjej shërbimin
-                </h1>
+    {/* Logo in white circle */}
+    <div className="mb-6 flex h-28 w-28 items-center justify-center rounded-full bg-white shadow-lg">
+      <img
+        src="/logo-akord.png"
+        alt="Akord.al"
+        className="h-16 w-16 object-contain"
+      />
+    </div>
 
-                <div className="mt-5 grid grid-cols-2 gap-3">
-                  <Link
-                    href="/services"
-                    className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#1f5b8f] to-[#174a74] px-3 py-3 text-sm font-extrabold text-white shadow-[0_10px_28px_rgba(31,91,143,0.25)] ring-1 ring-white/20 hover:brightness-[1.03] active:translate-y-[1px]"
-                  >
-                    <SearchWhiteIcon />
-                    Shiko Shërbimet
-                  </Link>
+    {/* Title */}
+    <h1 className="text-[26px] font-extrabold tracking-tight text-white sm:text-3xl">
+      Gjej shërbimin
+    </h1>
 
-                  {/* ✅ white/outline button so black text + black icon make sense */}
-                  <Link
-                    href="/oferta"
-                    className="group inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-300 bg-white px-3 py-3 text-sm font-extrabold text-slate-900 shadow-sm hover:bg-slate-50 active:translate-y-[1px]"
-                  >
-                    <FileTextBlackIcon />
-                    Merr Ofertën
-                  </Link>
-                </div>
-              </div>
+    {/* Buttons */}
+    <div className="mt-6 grid w-full max-w-sm grid-cols-2 gap-3">
+      <Link
+        href="/services"
+        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-3 py-3 text-sm font-extrabold text-slate-900 shadow hover:opacity-90"
+      >
+        <SearchWhiteIcon />
+        Shiko Shërbimet
+      </Link>
 
-              {/* ✅ clean separator (no glow) */}
-              <div className="h-[1px] w-full bg-slate-200" />
-            </div>
-          </section>
+      <Link
+        href="/oferta"
+        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#1f5b8f] px-3 py-3 text-sm font-extrabold text-white shadow hover:opacity-95"
+      >
+        <FileTextWhiteIcon />
+        Merr Ofertën
+      </Link>
+    </div>
+  </div>
+</section>
+
 
           {/* SERVICES GRID */}
           <div className="mt-5">
