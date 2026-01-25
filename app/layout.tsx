@@ -72,11 +72,12 @@ export default function RootLayout({
       {/* RIGHT – search (same size as logo container) */}
       <div className="flex justify-end">
         <button
-          aria-label="Search"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition"
-        >
-          <SearchIcon className="h-5 w-5" />
-        </button>
+  aria-label="Search"
+  className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-900 shadow-sm hover:bg-slate-100 transition"
+>
+  <SearchIcon className="h-5 w-5 text-slate-900" />
+</button>
+
       </div>
 
     </div>
