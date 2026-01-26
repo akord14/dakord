@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Footer from "@/components/Footer";
+import Link from "next/link";
 
 function SearchIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
@@ -72,15 +73,15 @@ export default function RootLayout({
 
       {/* RIGHT – search (same size as logo container) */}
       <div className="flex justify-end">
-        <button
-  aria-label="Search"
-  className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-900 shadow-sm"
->
+  <Link
+    href="/search"
+    aria-label="Search"
+    className="flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200 hover:bg-slate-50"
+  >
+    <SearchIcon className="h-5 w-5 text-slate-900" />
+  </Link>
+</div>
 
-  <SearchIcon className="h-5 w-5 text-slate-900" />
-</button>
-
-      </div>
 
     </div>
   </div>

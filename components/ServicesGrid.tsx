@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,7 +11,14 @@ const SERVICES = [
   { title: "Digital Marketing / Ads", slug: "digital-marketing-ads", image: "/services/digital-marketing-ads.jpg" },
 ];
 
-export default function ServicesGrid() {
+export default function ServicesGrid({ query = "" }: { query?: string }) {
+  const q = query.trim().toLowerCase();
+
+  const filtered = SERVICES.filter((s) => {
+    if (!q) return true;
+    return s.title.toLowerCase().includes(q) || s.slug.toLowerCase().includes(q);
+  });
+
   return (
     <section className="w-full px-2 py-6">
       {/* TITLE */}
@@ -25,41 +33,47 @@ export default function ServicesGrid() {
 
       {/* GRID */}
       <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
-        {SERVICES.slice(0, 6).map((s, idx) => (
-          <Link
-            key={s.slug}
-            href={`/services/${s.slug}`}
-            className={`group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md ${
-              idx >= 4 ? "hidden md:block" : ""
-            }`}
-          >
-            <div className="relative aspect-[16/9] w-full bg-slate-100">
-              <Image
-                src={s.image}
-                alt={s.title}
-                fill
-                className="object-contain transition group-hover:scale-[1.03]"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              />
-            </div>
-
-            <div className="flex items-center justify-between gap-2 px-3 py-3">
-              <div className="min-w-0">
-                <div className="text-sm font-extrabold leading-tight text-slate-900">
-                  {s.title}
-                </div>
-                <div className="mt-0.5 text-[11px] font-semibold text-slate-500">
-                  Kliko për detaje
-                </div>
+        {filtered.length === 0 ? (
+          <div className="col-span-2 rounded-2xl border border-slate-200 bg-white p-4 text-center text-sm font-semibold text-slate-600 md:col-span-3">
+            Nuk u gjet asnjë shërbim për “{query}”.
+          </div>
+        ) : (
+          filtered.slice(0, 6).map((s, idx) => (
+            <Link
+              key={s.slug}
+              href={`/services/${s.slug}`}
+              className={`group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md ${
+                idx >= 4 ? "hidden md:block" : ""
+              }`}
+            >
+              <div className="relative aspect-[16/9] w-full bg-slate-100">
+                <Image
+                  src={s.image}
+                  alt={s.title}
+                  fill
+                  className="object-contain transition group-hover:scale-[1.03]"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
               </div>
 
-              {/* PREMIUM HAP */}
-              <div className="shrink-0 rounded-xl border border-black bg-blue-50 px-3 py-1.5 text-[11px] font-extrabold text-black transition hover:bg-blue-100">
-                HAP
+              <div className="flex items-center justify-between gap-2 px-3 py-3">
+                <div className="min-w-0">
+                  <div className="text-sm font-extrabold leading-tight text-slate-900">
+                    {s.title}
+                  </div>
+                  <div className="mt-0.5 text-[11px] font-semibold text-slate-500">
+                    Kliko për detaje
+                  </div>
+                </div>
+
+                {/* PREMIUM HAP */}
+                <div className="shrink-0 rounded-xl border border-black bg-blue-50 px-3 py-1.5 text-[11px] font-extrabold text-black transition hover:bg-blue-100">
+                  HAP
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))
+        )}
       </div>
 
       {/* SEE ALL */}
