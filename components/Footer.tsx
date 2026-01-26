@@ -92,7 +92,7 @@ export default function Footer() {
                 </Link>
 
                 <Link
-                  href="/#si-funksionon"
+                  href="/si-funksionon"
                   className="group flex items-center justify-between rounded-xl px-1 py-2 text-sm font-semibold text-white/90 hover:text-white"
                 >
                   <span>Si funksionon</span>
