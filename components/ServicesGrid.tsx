@@ -5,11 +5,11 @@ import Link from "next/link";
 const SERVICES = [
   // ===== SHËRBIME TË REJA (DALIN TË PARAT) =====
   { title: "Kondicionim & Aspirim", slug: "hvac-conditioning-ventilation", image: "/services/hvac-conditioning-ventilation.jpg" },
-  { title: "Mobilieri", slug: "custom-furniture", image: "/services/custom-furniture.jpg" },
+  { title: "Mobilieri", slug: "costum-furniture", image: "/services/costum-furniture.jpg" },
   { title: "Sisteme Parkimi", slug: "parking-systems", image: "/services/parking-systems.jpg" },
   { title: "Sisteme WiFi", slug: "wifi-networking-systems", image: "/services/wifi-networking-systems.jpg" },
   { title: "Sisteme Hotelerie", slug: "hotel-management-systems", image: "/services/hotel-management-systems.jpg" },
-  { title: "Sisteme Akses Kontrolli", slug: "access-control-systems", image: "/services/access-control-systems.jpg" },
+  { title: "Sisteme Akses Kontrolli", slug: "access-control-system", image: "/services/access-control-system.jpg" },
   { title: "Sisteme Audio", slug: "audio-systems", image: "/services/audio-systems.jpg" },
   { title: "Ndriçim Skenik", slug: "stage-lighting-systems", image: "/services/stage-lighting-systems.jpg" },
   { title: "Smart Home", slug: "smart-home", image: "/services/smart-home.jpg" },
