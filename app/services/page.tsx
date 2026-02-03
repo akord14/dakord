@@ -2,13 +2,87 @@ import Image from "next/image";
 import Link from "next/link";
 
 const SERVICES = [
-  { title: "Sisteme Monitorimi", slug: "monitoring-systems", image: "/services/monitoring-systems.jpg" },
-  { title: "Sisteme Alarmi", slug: "alarm-systems", image: "/services/alarm-systems.jpg" },
-  { title: "Graphic Design & Branding", slug: "graphic-design-branding", image: "/services/graphic-design-branding.jpg" },
-  { title: "Web & App Development", slug: "web-app-development", image: "/services/web-app-development.jpg" },
-  { title: "Social Media Management", slug: "social-media-management", image: "/services/social-media-management.jpg" },
-  { title: "Digital Marketing / Ads", slug: "digital-marketing-ads", image: "/services/digital-marketing-ads.jpg" },
+  // ===== SHËRBIME TË REJA (DALIN TË PARAT) =====
+  {
+    title: "Kondicionim & Aspirim",
+    slug: "hvac-conditioning-ventilation",
+    image: "/services/hvac-conditioning-ventilation.jpg",
+  },
+  {
+    title: "Mobilieri",
+    slug: "costum-furniture",
+    image: "/services/costum-furniture.jpg",
+  },
+  {
+    title: "Sisteme Parkimi",
+    slug: "parking-systems",
+    image: "/services/parking-systems.jpg",
+  },
+  {
+    title: "Sisteme WiFi",
+    slug: "wifi-networking-systems",
+    image: "/services/wifi-networking-systems.jpg",
+  },
+  {
+    title: "Sisteme Hotelerie",
+    slug: "hotel-management-systems",
+    image: "/services/hotel-management-systems.jpg",
+  },
+  {
+    title: "Akses Kontrolli",
+    slug: "access-control-system",
+    image: "/services/access-control-system.jpg",
+  },
+  {
+    title: "Sisteme Audio",
+    slug: "audio-systems",
+    image: "/services/audio-systems.jpg",
+  },
+  {
+    title: "Ndriçim Skenik",
+    slug: "stage-lighting-system",
+    image: "/services/stage-lighting-system.jpg",
+  },
+  {
+    title: "Smart Home",
+    slug: "smart-home",
+    image: "/services/smart-home.jpg",
+  },
+
+  // ===== SHËRBIME EKZISTUESE (DALIN POSHTË) =====
+  {
+    title: "Sisteme Monitorimi",
+    slug: "monitoring-systems",
+    image: "/services/monitoring-systems.jpg",
+  },
+  {
+    title: "Sisteme Alarmi",
+    slug: "alarm-systems",
+    image: "/services/alarm-systems.jpg",
+  },
+  {
+    title: "Graphic Design & Branding",
+    slug: "graphic-design-branding",
+    image: "/services/graphic-design-branding.jpg",
+  },
+  {
+    title: "Web & App Development",
+    slug: "web-app-development",
+    image: "/services/web-app-development.jpg",
+  },
+  {
+    title: "Social Media Management",
+    slug: "social-media-management",
+    image: "/services/social-media-management.jpg",
+  },
+  {
+    title: "Digital Marketing / Ads",
+    slug: "digital-marketing-ads",
+    image: "/services/digital-marketing-ads.jpg",
+  },
 ];
+
+
 
 export default function ServicesPage() {
   return (
