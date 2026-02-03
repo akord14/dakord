@@ -2,6 +2,47 @@ import Image from "next/image";
 import Link from "next/link";
 
 const SERVICES = [
+  {
+    title: "Mobilieri",
+    slug: "costum-furniture",
+    image: "/services/costum-furniture.jpg",
+  },
+  {
+    title: "Sisteme Parkimi",
+    slug: "parking-systems",
+    image: "/services/parking-systems.jpg",
+  },
+  {
+    title: "Sisteme WiFi",
+    slug: "wifi-networking-systems",
+    image: "/services/wifi-networking-systems.jpg",
+  },
+  {
+    title: "Sisteme Hotelerie",
+    slug: "hotel-management-systems",
+    image: "/services/hotel-management-systems.jpg",
+  },
+  {
+    title: "Akses Kontrolli",
+    slug: "access-control-systems",
+    image: "/services/access-control-systems.jpg",
+  },
+  {
+    title: "Sisteme Audio",
+    slug: "audio-systems",
+    image: "/services/audio-systems.jpg",
+  },
+  {
+    title: "Ndriçim Skenik",
+    slug: "stage-lighting-system",
+    image: "/services/stage-lighting-system.jpg",
+  },
+  {
+    title: "Smart Home",
+    slug: "smart-home",
+    image: "/services/smart-home.jpg",
+  },
+  {title: "Kondicionim & Aspirim", slug: "hvac-conditioning-ventilation", image: "/services/hvac-conditioning-ventilation.jpg" },
   { title: "Sisteme Monitorimi", slug: "monitoring-systems", image: "/services/monitoring-systems.jpg" },
   { title: "Sisteme Alarmi", slug: "alarm-systems", image: "/services/alarm-systems.jpg" },
   { title: "Graphic Design & Branding", slug: "graphic-design-branding", image: "/services/graphic-design-branding.jpg" },
